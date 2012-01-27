@@ -2,9 +2,9 @@
 class ModelReportSale extends Model {
   public function stat($request){
     // todo. GA4060 removed by JP
+    // toto. TX1616,TX2835,TX3947,TX6500 removed by AK
     $exclude = " and substr(x.txid,1,6) not in ('CA9930','FL9400','GA7477','IL0995','IL9800','PA4035',
-                 'PA5885','PA7473','TX1616','TX2835','TX3947','TX4464','TX6500')";
-
+                 'PA5885','PA7473','TX4464')";
     // today
     if(!is_null($request['filter_from']) && !is_null($request['filter_to'])){
       $thismonth = mktime(0, 0, 0, date(substr($request['filter_from'],5,2)), date(substr($request['filter_from'],8,2)), date(substr($request['filter_from'],0,4)));
@@ -95,8 +95,8 @@ class ModelReportSale extends Model {
           from transaction x, rep_stat rs, storelocator st
          where concat(substr(x.order_date,1,4),substr(x.order_date,6,2)) = rs.month
            and x.order_user = rs.rep and x.store_id = st.id
+           and x.status in ('1','2','3')
            and x.approve_status = 'approve'";
-
     if(!is_null($request['filter_from']) && !is_null($request['filter_to'])){
       $thismonth = mktime(0, 0, 0, date(substr($request['filter_from'],5,2)), date(substr($request['filter_from'],8,2)), date(substr($request['filter_from'],0,4)));
       $from = date("Y-m-01",$thismonth);
@@ -114,7 +114,7 @@ class ModelReportSale extends Model {
 
     $sql.= " " . $request['order'];
 
-    //$this->log->aPrint( $sql );
+//    $this->log->aPrint( $sql );
     $query = $this->db->query($sql);
     $rtn['this_month'] = $query->rows;
 
@@ -255,8 +255,6 @@ class ModelReportSale extends Model {
     return $rtn;
   }
 
-
-
   ##############################################################################
   ###### account
   ##############################################################################
@@ -280,12 +278,13 @@ class ModelReportSale extends Model {
                x.order_date,
                sum(s.order_quantity*s.price1) as sum,
                s.order_quantity
-          from transaction x, storelocator sl, sales s, product_description pd
+          from transaction x, storelocator sl, sales s, product_description pd, product p
          where x.store_id = sl.id
+           and p.product_id = pd.product_id
            and s.product_id = pd.product_id
            and s.txid = x.txid
            and lower(sl.accountno) = '$accountno'
-           and s.order_quantity > 0 
+           and s.order_quantity > 0
         ";
     /*
     if(!is_null($request['filter_from']) && !is_null($request['filter_to'])){
@@ -297,7 +296,7 @@ class ModelReportSale extends Model {
 		}
 		*/
     $sql .= " AND substr(s.order_date,1,10) between '" . $from . "' and '" . $to . "'";    
-    $sql .= " group by x.txid,s.model order by x.order_date desc";
+    $sql .= " group by x.txid,s.model order by x.order_date, p.model desc";
 
     //$this->log->aPrint( $sql );
     $query = $this->db->query($sql);
@@ -320,7 +319,6 @@ class ModelReportSale extends Model {
 
 
 
-
   ##############################################################################
   ###### validate
   ##############################################################################
@@ -338,6 +336,7 @@ class ModelReportSale extends Model {
                    (select txid from transaction  where substr(order_date,1,10) between '$from' and '$to' )
              group by x.txid;
         ";
+    //$this->log->aPrint( $sql ); exit;
     $query = $this->db->query($sql);
     $aResponse = $aDC = array();
     foreach($query->rows as $row){
@@ -356,10 +355,12 @@ class ModelReportSale extends Model {
             }
           }
         }
-        //$this->log->aPrint( $sale_price );
-        //$this->log->aPrint( $row['tx_price'] );
-        //$this->log->aPrint( substr($sale_price,0,-2) );
-        if( substr($sale_price,0,-1) != substr($row['tx_price'],0,-1) ){
+        /*
+        $this->log->aPrint( $sale_price );
+        $this->log->aPrint( $row['tx_price'] );
+        $this->log->aPrint( substr($sale_price,0,-2) );
+        */
+        if( substr($sale_price,0,-2) != substr($row['tx_price'],0,-2) ){
           $aResponse[] = $row;
         }
       }
@@ -370,7 +371,6 @@ class ModelReportSale extends Model {
     //exit;
     return $aResponse;
   }
-
 
 	public function ordersales($request){
     $from  = $request['filter_from'];
