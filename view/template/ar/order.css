@@ -1,0 +1,168 @@
+@media print {
+  body, td, th, input, select, textarea, option, optgroup {
+    font-size: 14px;
+  }
+  
+  #header,#menu,#footer{
+    display:none;
+  }
+  
+  #content .heading,.left,.right{
+    display:none;
+  }
+  
+  #base span{
+    display:none;
+  }
+  
+  img#preview{
+    display:none;
+  }
+  
+  #base div {
+    padding-bottom:0px;
+  }
+  
+  .del,.plus{
+    display:none;
+  }
+    
+  .np{
+    display:none;
+  }
+} 
+
+#ubporder {
+  clear:left;
+}
+#ubporder table{
+  border-style:dotted;
+  margin:5px;
+  width:100%;
+}
+
+#ubporder .plus,.del{
+  cursor:pointer;
+  width:18px;
+  height:18px;
+  text-align:center;
+  background: url('') no-repeat;
+  /* background: url('view/image/del_icn.jpg') no-repeat; */
+}
+
+#ubporder td.nostyle{
+  background-color:white;
+  border:0px hidden white;
+}
+
+#base .half{
+  float:left;
+  position:relative;
+  margin-right:30px;
+  margin-top:10px;
+  width: 480px;
+}
+
+#base #store,#ship,#payment,#return {
+  width:480px;
+}
+
+#ubporder span.small_btn{
+  border:1px solid gray;
+  float:right;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 2px;
+  background-color: orange;
+  cursor:hand;
+}
+
+#base {
+  width:1024px;
+  /* height:100%; */
+  float:left;
+}
+
+.half div {
+  padding-bottom:10px;
+}
+
+table .label{
+  width:100px;
+  text-align:center;
+}
+
+table .context{
+  width:350px;
+}
+
+#detail{
+  position : absolute;
+  top: 100px;
+  left: 200px;
+  visibility:hidden;
+  border: 1px dotted green;
+  z-index:2;
+}
+
+#ship table .label{
+  width:100px;
+  text-align:center
+}
+
+#ship table .context{
+  width:350px;
+}
+
+
+#payment table .label{
+  width:100px;
+  text-align:center
+}
+
+#payment table .context{
+  width:350px;
+}
+
+#payment {
+  padding-bottom:20px;
+}
+
+#return table .label{
+  width:100px;
+  text-align:center
+}
+
+#return table .context{
+  width:350px;
+}
+
+#order{
+  clear:both;
+}
+
+#order table{
+  margin-top: 30px;
+  width:1000px;
+  /* height:100%; */
+}
+
+.insert{
+  background-color: gray;
+}
+
+#preview{
+  /* float:right; */
+}
+
+#preview img{
+  border:0px;
+}
+
+#brief {
+  padding-bottom : 0px;
+}
+#brief li{
+  list-style:none;
+  font-size:20px;
+}

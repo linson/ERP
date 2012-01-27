@@ -1,0 +1,8 @@
+<script>
+str = '[Promotion A] over $300 , Lace 0.5 oz Bond \n';
+str = str + 'aaaaaaaaaaaaaaaa\n';
+str = str + 'bbbbbbbbbbbbbbbb\n';
+// added = $added.replace(/(^\[Promotion A\]+[A-Za-z0-9_\-\.]+\\n)/,'');
+str = str.replace(/(^\[Promotion A\].+\n?)/g,'');
+console.log(str);
+</script>

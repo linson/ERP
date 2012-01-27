@@ -1,0 +1,15 @@
+Loaded plugins: fastestmirror
+Installed Packages
+php.i386                             5.2.5-7                           installed
+php-cli.i386                         5.2.5-7                           installed
+php-common.i386                      5.2.5-7                           installed
+php-gd.i386                          5.2.5-7                           installed
+php-imap.i386                        5.2.5-7                           installed
+php-mbstring.i386                    5.2.5-7                           installed
+php-mysql.i386                       5.2.5-7                           installed
+php-pdo.i386                         5.2.5-7                           installed
+php-pear.noarch                      1:1.5.0-3                         installed
+php-pear-DB.noarch                   1.7.13-1.el5.centos               installed
+php-pecl-memcache.i386               2.2.3-5                           installed
+php-snmp.i386                        5.2.5-7                           installed
+php-xml.i386                         5.2.5-7                           installed

@@ -1,0 +1,899 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Auto Complete 5.1</title>
+	<link rel='stylesheet' type='text/css' href='styles.css' />
+	<script type='text/javascript' src='../jquery/jquery-1.4.2.js'></script>
+	<script type='text/javascript' src='../jquery/jquery.history.js'></script>
+<script type='text/javascript'>
+$(function(){
+	var $h1 = $('h1').eq(0), firstLoad = true;
+	$('#menu').css({
+		height: ( $(window).height()-$h1.outerHeight() )*.9,
+		position: 'fixed',
+		overflow: 'auto',
+		top: $h1.outerHeight() + 5
+	});
+	$.historyInit(function(hash){
+		// Body Descriptions
+		$('h3.focus').removeClass('focus');
+		$('a[name='+hash+']').parent().addClass('focus');
+
+		// Floating Menu
+		var $li = $('a[href=#'+hash+']').parent(), $menu = $('#menu');
+		$menu.find('li.focus').removeClass('focus');
+		$li.addClass('focus');
+
+		if ( firstLoad ) {
+			$menu.scrollTop( $li.offset().top - $menu.offset().top - 1 );
+			firstLoad = false;
+		}
+	});
+});
+</script>
+</head>
+<body>
+<!--
+Auto Complete 5.1 Docs
+April 13, 2010
+Corey Hart @ http://www.codenothing.com
+-->
+
+
+<h1>Auto Complete 5.1 Documentation</h1>
+
+
+<ul id='menu'>
+	<li class='title'>4.1 and lower</li>
+	<li><a href='#backwardsCompatible'>backwardsCompatible</a></li>
+
+	<li class='title' style='margin-top: 20px;'>jQuery.autoComplete</li>
+	<li><a href='#defaults'>defaults</a></li>
+	<li><a href='#length'>length</a></li>
+	<li><a href='#focus'>focus</a></li>
+	<li><a href='#blur'>blur</a></li>
+	<li><a href='#hasFocus'>hasFocus</a></li>
+	<li><a href='#getFocus'>getFocus</a></li>
+	<li><a href='#getPrevious'>getPrevious</a></li>
+	<li><a href='#getAll'>getAll</a></li>
+	<li><a href='#version'>version</a></li>
+	<li><a href='#other'>Other Internals</a></li>
+
+	<li class='title' style='margin-top: 20px;'>Settings</li>
+	<li><a href='#ajax'>ajax</a></li>
+	<li><a href='#ajaxCache'>ajaxCache</a></li>
+	<li><a href='#autoFill'>autoFill</a></li>
+	<li><a href='#bgiframe'>bgiframe</a></li>
+	<li><a href='#cacheLimit'>cacheLimit</a></li>
+	<li><a href='#dataFn'>dataFn</a></li>
+	<li><a href='#dataSupply'>dataSupply</a></li>
+	<li><a href='#delay'>delay</a></li>
+	<li><a href='#formatSupply'>formatSupply</a></li>
+	<li><a href='#inputControl'>inputControl</a></li>
+	<li><a href='#list'>list</a></li>
+	<li><a href='#maxItems'>maxItems</a></li>
+	<li><a href='#maxHeight'>maxHeight</a></li>
+	<li><a href='#maxRequests'>maxRequests</a></li>
+	<li><a href='#maxRequestsDeep'>maxRequestsDeep</a></li>
+	<li><a href='#minChars'>minChars</a></li>
+	<li><a href='#multiple'>multiple</a></li>
+	<li><a href='#multipleSeparator'>multipleSeparator</a></li>
+	<li><a href='#newList'>newList</a></li>
+	<li><a href='#nonInput'>nonInput</a></li>
+	<li><a href='#postData'>postData</a></li>
+	<li><a href='#postFormat'>postFormat</a></li>
+	<li><a href='#postVar'>postVar</a></li>
+	<li><a href='#preventEnterSubmit'>preventEnterSubmit</a></li>
+	<li><a href='#requestType'>requestType</a></li>
+	<li><a href='#rollover'>rollover</a></li>
+	<li><a href='#striped'>striped</a></li>
+	<li><a href='#useCache'>useCache</a></li>
+	<li><a href='#width'>width</a></li>
+
+	<li class='title' style='margin-top:20px;'>Event Callbacks</li>
+	<li><a href='#onBlur'>onBlur</a></li>
+	<li><a href='#onFocus'>onFocus</a></li>
+	<li><a href='#onHide'>onHide</a></li>
+	<li><a href='#onListFormat'>onListFormat</a></li>
+	<li><a href='#onLoad'>onLoad</a></li>
+	<li><a href='#onMaxRequest'>onMaxRequest</a></li>
+	<li><a href='#onRollover'>onRollover</a></li>
+	<li><a href='#onSelect'>onSelect</a></li>
+	<li><a href='#onShow'>onShow</a></li>
+	<li><a href='#onSubmit'>onSubmit</a></li>
+	<li><a href='#spinner'>spinner</a></li>
+
+	<li class='title' style='margin-top:20px;'>Methods (Event Triggers)</li>
+	<li><a href='#button-ajax'>button-ajax</a></li>
+	<li><a href='#button-supply'>button-supply</a></li>
+	<li><a href='#destroy'>destroy</a></li>
+	<li><a href='#direct-supply'>direct-supply</a></li>
+	<li><a href='#disable'>disable</a></li>
+	<li><a href='#enable'>enable</a></li>
+	<li><a href='#flush'>flush</a></li>
+	<li><a href='#option'>option</a></li>
+	<li><a href='#search'>search</a></li>
+	<li><a href='#settings'>settings</a></li>
+
+	<li class='index' style='margin-top:20px;list-style:none;font-size:8pt;'><a href='../demo/'><i>&lt;--Back to index</i></a></li>
+	<li class='index' style='list-style:none;font-size:8pt;'>
+		<a href='http://www.codenothing.com/archives/jquery/auto-complete/'><i>&lt;--Back to Original Article</i></a>
+	</li>
+</ul>
+
+
+
+<!--
+
+	Notes
+
+-->
+
+
+<div id='notes'>
+	<h2>Note's about autoComplete</h2>
+	<b>Namespaces</b>
+
+	autoComplete only requires control of 2 namespaces: jQuery.autoComplete &amp; jQuery.fn.autoComplete. The plugin
+	first runs a check to see if the bgiframe plugin is installed, and if it's not, it creates a useless function
+	that returns 'this' for internal purposes. The bgiframe plugin can be installed before or after and will be used.<br><br>
+
+	<b>Event Namespacing</b>
+
+	All normal event's are attached with the .autoComplete namespace, and all method's(custom event's) are attached to
+	the autoComplete event namespace. In cases where a manual trigger is required, prefix the method with
+	autoComplete, i.e: .trigger('autoComplete.<i>namespace</i>', args...).
+
+	<b>Passing array of argument's with method's</b>
+
+	autoComplete is flexible enough to pass an array of argument's, or list out argument's as needed. So 
+	.autoComplete('method', arg1, arg2, arg3) is the same as .autoComplete('method', [arg1, arg2, arg3]), and
+	if needed, .autoComplete('method', arguments).
+
+	<b>Callback Functions</b>
+
+	Any callback functions defined through the settings have 3 properties attached to them:<br>
+	1) The '<span style='color:blue;'>this</span>' object reference's the element in focus(losing focus for blur event)<br>
+	2) The first parameter contains the original event that was triggered.<br>
+	3) The second parameter contains an object of argument's needed for that function.<br><br>
+	
+	This tries to conform to jQuery-ui's standards for callback functions, and allows for new feature's to be added while still
+	being backwards compatible from this point on. For autoComplete versions 4.1 and lower, this new style will completely
+	break those code bases. For those instances, a <a href='#backwardsCompatible'>backwardsCompatible</a> setting has been installed 
+	for an easier transition to the new style. Please update all code bases as this will be the new standard going forward.
+</div>
+
+
+
+<!--
+
+	jQuery.autoComplete
+
+-->
+
+
+
+<h2>jQuery.autoComplete</h2>
+<div class='header'>
+	<div>Type</div>
+	Key
+</div>
+
+
+<h3><div class='default'>Object</div> <a name='defaults'>defaults</a></h3>
+<p>
+	Contains a global object of the autoComplete settings. Both of the settings passed into the autoComplete function 
+	as a parameter and defined through metadata solution overwrite these global defaults.
+</p>
+
+
+
+<h3><div class='default'>Integer</div> <a name='length'>length</a></h3>
+<p>
+	Number of element's on the page that currently have autoComplete attached to them.
+</p>
+
+
+
+<h3><div class='default'>Function</div> <a name='focus'>focus</a></h3>
+<p>
+	This function gets triggered whenever one of the autoComplete inputs gains focus. It's treated
+	exactly like the instance specific focus event, only it tracks all inputs. The <span class='this'>this</span>
+	references the element currently in focus. The function gets two arguments passed in, the first is the event
+	object that was triggered, the second is a ui object.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> This function gets triggered across all inputs. For a per instance focus function,
+	check out the <a href='#onFocus'>onFocus</a> event.
+</p>
+
+
+
+<h3><div class='default'>Function</div> <a name='blur'>blur</a></h3>
+<p>
+	This function gets triggered whenever one of the autoComplete inputs loses focus. It's treated
+	almost the same as the instance specific blur event, only it tracks all inputs. The <span class='this'>this</span>
+	references the element currently losing focus. The function gets two arguments passed in, the first is the event
+	object that was triggered, the second is a ui object.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> This function gets triggered across all inputs. For a per instance blur function,
+	check out the <a href='#onBlur'>onBlur</a> event.
+</p>
+
+
+
+<h3><div class='default'>Boolean</div> <a name='hasFocus'>hasFocus</a></h3>
+<p>
+	Boolean key which is true when an input that has autoComplete attached is in focus, false otherwise.
+</p>
+
+
+
+<h3><div class='default'>Function</div> <a name='getFocus'>getFocus</a></h3>
+<p>
+	Returns the element that is currently in focus. Passing true as an argument returns 
+	the jQuery cached version of that element. If no element is in focus, the function returns
+	an empty jQuery object if a true argument is passed in, otherwise it returns undefined.
+</p>
+
+
+
+<h3><div class='default'>Function</div> <a name='getPrevious'>getPrevious</a></h3>
+<p>
+	Returns the element that was previously in focus. Passing true as an argument returns
+	the jQuery cached version of that element. If no element was previously in focus, the function returns
+	an empty jQuery object if a true argument is passed in, otherwise it returns undefined.
+</p>
+
+
+
+<h3><div class='default'>Function</div> <a name='getAll'>getAll</a></h3>
+<p>
+	Returns a jQuery object containing all elements that currently have autoComplete attached to them.
+</p>
+
+
+
+<h3><div class='default'>String</div> <a name='version'>version</a></h3>
+<p>
+	Contains the current version of the autoComplete plugin
+</p>
+
+
+
+<h3><a name='other'>Other Inner Operation Methods</a></h3>
+<p>
+	The jQuery.autoComplete comes with a few more key variables that are operated on internally. Adjusting
+	these value's is generally a bad idea, but if required, here are the docs:<br><br>
+
+	<b>-counter:</b> Index counter. Gives a unique id to each element internally.<br>
+	<b>-stack:</b> Object containing all element's with autoComplete attached to them, referenced by their unique id.<br>
+	<b>-jqStack:</b> Object containing all cached jQuery element's with autoComplete attached to them, referenced by their unique id.<br>
+	<b>-order:</b> Array containing list order of each element focus event.<br>
+	<b>-keys:</b> A list of keycodes used throughout the plugin.<br>
+	<b>-arrayMethods:</b> Object containing all methods that may take an array as their first argument.<br>
+	<!-- TODO: Get a better description -->
+	<b>-handlerMethods:</b> Object containing all methods that may use triggerHandler under the proper number of arguments 
+	(-1 forces triggerHandler method regardless the number of arguments).<br>
+	<b>-remove:</b> Function that removes an input from the stack, takes the element's unique id as the parameter.<br>
+</p>
+
+
+
+
+
+
+<!--
+	autoComplete Settings
+-->
+
+
+<h2>Settings</h2>
+<div class='header'>
+	<div>Default</div>
+	Name - Type
+</div>
+<h3><div class='default'>false</div> <a name='backwardsCompatible'>backwardsCompatible</a> - <span class='type'>Boolean</span></h3>
+<p>
+	With version 5.0 and going forward, autoComplete will become more jqueryui standards compliant for event driven functions. With that,
+	the parameter's passed to those functions have changed. To respect developers who are currently on 4.1, a backwardsCompatible setting
+	has been implemented to ensure parameters passed to those functions remain constant. This is to ease the transition into 5.0 and beyond.<br><br>
+	From 5.0 and on, autoComplete will be using this style so new feature's can easily be implemented while still be compatible with earlier versions.
+</p>
+
+
+
+<h3><div class='default'>'ajax.php'</div> <a name='ajax'>ajax</a> - <span class='type'>String</span></h3>
+<p>
+	URL of the server side script.
+</p>
+<p class='notes'>
+	<b>Note*:</b> When dataSupply has a length greater than 0, no ajax request is sent.
+</p>
+
+
+
+<h3><div class='default'>jQuery.ajaxSettings.cache</div> <a name='ajaxCache'>ajaxCache</a> - <span class='type'>Boolean</span></h3>
+<p>
+	Whether to allow browsers to cache ajax requests. Default's to jQuery's native settings.
+</p>
+
+
+
+<h3><div class='default'>false</div> <a name='autoFill'>autoFill</a> - <span class='type'>Boolean</span></h3>
+<p>
+	Automatically fills the input with the focused list item. Best to use with a <a href='#delay'>delay</a>,
+	as it's prone to quirks with fast typers.
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='bgiframe'>bgiframe</a> - <span class='type'>Object</span></h3>
+<p>
+	Only valid when bgiframe plugin is installed, this object gets passed as the settings argument into the bgiframe plugin.
+</p>
+
+
+
+<h3><div class='default'>50</div> <a name='cacheLimit'>cacheLimit</a> - <span class='type'>Integer</span></h3>
+<p>
+	Limit's the number of entries stored in cache. Setting this value to -1 will remove any limitation.
+</p>
+<p class='notes'>
+	<b>Note*:</b> The global jQuery.autoComplete.defaults.cacheLimit value is used in determining the stack limit
+	of the <a href='#other'>jQuery.autoComplete.order</a> list.
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='dataFn'>dataFn</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Personal function to use in place of default pattern matching. Return true for correct match, false for incorrect.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>search:</b> Current value to be searching with.</li>
+	<li><b>entry:</b> Value of the entry in the dataSupply array.</li>
+	<li><b>list:</b> Holds the current values that have passed this functions pattern match.</li>
+	<li><b>i:</b> Current index of the array being searched.</li>
+	<li><b>supply:</b> The complete array currently being searched.</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> with the <a href='#backwardsCompatible'>backwardsCompatible</a> flag enabled, the params are:<br>
+	Function(search, entry, list, i, supply, ul, event, settings, cache).
+</p>
+
+
+<h3><div class='default'>[]</div> <a name='dataSupply'>dataSupply</a> - <span class='type'>Array</span></h3>
+<p>
+	Array of values/objects to run auto-complete as local instead of ajax requests. Default pattern match is: "/^<i>(input value)</i>/i"
+</p>
+
+
+
+<h3><div class='default'>100</div> <a name='delay'>delay</a> - <span class='type'>Integer</span></h3>
+<p>
+	Time delay of when to send the ajax requests in milliseconds.
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='formatSupply'>formatSupply</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Gives full access to formatting a supplied set of data into a list to be displayed.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>search:</b> Current value to be searching with.</li>
+	<li><b>supply:</b> The complete array currently being searched.</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul><br>
+<p class='notes'>
+	<b>Note*:</b> An array of objects must be returned (Same array of objects format sent back from an ajax request).
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='inputControl'>inputControl</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	inputControl provides access to changing the name for cache storage. When doing pattern matching, or sending requests,
+	the string returned by this function is used.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>val:</b> Current inputval going to be used in search.</li>
+	<li><b>key:</b> The keyCode logged on the keyup event</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> This function must return a string, which is either the 'val' key of the ui object or a modification of it.<br>
+	<b>Note2*:</b> with the <a href='#backwardsCompatible'>backwardsCompatible</a> flag enabled, the params are:<br>
+	Function(val, key, ul, event, settings, cache).
+</p>
+
+
+
+<h3><div class='default'>'auto-complete-list'</div> <a name='list'>list</a> - <span class='type'>String</span></h3>
+<p>
+	CSS Class that will be attached to the UL created.
+</p>
+
+
+
+<h3><div class='default'>-1</div> <a name='maxItems'>maxItems</a> - <span class='type'>Number</span></h3>
+<p>
+	Limits the number of values added to the drop down list. When -1, no limit is imposed.
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='maxHeight'>maxHeight</a> - <span class='type'>Number</span></h3>
+<p>
+	Applies the max-height logic programmatically for browser's that don't support that css property.
+</p>
+
+
+
+<h3><div class='default'>0</div> <a name='maxRequests'>maxRequests</a> - <span class='type'>Integer</span></h3>
+<p>
+	Maximum number of ajax requests allowed within a scripts duration. If 0, no limit is applied
+</p>
+
+
+
+<h3><div class='default'>false</div> <a name='maxRequestsDeep'>maxRequestsDeep</a> - <span class='type'>Boolean</span></h3>
+<p>
+	The blocker setup by maxRequests only prevents more ajax requests from being made, while lists stored in the cache
+	and supplied through <a href='#dataSupply'>dataSupply</a> will still work. By setting this value to true, all
+	requests are blocked.
+</p>
+
+
+
+<h3><div class='default'>1</div> <a name='minChars'>minChars</a> - <span class='type'>Integer</span></h3>
+<p>
+	Minimum number of required characters to send a request.
+</p>
+
+
+
+<h3><div class='default'>false</div> <a name='multiple'>multiple</a> - <span class='type'>Boolean</span></h3>
+<p>
+	When true, multiple word searching is allowed.
+</p>
+
+
+
+<h3><div class='default'>' '</div> <a name='multipleSeparator'>multipleSeparator</a> - <span class='type'>String</span></h3>
+<p>
+	Separator used between multiple words. Default's to an empty space, and is only active when the
+	<a href='#multiple'>multiple</a> option is true.
+</p>
+
+
+
+<h3><div class='default'>false</div> <a name='newList'>newList</a> - <span class='type'>Boolean</span></h3>
+<p>
+	Defines whether to create a new UL drop down list for this instance, or use an existing one.
+</p>
+
+
+
+<h3><div class='default'>[ 16(shift), 37(left), 39(right) ]</div> <a name='nonInput'>nonInput</a> - <span class='type'>Array</span></h3>
+<p>
+	Array of character key codes not allowed. Remember to use 
+	<a href='http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx'>keyCode's</a>,
+	not characters. By default, the shift, left arrow and right arrow keys are ignored.
+</p>
+
+
+<h3><div class='default'>{}</div> <a name='postData'>postData</a> - <span class='type'>Object</span></h3>
+<p>
+	Parameters that get passed to the server. The value defined by <a href='#postVar'>postVar</a> will be overridden by the users input.
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='postFormat'>postFormat</a> - <span class='type'>Function (event, ui)</span></h3>
+<p>
+	Format the data to be passed with the <a href='http://api.jquery.com/jQuery.ajax/'>jQuery.ajax</a> function when defined.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>data:</b> The data object that would be sent with the ajax function.</li>
+	<li><b>search:</b> The input value being searched</li>
+	<li><b>val:</b> The current full string value of the input (only differs when <a href='#multiple'>multiple</a> is true)</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> The function defined must return either an object or a string that conforms to the data option in 
+	<a href='http://api.jquery.com/jQuery.ajax/'>jQuery.ajax</a>.
+</p>
+
+
+<h3><div class='default'>'value'</div> <a name='postVar'>postVar</a> - <span class='type'>String</span></h3>
+<p>
+	Name of the users input as it gets posted to the server.
+</p>
+
+
+
+<h3><div class='default'>true</div> <a name='preventEnterSubmit'>preventEnterSubmit</a> - <span class='type'>Boolean</span></h3>
+<p>
+	Prevents form submission when user selects a value from the UL drop down list using the enter key. This setting has been
+	defaulted to true to conform to IE quirkiness. If the application requires form submission on enter, set this value to false
+	to perform like so.
+</p>
+
+
+
+<h3><div class='default'>'POST'</div> <a name='requestType'>requestType</a> - <span class='type'>String</span></h3>
+<p>
+	Type of request during ajax calls. Only use 'GET' or 'POST'.
+</p>
+
+
+
+<h3><div class='default'>'auto-complete-list-rollover'</div> <a name='rollover'>rollover</a> - <span class='type'>String</span></h3>
+<p>
+	CSS Class toggled on li elements when mouseover or up/down events occur.
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='striped'>striped</a> - <span class='type'>String</span></h3>
+<p>
+	CSS Class toggled on alternating li elements to give a zebra striped look.
+</p>
+
+
+
+<h3><div class='default'>true</div> <a name='useCache'>useCache</a> - <span class='type'>Boolean</span></h3>
+<p>
+	Tells autoComplete whether or not to use script level caching.
+</p>
+
+
+
+<h3><div class='default'>Input Width</div> <a name='width'>width</a> - <span class='type'>Float</span></h3>
+<p>
+	Width of the UL drop down list. Default's to the width of the Input field
+</p>
+
+
+
+<h2 style='margin-bottom: 0px;'>Event Callbacks</h2>
+<div style='margin: 1px 0 5px 0; font-size: 11pt;'>
+	<b style='color: red;'>Note*:</b> The <span style='color:blue;'>this</span> object references the input field currently in focus.
+</div>
+
+<h3><div class='default'>Empty Function</div> <a name='onBlur'>onBlur</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function when the user loses focus on the input field.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>val:</b> The current full string value of the input (only differs when <a href='#multiple'>multiple</a> is true)</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> with the <a href='#backwardsCompatible'>backwardsCompatible</a> flag enabled, the params are:<br>
+	Function(val, ul, event, settings, cache).
+</p>
+
+
+
+<h3><div class='default'>Empty Function</div> <a name='onFocus'>onFocus</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function when the user focuses on the input field.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> with the <a href='#backwardsCompatible'>backwardsCompatible</a> flag enabled, the params are:<br>
+	Function(ul, event, settings, cache).
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='onHide'>onHide</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function whenever the drop down list is closed.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+
+
+
+<h3><div class='default'>undefined</div> <a name='onListFormat'>onListFormat</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function to format the list elements into the ul drop down.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>list:</b> Current list array that should be loaded into the list</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> You must <i>populate</i> the drop down list when defining this function.
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='onLoad'>onLoad</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function before the drop down list is loaded.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>list:</b> Current list array that is about to be loaded into the list</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> You must return the list array, with or without modifications made. 
+</p>
+
+
+
+<h3><div class='default'>Empty Function</div> <a name='onMaxRequest'>onMaxRequest</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function when maximum number of ajax requests is reached. Will only fire if <a href='#maxRequests'>maxRequests</a> is not 0.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>search:</b> Value of the string that was going to be used in the search.</li>
+	<li><b>val:</b> The current full value of the input (only differs when <a href='#multiple'>multiple</a> is true)</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> with the <a href='#backwardsCompatible'>backwardsCompatible</a> flag enabled, the params are:<br>
+	Function(search, ul, event, val, settings, cache).
+</p>
+
+
+
+<h3><div class='default'>Empty Function</div> <a name='onRollover'>onRollover</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function when the user focuses on one of the li elements in the UL drop down list.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>data:</b> Data attached to that entry</li>
+	<li><b>li:</b> Cached $li jQuery object of the entry within the drop down list</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> with the <a href='#backwardsCompatible'>backwardsCompatible</a> flag enabled, the params are:<br>
+	Function(data, li, ul, event, settings, cache).
+</p>
+
+
+
+<h3><div class='default'>Empty Function</div> <a name='onSelect'>onSelect</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function when the user selects an option from the UL drop down list.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>data:</b> Data attached to that entry</li>
+	<li><b>li:</b> Cached $li jQuery object of the entry within the drop down list</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+<p class='notes'>
+	<b>Note*:</b> with the <a href='#backwardsCompatible'>backwardsCompatible</a> flag enabled, the params are:<br>
+	Function(data, li, ul, event, settings, cache).
+</p>
+
+
+
+<h3><div class='default'>undefined</div> <a name='onShow'>onShow</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function when the drop down list is opened.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+
+
+
+<h3><div class='default'>Returns True</div> <a name='onSubmit'>onSubmit</a> - <span class='type'>Function(event, ui)</span></h3>
+<p>
+	Callback function called when form submission occurs. If <a href='#preventEnterSubmit'>preventEnterSubmit</a> is enabled,
+	the onSubmit method will only fire when the drop list is not active.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>form:</b> Contains the parent form element of the input in focus.</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+
+
+
+<h3><div class='default'>undefined</div> <a name='spinner'>spinner</a> - <span class='type'>Function(active)</span></h3>
+<p>
+	Callback function used to let developers know when to activate and deactivate any spinner's they want to run during requests.
+</p>
+<ul class='ui'>
+	<li class='title'>The ui object</li>
+	<li><b>active:</b> Current state of activity. True when spinner needs to be activated, false when spinner needs to be deactivated.</li>
+	<li><b>settings:</b> Current settings attached to the input in focus</li>
+	<li><b>cache:</b> Current cache attached to the input in focus</li>
+	<li><b>ul:</b> Cached $ul jQuery object of the drop down list.</li>
+</ul>
+
+
+
+
+<h2 style='margin-bottom: 0px;'>Methods (Event Triggers)</h2>
+<div style='width:600px;margin-bottom:10px;'>
+	Auto-complete comes with a set of predefined method's that operate some common tasks.
+	To trigger these events, use the normal autoComplete function initialization, with the
+	string name of the event as the first parameter, along with any other parameters that
+	are needed. Something like the following:
+<pre>
+	$('selector of input').autoComplete('<i>method name</i>', ...other params...);
+</pre>
+</div>
+
+
+<h3><a name='button-ajax'>button-ajax</a> - <span class='type'>.autoComplete('button-ajax', postData, cacheName)</span></h3>
+<p>
+	The button-ajax method allows for sending requests through an external trigger(<i style='font-weight: normal;'>button</i>).
+	It's required to pass a special cacheName string if more than one button-ajax method is used on the same input. If only one is 
+	used, an inner string of random characters will be used. This can enable a sort of select drop down functionality, where 
+	clicking a button can show the whole list, or users can just use the autoComplete to find their selection.
+</p>
+
+
+
+<h3><a name='button-supply'>button-supply</a> - <span class='type'>.autoComplete('button-supply', data, cacheName)</span></h3>
+<p>
+	The button-supply method is essentially the same as the <a href='#button-ajax'>button-ajax</a> method, except it works
+	with a localized set of results instead of through ajax requests. Additionally, an optional
+	second data parameter can be passed to supply a different set of results on just this event,
+	instead of the normal set supplied during initialization. Also, if more than one method is in use for the
+	same input, it is required to pass different cacheName's so caching of the data-set's don't override each other.
+</p>
+
+
+
+<h3><a name='destroy'>destroy</a> - <span class='type'>.autoComplete('destroy')</span></h3>
+<p>
+	Destroys the autoComplete initiation. Removes all events and data that were attached to
+	the input, form, and document. Also, if the UL drop list was created through the function, and
+	no other input's are using it, that element will be removed as well.
+</p>
+
+
+
+<h3><a name='direct-supply'>direct-supply</a> - <span class='type'>.autoComplete('direct-supply', data, cacheName)</span></h3>
+<p>
+	The direct-supply method bypasses list formatting and request delays, and loads either the data supplied to it, or the 
+	<a href='#dataSupply'>dataSupply</a> data. This would be the fastest way to load a list directly into the drop down UL, but
+	is prone to errors if the data passed to formatted incorrectly.
+</p>
+
+
+
+<h3><a name='disable'>disable</a> - <span class='type'>.autoComplete('disable')</span></h3>
+<p>
+	Disables the autoComplete, but doesn't destroy it.
+</p>
+
+
+
+<h3><a name='enable'>enable</a> - <span class='type'>.autoComplete('enable')</span></h3>
+<p>
+	Enables the autoComplete.
+</p>
+
+
+
+<h3><a name='flush'>flush</a> - <span class='type'>.autoComplete('flush', cacheOnly)</span></h3>
+<p>
+	The flush event clears out the inner cache of results, as well as the number of requests made.
+	And optional, second boolean parameter can be passed if only the cache needs to be flushed, not
+	the number of requests made.
+</p>
+
+
+
+<h3><a name='option'>option</a> - <span class='type'>.autoComplete('option', name, value)</span></h3>
+<p>
+	The option method provides a way to get/set single settings.<br><br>
+	-Passing both name and value parameters will set that option into the current settings.<br>
+	-Passing just the name value returns that settings value. There are four keywords that return special objects:
+	<span style='display:block;margin: 0 0 0 25px;'>
+		-Passing 'ul' will return the $ul object for the drop down list<br>
+		-Passing 'cache' will return the current cache object<br>
+		-Passing 'xhr' will return the last called xhr request<br>
+		-Passing 'input' will return the current $input object.<br>
+	</span>
+	-Passing no name or value parameter's will return the entire settings object.<br><br>
+</p>
+<p class='notes'>
+	<b>Note*:</b> Not passing the value parameter breaks the chain, as it utilizes jQuery's
+	<a href='http://docs.jquery.com/Events/triggerHandler'>triggerHandler</a> option to return the value return from the event function.
+</p>
+
+
+
+<h3><a name='search'>search</a> - <span class='type'>.autoComplete('search', value)</span></h3>
+<p>
+	The search method gives a programmatic way for triggering search with custom input. The 'value'
+	parameter passed should contain a string for the custom search to be triggered.
+</p>
+
+
+
+<h3><a name='settings'>settings</a> - <span class='type'>.autoComplete('settings', newSettings)</span></h3>
+<p style='margin-bottom: 20px;'>
+	The settings method allows for changes to the settings for that inputs autoComplete at any
+	point of time. This can be very useful if the metadata plugin is not installed, yet separate
+	functionality is needed for each input. Simply initiate the autoComplete on each input,
+	and use the settings method to attach special parameters to each input's autoComplete instance.
+</p>
+<p style='margin-bottom: 5px;'>
+	<b>Extra Functionality*:</b> If a function is passed as the newSettings var, the inputs current settings and cache
+	are passed to the function as parameters. Just return the array [newSettings, cache]. Here's the format:
+</p>
+
+<pre>
+$('input').autoComplete('settings', function(settings, cache){
+	// ...Check or make changes to the current settings and cache here...
+	return [settings, cache];
+});
+</pre>
+
+<br><br>
+
+
+</body>
+</html>

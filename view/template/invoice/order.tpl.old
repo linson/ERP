@@ -1,0 +1,555 @@
+<?php
+$today = new DateTime();
+$odt = new DateTime($order_date);
+?>
+<?php echo $header; ?>
+<?php if ($error_warning){ ?>
+<div class="warning"><?php echo $error_warning; ?></div>
+<?php } ?>
+
+<link rel='stylesheet' type='text/css' href='view/template/ar/order.css' />
+<script type='text/javascript' src='view/template/sales/atc/jquery/jquery.metadata.js'></script>
+<script type='text/javascript' src='view/template/sales/atc/src/jquery.auto-complete.js'></script>
+<link rel='stylesheet' type='text/css' href='view/template/sales/atc/src/jquery.auto-complete.css' />
+
+<div class="box">
+  <div class="left"></div>
+  <div class="right"></div>
+  <div class="heading">
+    <h1 style="background-image: url('view/image/product.png');">Order Information</h1>
+    <div class="buttons">
+      <a class="button" id='save'><span>Save</span></a>
+      <a class="button invoice_sheet"><span>Create Invoice Sheet</span></a>
+      <a onclick="location = '<?php echo $lnk_list; ?>';" class="button"><span>List</span></a>
+      <!--a onclick="location = '<?php echo $lnk_cancel; ?>';" class="button"><span><?php echo $button_cancel; ?></span></a-->
+      <a id='print' onclick='printOrder()'><img border="0" style='width:20px;height:20px;vertical-align:bottom;' src="image/icon/printtag.jpg"></a>
+    </div>
+  </div>
+  <div id="ubporder">
+    <form action='<?php echo $order_action; ?>' method='post' id='form'>
+    <div id='base'>
+      <div class='half'>
+        <div id='brief'>
+          <h1><?php if($txid){ echo $txid; }else{ echo '<font color=red>New Order</font>'; } ?></h1> 
+        </div>
+        <!-- store info : start -->
+        <div id='storeinfo'>
+          <table border='1' cellpadding="0" cellspacing="0">
+            <tr style='border-style:none;'>
+              <td colspan='3' style='border-style:none;'></td>
+              <td style='border-style:none; text-align:right;'>
+                <input type='text' class='date_pick' name='order_date' value='<?php echo $order_date; ?>' />
+              </td>
+            </tr>
+            <tr>
+              <td class='label'>Biz Name</td>
+              <td class='context'>
+                <input type='hidden' name='store_id' value='<?php echo $store_id; ?>' />
+                <input type='hidden' name='txid' value='<?php echo $txid; ?>' />
+                <input type='hidden' name='ddl' value='<?php echo $ddl; ?>' />
+                <!--input type='hidden' name='user_id' value='<?php echo $user_id; ?>' /-->
+                <input type='text' name='store_name' value='<?php echo $store_name; ?>'  style='width:96%' />
+              </td>
+              <td class='label'>Account No</td>
+              <td class='context'>
+                <input type='text' name='accountno' value='<?php echo $accountno; ?>' size='5' />
+                <input type='hidden' name='salesrep' value='<?php echo $salesrep; ?>' />
+              </td>
+            </tr>
+            <tr>
+              <td colspan=2>
+                <input type='text' name='address1' value='<?php echo $address1; ?>'  style='width:96%' />
+              </td>
+              <td class='label'>
+                City /State/Zip
+              </td>
+              <td class='context'>
+                <input type='text' name='city' value='<?php echo $city; ?>' style='width:36%' /> / 
+                <input type='text' name='state' value='<?php echo $state; ?>' style='width:10%' /> / 
+                <input type='text' name='zipcode' value='<?php echo $zipcode; ?>' style='width:24%' /> 
+              </td>
+            </tr>
+
+            <tr>
+              <td class='label'>
+                Type
+              </td>
+              <td class='context'>
+                <select name='storetype'>
+                <?php
+                if(strtolower($storetype) == 'w'){
+                  echo '<option value="W" selected>W</option>';
+                }else{
+                  echo '<option value="W">W</option>';
+                }
+                if(strtolower($storetype) == 'r'){
+                  echo '<option value="R" selected>R</option>';
+                }else{
+                  echo '<option value="R">R</option>';
+                }
+                if(strtolower($storetype) == ''){
+                  echo '<option value="" selected>--</option>';
+                }
+                ?>
+                </select>
+              </td>
+              <td class='label'>
+                Phone / Fax
+              </td>
+              <td class='context'>
+                <input type='text' name='phone1' value='<?php echo $phone1; ?>' style='width:51%' />
+                / <input type='text' name='fax' value='<?php echo $fax; ?>'  style='width:30%' />
+              </td>
+            </tr>
+            <tr>
+              <td colspan=4>
+                <textarea name='description' style='width:460px;height:100px;'><?php echo $description; ?></textarea>
+              </td>
+            </tr>
+          </table>
+          <?php
+          // todo. block on service. , besso-201103 
+          if('update' != $ddl){
+          ?>
+          <span class='small_btn' id='findstore'>Find Store</span>
+          <?php
+          }
+          ?>
+          <!--span class='small_btn'>Update Store</span-->
+          <!--span id='googlemap' class='small_btn'>Google map</span-->
+        </div>
+        
+        <?php 
+        //todo. check the condition, , besso-201103 
+        if(isset($store_ar_total) && $store_ar_total['tot_order'] > 0 ){
+        ?>
+        <!-- start of account history -->
+        <div id='account_history'>
+          <?php //require_once('view/template/invoice/arHistory.tpl'); ?>
+        </div>
+        <!-- end of account history -->
+        <?php
+        }   // end isset for ar history 
+        ?>
+      </div>
+
+      <div class='half'>
+        <br/><br/>
+        <div id='ship' style='background-color:#e3fcd4;'>
+          <table border='1' cellpadding="0" cellspacing="0">
+            <tr>
+              <td class='label' style='height:20px'>Invoice.No</td>
+              <td colspan='3'><font size=3 color=blue><?php echo $invoice_no; ?></font></td>
+            </tr>
+            <tr>
+              <td class='label'>
+                TERM
+              </td>
+              <td class='context'>
+                <select name='term'>
+                  <option value='30' <?php if('30'==$term) echo 'selected'; ?> >30</option>
+                  <option value='60' <?php if('60'==$term) echo 'selected'; ?> >60</option>
+                  <option value='90' <?php if('90'==$term) echo 'selected'; ?> >90</option>
+                </select>
+              </td>
+              <td class='label'>
+                WEIGHT
+              </td>
+              <td class='context'>
+                <input type='text' name='weight_sum' value='<?php echo $weight_sum; ?>' size='5' />
+              </td>
+            </tr>
+        <?php
+        if(!isset($ship)){
+          $ship = array();
+        }
+        // todo. need to replace ship_user from order_user
+        if(count($ship) == 0):
+        ?>
+          <tr><td colspan='4' style='background-color:orange; height:3px;'></td></tr><tr><td class='label'><p class='del' style='float:left;margin:0px;margin-left:2px;'></p><p style='margin:0px;'>APP</p></td><td class='context' colspan='3'><input type='hidden' name='ship_id[]' value=''/><input type='text' class='date_pick' name='ship_appointment[]' value='' style='width:40%'/>(ship appointment)</td></tr><tr><td colspan=4><textarea name='ship_comment[]' style='width:95%;height:30px;'/></textarea></td></tr><tr><td class=label>SHIP</td><td class=context><select name=method[]><option value='truck' selected>truck</option><option value='ups'>ups</option><option value='cod'>cod</option><option value='self'>self</option><option value='etc'>etc</option></select></td><td class=label>DATE</td><td class=context><input type=text class='date_pick' name=ship_date[] value='' style='width:40%' /></td></tr><tr><td class=label>LIFT</td><td class=context><input type=text name=lift[] value='' size=5 /></td><td class=label>COD</td><td class=context><input type=text name=cod[] value='' size=5 /><p class=plus style='float:right;margin:0px;margin-right:2px;' /><input type='hidden' name='ship_user[]' value='<?php echo $this->user->getUserName(); ?>' /></td></tr>
+        <?php
+        else: // aShip
+          foreach($ship as $row){
+        ?>
+            <tr><td colspan='4' style='background-color:orange; height:3px;'></td></tr>
+            <tr>
+              <td class='label'>
+                <p class='del' style='float:left;margin:0px;margin-left:2px;'></p>
+                <p style='margin:0px;'>APP</p>
+              </td>
+              <td class='context' colspan=3>
+                <input type='hidden' name='ship_id[]' value='<?php echo $row['id']; ?>'/>
+                <input type='text' class='date_pick' name='ship_appointment[]' value='<?php echo $row['ship_appointment']; ?>' style='width:40%'/>
+              </td>
+            </tr>
+            <tr>
+              <td colspan=4>
+                <textarea name='ship_comment[]' style='width:96%;'/><?php echo $row['ship_comment']; ?></textarea>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class='label'>
+                <p style='margin:0px;'>SHIP</p>
+              </td>
+              <td class='context'>
+                <select name='method[]'>
+                <?php
+                if(strtolower($row['method']) == 'truck'){
+                  echo '<option value="truck" selected>truck</option>';
+                }else{
+                  echo '<option value="truck">truck</option>';
+                }
+                if(strtolower($row['method']) == 'ups'){
+                  echo '<option value="ups" selected>ups</option>';
+                }else{
+                  echo '<option value="ups">ups</option>';
+                }
+                if(strtolower($row['method']) == 'cod'){
+                  echo '<option value="cod" selected>cod</option>';
+                }else{
+                  echo '<option value="cod">cod</option>';
+                }
+                if(strtolower($row['method']) == 'self'){
+                  echo '<option value="self" selected>self</option>';
+                }else{
+                  echo '<option value="self">self</option>';
+                }
+                if(strtolower($row['method']) == 'etc'){
+                  echo '<option value="etc" selected>etc</option>';
+                }else{
+                  echo '<option value="etc">etc</option>';
+                }
+                ?>
+                </select>
+                <input type='hidden' name='ship_user[]' value='<?php echo $row['ship_user']; ?>' />
+              </td>
+
+              <td class='label'>
+                DATE
+              </td>
+              <td class='context'>
+                <input type='text' class='date_pick' name='ship_date[]' value='<?php echo $row['ship_date']; ?>' style='width:40%' />
+              </td>
+            </tr>
+
+            <tr>
+              <td class='label'>
+                LIFT
+              </td>
+              <td class='context'>
+                <input type='text' name='lift[]' value='<?php echo $row['lift']; ?>' size='5' />
+              </td>
+              <td class='label'>
+                COD
+              </td>
+              <td class='context'>
+                <input type='text' name='cod[]' value='<?php echo $row['cod']; ?>' size='5' />
+                <p class='plus' style='float:right;margin:0px;margin-right:2px;' />
+              </td>
+            </tr>
+        <?php
+          } // end foreach // todo. so weird , need no close brace foreach , besso-201103
+        endif;  // count()
+        ?>
+          </table>
+          <!--span id='ship_history' class='small_btn'>Shipping History</span-->
+        </div>
+        <!-- end of ship -->
+        
+        <!-- return info -->
+        <!--div id='return'>
+          block return history null
+        </div-->
+        <!-- end of return -->
+      </div>
+      
+    </div>
+    
+
+<style>
+  #order table {
+    margin-top:10px;
+  }
+  
+  #order thead {
+    background-color: #e2e2e2;
+  }            
+  #order thead td {
+    text-align:center;
+    font-size:14px;
+  }
+  #order tbody td {
+    text-align:right;
+    cellpadding:0px;
+    cellspacing:0px;
+ }
+ 
+#order table .nolborder{
+  border-left : 0px;
+  border-top : 0px;
+  border-bottom : 0px;
+  border-style:none;
+  background-color:white;
+}
+
+#order .product_name{
+  width:300px;
+  text-align:center;
+}
+
+</style>
+    <!-- order info -->
+    <div id='order'>
+    <?php
+      $aCat = $this->config->ubpCategory();
+      foreach($aCat as $k => $v){
+        if(!isset($sales[$k])){
+          $sales[$k] = array();
+        }
+        
+        if(0 == count($sales[$k])){
+          $printClass = 'np';
+        }else{
+          $printClass = 'p';        
+        }
+    ?>
+      <?php
+      if(count($sales[$k]) != 0){
+      ?>
+
+      <table id='<?php echo $k; ?>' border='1' cellpadding="0" cellspacing="0"  class='<?php echo $printClass; ?>'>
+        <thead>
+        <tr>
+          <td style='color:orange;'><strong><?php echo $v; ?></strong></td>
+          <td style='width:100px'>Name</td>
+          <td>Pcs</td>
+          <td>QTY</td>
+          <td>FREE</td>
+          <td>DMGE</td>
+          <td colspan=2>Cancel</td>
+        </tr>
+        </thead>
+        <tbody>
+        <style>
+        #order tbody td {
+          text-align:center;
+        }
+        td.emphasis {
+          font-size : 20px;
+          font-weight : 20px;
+        }
+        </style>
+        <?php
+          foreach($sales[$k] as $sale){
+            if($sale['image']){
+              $style = "style='visibility:visible'";
+            }else{
+              $style = "style='visibility:hidden'";
+            }
+            /*
+            $namePtn = "/([A-Za-z0-9]*) ([A-Za-z0-9]*) (.*)/";
+            preg_match_all($namePtn,trim($sale['product_name']),$match);
+            if(isset($match[3][0])){
+              $sale['product_name'] = $match[3][0];
+            }
+            */
+            $imgUrl = HTTP_SERVER2 . 'image/' . $sale['image'];
+          ?>
+          <tr>
+            <td style='width:120px;' class='emphasis'>
+              <?php echo $sale['model']; ?>
+              <input type='hidden' name='product_id[]' value='<?php echo $sale['product_id']; ?>'/>
+            </td>
+            <td class='product_name' style='text-align:left;padding-left:5px;'>
+              <?php echo $sale['product_name']; ?>
+            </td>
+            <td class='pc'>
+              <?php echo $sale['pc']; ?>
+            </td>
+            <td class='emphasis'>
+              <?php echo $sale['order_quantity']; ?>
+            </td>
+            <td class='emphasis'>
+              <?php echo $sale['free']; ?>
+            </td>
+            <td class='emphasis'>
+              <?php echo $sale['damage']; ?>
+            </td>
+            <td class='emphasis np'>
+              <input type=text name='comment[]' size='50' value='tbd after consulting' /> 
+            </td>
+            <td class='emphasis np'>
+              <button name='cancel'>Cancel</button> 
+            </td>
+          </tr>
+          <?php
+          } // inner roof
+        ?>
+        </tbody>        
+      </table>
+      <?php
+      } // if case of having contents
+      ?>
+      <br/>
+      <?php 
+      } // end foreach
+      ?>
+    </div>
+  </div>
+  </form>
+  <div class='footer'>
+  </div>
+</div>
+<?php echo $footer; ?>
+
+<!-- common detail div -->
+<div id='detail' class='ui-widget-content'></div>
+
+<!-- Google map showing -->
+<style>
+
+#hide_googlemap {
+  position:absolute;
+  visibility : hidden;
+  width:100px;
+  height:30px;
+  background-color:black;
+  color:white;
+  font-size:20px;
+  font-weight:3px;
+  top:100px;
+  left:850px;
+  cursor:pointer;
+  text-align:center;
+}
+</style>
+<div id="map_canvas"></div>
+<div id='hide_googlemap'>Close Map</div>
+
+<style>
+.tipsy{ padding:5px; font-size:10px; position: absolute; z-index: 100000; }
+.tipsy-inner{
+  padding: 5px 8px 4px 8px; background-color: black; color: white; max-width: 200px; text-align: center; 
+  font-size:14px;
+}
+.tipsy-inner { border-radius: 3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
+.tipsy-arrow { position: absolute; background: url('../images/tipsy.gif') no-repeat top left; width: 9px; height: 5px; }
+.tipsy-n .tipsy-arrow { top: 0; left: 50%; margin-left: -4px; }
+.tipsy-nw .tipsy-arrow { top: 0; left: 10px; }
+.tipsy-ne .tipsy-arrow { top: 0; right: 10px; }
+.tipsy-s .tipsy-arrow { bottom: 0; left: 50%; margin-left: -4px; background-position: bottom left; }
+.tipsy-sw .tipsy-arrow { bottom: 0; left: 10px; background-position: bottom left; }
+.tipsy-se .tipsy-arrow { bottom: 0; right: 10px; background-position: bottom left; }
+.tipsy-e .tipsy-arrow { top: 50%; margin-top: -4px; right: 0; width: 5px; height: 9px; background-position: top right; }
+.tipsy-w .tipsy-arrow { top: 50%; margin-top: -4px; left: 0; width: 5px; height: 9px; }
+</style>
+
+<!--external link for google map--> 
+<script type="text/javascript" src="view/javascript/jquery/jquery.tipsy.js"></script>
+<!--script type="text/javascript" src="view/template/sales/order.js"></script-->
+
+<style>
+#help_content{
+  position:absolute;
+  top:100px;
+  left:100px;
+  background-color:#999999;
+  color:white;
+  visibility:hidden;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+  // use name as amount instead of order_price used in #order
+  var $ele_amount = $('#payment').find('input[name=order_price]'),
+      $ele_balance = $('#payment').find('input[name=balance]'),
+      $ele_payed_sum = $('#payment').find('input[name=payed_sum]'),
+      $ele_order_date = $('#storeinfo').find('input[name=order_date]'),
+      $aProductLocked = new Array(),
+      $aInventoryReleased = new Array();
+  // define locked product_id as array
+
+  $('input[readonly]').css('background-color','#e3e3e3');
+  $('select[disabled]').css('background-color','#e3e3e3');
+
+  // date picker binding
+  $('#form').bind('focusin',function(event){
+    var $tgt = $(event.target);
+    if($tgt.is('input.date_pick')){
+      $(".date_pick").datePicker({
+        clickInput:true,
+        createButton:false,
+        startDate:'2000-01-01'
+      });
+    }
+  });
+
+  // Dynamic row binding , shipment
+  $('#ship>table').mouseover(function(event){
+    var $tgt = $(event.target),
+        $pnt = $tgt.parents('tr');
+    if($tgt.is('p.plus') && $pnt.is('tr') ){
+      $tgt.css('background', 'url(\'view/image/plus_icn.jpg\') no-repeat');
+    }
+    if($tgt.is('p.del') && $pnt.is('tr')){
+      if($pnt[0].rowIndex != 2){
+        $tgt.css('background', 'url(\'view/image/del_icn.jpg\') no-repeat');
+      }
+    }
+  });
+
+  $('#ship>table').mouseout(function(event){
+    var $tgt = $(event.target),
+        $pnt = $tgt.parents('tr');
+    if($tgt.is('p.plus')){
+      $tgt.css('background', 'url(\'\') no-repeat');
+    }
+    if($tgt.is('p.del') && $pnt.is('tr')){
+      if($pnt[0].rowIndex != 2){
+        $tgt.css('background', 'url(\'\') no-repeat');
+      }else{
+        $tgt.css('cursor','default');
+      }
+    }
+  });
+
+  // todo. border-bottom not work correctly , besso-201103 
+  var $newShipRow = "<tr><td colspan='4' style='background-color:orange; height:3px;'></td></tr><tr><td class='label'><p class='del' style='float:left;margin:0px;margin-left:2px;'></p><p style='margin:0px;'>APP</p></td><td class='context' colspan='3'><input type='hidden' name='ship_id[]' value=''/><input type='text' class='date_pick' name='ship_appointment[]' value='' style='width:40%'/></td></tr><tr><td colspan=4><textarea name='ship_comment[]' value='' style='width:95%;height:30px;'/></textarea></td></tr><tr><td class=label>SHIP</td><td class=context><select name=method[]><option value='truck' selected>truck</option><option value='ups'>ups</option><option value='cod'>cod</option><option value='self'>self</option><option value='etc'>etc</option></select></td><td class=label>DATE</td><td class=context><input type=text class='date_pick' name=ship_date[] value='' style='width:40%' /></tr><tr><td class=label>LIFT</td><td class=context><input type=text name=lift[] value='' size=5 /></td><td class=label>COD</td><td class=context><input type=text name=cod[] value='' size=5 /><p class=plus style='float:right;margin:0px;margin-right:2px;' /><input type='hidden' name='ship_user[]' value='<?php echo $this->user->getUserName(); ?>' /></td></tr>";  
+  $('#ship').click(function(event){
+    var $tgt = $(event.target),
+        $pnt = $tgt.parents('tr');
+    if($tgt.is('p.plus') && $pnt.is('tr') ){
+      $tgt.parent().parent().after($newShipRow);
+      $tgt.parent().parent().next().css('border-top','2px solid orange');
+    }
+    if( $tgt.is('p.del') && $pnt.is('tr') ){
+      if($pnt[0].rowIndex != 2){
+        $tgt.parent().parent().prev().prev().prev().prev().remove();
+        $tgt.parent().parent().prev().prev().prev().remove();
+        $tgt.parent().parent().prev().prev().remove();
+        $tgt.parent().parent().prev().remove();
+        $tgt.parent().parent().remove();
+      }else{
+        $tgt.css('cursor','default');
+      }
+    }
+  });
+
+  $('#save').bind('click',function(e){
+    $('#form').submit();
+  });
+
+  $('.invoice_sheet').bind('click',function(e){
+    $url = 'index.php?route=invoice/sheet&token=<?php echo $token; ?>&txid=<?php echo $txid; ?>';
+    window.open($url);
+  });
+
+});
+
+function printOrder(){
+  self.focus();
+  self.print();
+}
+</script>

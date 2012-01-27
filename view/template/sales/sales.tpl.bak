@@ -1,0 +1,210 @@
+<?php
+/*
+  todo. requirement floating 'Save' button , besso 201105
+ */
+?>
+
+<style>
+/***
+todo. merge in order.css
+***/
+#order table {
+  margin-top:10px;
+}
+
+#order thead {
+  /*** background-color: #e2e2e2; ***/
+}            
+#order thead td {
+  text-align:center;
+  font-size:14px;
+}
+#order tbody td {
+  text-align:center;
+  cellpadding:0px;
+  cellspacing:0px;
+}
+#order table .nolborder{
+  border-left : 0px;
+  border-top : 0px;
+  border-bottom : 0px;
+  border-style:none;
+  background-color:white;
+}
+#order .product_name{
+  width:300px;
+  text-align:center;
+}
+</style>
+<style>
+#float_save{
+  position:absolute;
+  top:10px;
+  left:1010px;
+}
+</style>
+<div id='float_save'>
+  <a class="button np" id='save'><span>Save</span></a>
+</div>
+<?php
+  /***
+  todo. OEM
+  select p.model,pd.name_for_sales 
+    from product p,product_description pd
+   where p.product_id = pd.product_id
+     and substr(p.model,1,2) not in ('SP','AE','3S','VN','IR','QT');
+  ***/
+  $aCat = $this->config->ubpCategory();
+  foreach($aCat as $k => $v){
+    if(!isset($sales[$k]))  $sales[$k] = array();
+    
+    if(0 == count($sales[$k])){
+      $printClass = 'np';
+    }else{
+      $printClass = 'p';        
+    }
+?>
+<!-- 30 Sec -->
+<table id='<?php echo $k; ?>' border='1' cellpadding="0" cellspacing="0"  class='<?php echo $printClass; ?>'>
+  <thead>
+  <tr>
+    <td class='nostyle np'></td>
+    <td style='color:orange;'><strong><?php echo $v; ?></strong></td>
+    <td>Name</td>
+    <td>Pcs</td>
+    <td>STOCK</td>
+    <td>QTY</td>
+    <td>FREE</td>
+    <td>DMG</td>
+    <td>RATE</td>
+    <td>DC1</td>
+    <td>DC2</td>
+    <td>TOTAL</td>
+    <td class='plus nostyle'></td>
+  </tr>
+  </thead>
+  <tbody>
+  <?php
+  if(count($sales[$k]) == 0){
+  ?>
+    <tr><td class="del nostyle"></td><td style=text-align:left;><input type=text class=atc name=model[] style=width:60px; /><input type=hidden name=image[] value='' /><input type=hidden name=product_id[] value='' /><input type=hidden name=weight[] value='' /><img class='preview' title='' src='view/image/preview.jpg' style='diplay:none;' /></td><td class='product_name'></td><td class='pc'></td><td style='width:70px'><input type=text name=stock[] size=2 />&nbsp;<img class='check_locked' src='image/data/package/locked.gif' style='display:none;'/></td><td><input type=text name=cnt[] value=0 size=2 /></td><td><input type=text name=free[] value=0 size=2 /></td><td><input type=text name=damage[] value=0 size=2 /></td><td><input type=text name=price[] value=0 size=3/></td><td><input type=text name=discount[] value=0 size=2 />% </td><td><input type=text name=discount2[] value=0 size=2 />% </td><td><input type=text name=total_price[] value=0 class=total_price size=4 /><input type=hidden name=weight_row[] value='' /></td><td class="plus nostyle"></td></tr>
+    <!--tr>
+      <td class='del nostyle'>
+      </td>
+      <td style='text-align:left;'>
+        <input type='text' class='atc' name='model[]' value='' style='width:60px;' />
+        <input type='hidden' name='product_id[]' value=''/>
+        <input type='hidden' name='weight[]' value=''/>
+        <img title='' src='view/image/preview.jpg' class='np preview' style='display:none;' />
+      </td>
+      <td class='product_name'></td>
+      <td class='pc'></td>
+      <td style='width:50px'>
+        <input type='text' name='stock[]' value='' size=3 />
+        <img class='check_locked' src='image/data/package/locked.gif' style='display:none;'/>
+      </td>
+      <td>
+        <input type='text' name='cnt[]' value='0' size=2 />
+      </td>
+      <td>
+        <input type='text' name='free[]' value='0' size=2 />
+      </td>
+      <td>
+        <input type='text' name='damage[]' value='0' size=2 />
+      </td>
+      <td>
+        <input type='text' name='price[]' value='0' size=5/>
+      </td>
+      <td>
+        <input type='text' name='discount[]' value='0' size=2 />%
+      </td>
+      <td>
+        <input type='text' name='discount2[]' value='0' size=2 />%
+      </td>
+      <td>
+        <input type='text' class='total_price' name='total_price[]' value='0' size=4 />
+        <input type='hidden' name='weight_row[]' value=''/>
+      </td>
+      <td class='plus nostyle'>
+      </td>
+    </tr-->   
+  <?php     
+  }else{
+    foreach($sales[$k] as $sale){
+      if($sale['image']){
+        $style = "style='visibility:visible'";
+      }else{
+        $style = "style='visibility:hidden'";
+      }
+      /*
+      $namePtn = "/([A-Za-z0-9]*) ([A-Za-z0-9]*) (.*)/";
+      preg_match_all($namePtn,trim($sale['product_name']),$match);
+      if(isset($match[3][0])){
+        $sale['product_name'] = $match[3][0];
+      }
+      */
+      $imgUrl = HTTP_SERVER2 . 'image/' . $sale['image'];
+    ?>
+    <tr>
+      <td class='del nostyle'>
+      </td>
+      <td style='text-align:left;width:120px;'>
+        <input type='text' class='atc' name='model[]' value='<?php echo $sale['model']; ?>' style='width:60px;' />
+        <input type='hidden' name='product_id[]' value='<?php echo $sale['product_id']; ?>'/>
+        <!-- todo. need not to add image[] mightbe , besso-201103 -->
+        <input type='hidden' name='image[]' value='<?php echo HTTP_SERVER2 . "image/" .$sale['image']; ?>'/>
+        <input type='hidden' name='weight[]' value='<?php echo $sale['ups_weight']; ?>'/>
+        <img src='view/image/preview.jpg' class='np preview' title='<?php echo $imgUrl; ?>'/>
+      </td>
+      <td class='product_name' style='text-align:left;padding-left:5px;'>
+        <?php echo $sale['product_name']; ?>
+      </td>
+      <td class='pc'>
+        <?php echo $sale['pc']; ?>
+      </td>
+      <td style='width:70px;'>
+        <input type='text' name='stock[]' value='<?php echo $sale['quantity']; ?>' size=3 />
+        <img class='check_locked' src='image/data/package/locked.gif' style='display:none;'/>
+      </td>
+      <td>
+        <input type='text' name='cnt[]' value='<?php echo $sale['order_quantity']; ?>' size=2 />
+      </td>
+      <td>
+        <input type='text' name='free[]' value='<?php echo $sale['free']; ?>' size=2 />
+      </td>
+      <td>
+        <input type='text' name='damage[]' value='<?php echo $sale['damage']; ?>' size=2 />
+      </td>
+      <td>
+        <input type='text' name='price[]' value='<?php echo $sale['price1']; ?>' size=5/>
+      </td>
+      <td>
+        <input type='text' class='discount' name='discount[]' value='<?php echo $sale['discount']; ?>'size=2 />%
+      </td>
+      <td>
+        <input type='text' class='discount' name='discount2[]' value='<?php echo $sale['discount2']; ?>'size=2 />%
+      </td>
+      <td>
+        <input type='text' class='total_price' name='total_price[]' value='<?php echo $sale['total_price']; ?>' size=5 />
+        <input type='hidden' name='weight_row[]' value='<?php echo $sale['weight_row']; ?>'/>
+      </td>
+      <td class='plus nostyle'>
+      </td>
+    </tr>
+    <?php
+    } // inner roof
+  } // if case of having contents
+  ?>
+  </tbody>
+</table>
+<?php 
+} // end foreach
+?>
+
+<script>
+$(window).scroll(function () {  
+  var $top = $(window).scrollTop()-400;
+  //console.log($top);
+  $('#float_save').css('top',$top);
+}); 
+</script>

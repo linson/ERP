@@ -1,0 +1,96 @@
+<style>
+.plus,.del{
+  cursor:pointer;
+  width:18px;
+  height:18px;
+  text-align:center;
+  background: url('') no-repeat;
+  /* background: url('view/image/del_icn.jpg') no-repeat; */
+}
+#form .form{
+  width:400px;
+}
+table.form tr td:first-child {
+  width: 100px;
+}
+#updateForm ul li{
+  list-style:none;
+}
+</style>
+<div class="box" style='background-color:white;width:400px;'>
+  <div class="left"></div>
+  <div class="right"></div>
+  <div class="heading">
+    <div class="buttons">
+      <a onclick="$('#updateForm').submit();" class="button">
+        <span>Save</span></a>
+      <a onclick="$('#detail').html(); $('#detail').css('visibility','hidden');" class="button">
+        <span>Cancel</span></a>
+    </div>
+  </div>
+  <div class="content">
+    <form action="<?php echo $action; ?>" method="post" id="updateForm">
+      <ul>
+        <?php
+        foreach($aModel as $model){
+        ?>
+        <li>
+          <p class='del' style='float:left;margin:0px;margin-left:2px;' />
+          <input type=text name=model[] value='<?php echo $model; ?>'/>
+          <p class='plus' style='float:right;margin:0px;margin-right:2px;' />
+        </li>
+        <?php
+        }
+        ?>
+      </ul>
+		  <!--end of map-->
+		</form>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  // Dynamic row binding , shipment
+  $('#updateForm').mouseover(function(event){
+    var $tgt = $(event.target),
+        $pnt = $tgt.parents('li');
+    if($tgt.is('p.plus') && $pnt.is('li') ){
+      $tgt.css('background', 'url(\'view/image/plus_icn.jpg\') no-repeat');
+    }
+    if($tgt.is('p.del') && $pnt.is('li')){
+      if($pnt[0].rowIndex != 2){
+        $tgt.css('background', 'url(\'view/image/del_icn.jpg\') no-repeat');
+      }
+    }
+  });
+
+  $('#updateForm').mouseout(function(event){
+    var $tgt = $(event.target),
+        $pnt = $tgt.parents('li');
+    if($tgt.is('p.plus')){
+      $tgt.css('background', 'url(\'\') no-repeat');
+    }
+    if($tgt.is('p.del') && $pnt.is('li')){
+      if($pnt[0].rowIndex != 2){
+        $tgt.css('background', 'url(\'\') no-repeat');
+      }else{
+        $tgt.css('cursor','default');
+      }
+    }
+  });
+
+  $('#updateForm').click(function(event){
+    var $tgt = $(event.target);
+    // tooltip.display image
+    if($tgt.is('p.plus')){
+      $newRow = "<li><p class='del' style='float:left;margin:0px;margin-left:2px;'></p><input type=text name=model[] value=''/><p class='plus' style='float:right;margin:0px;margin-right:2px;' /></li>";
+      $tgt.parent().after($newRow);
+    }
+
+    if( $tgt.is('p.del')){
+      // minus calculation
+      $tgt.parent().remove();
+    }
+  });
+});
+</script>

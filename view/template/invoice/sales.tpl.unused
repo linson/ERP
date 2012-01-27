@@ -1,0 +1,394 @@
+<style>
+.header{
+  color:white;
+  font-size:16px;
+  background:black;
+  padding-left:20px;
+  line-height:30px;
+  height:30px;
+  width:900px;
+  margin-bottom:1px;
+}
+.sales_tbl{
+  display:none;
+}
+td{
+  padding:2px;
+}
+.rborder{
+  border-right:1px dotted black;
+}
+.item{
+  width:430px;
+  margin: 2px 5px 2px 5px;
+}
+.item div{
+  float:left;
+  padding:1px;
+  line-height:20px;
+}
+.fl{
+  float:left;
+}
+</style>
+
+<?php
+if($mode == 'show'){
+  foreach($sales as $key => $sale){
+    $sibling = implode('|',$catalog[$key]);
+    $total = 0; $headerBG = ''; $headerTotal = ''; $fd = false;
+    foreach($sale as $row){
+      $total += $row['total_price'];
+      if( $row['free'] > 0 || $row['damage'] > 0 ){
+        $fd = true;
+      }
+    }
+    if( $total > 0 || $fd == true ){
+      $headerBG = 'style=background-color:#660000';
+      $headerTotal = '<b>[' . $total . ']</b> ';
+    }
+  ?>
+    <h1 class='header' <?php echo $headerBG; ?> ><?php echo $headerTotal; ?><?php echo $key; ?></h1>
+    <table id='<?php echo $key; ?>' sibling='<?php echo $sibling; ?>' style='display:block'>
+      <?php
+        $idx = 0;
+        foreach($sale as $row){
+          //$this->log->aPrint( $row );
+          //$total += $row['total_price'];
+          ('W' == $storetype) ? $price = $row['ws_price'] : $price = $row['rt_price'];
+          $product_name = substr($row['product_name'],0,20);
+          if(fmod($idx,2) == 0) echo '<tr>';
+          $redbox = '';
+          if( $row['cnt'] > 0 || $row['free'] > 0 || $row['damage'] > 0 ) $redbox = "style='border:2px solid red;'";
+      ?>
+        <td <?php echo $redbox; ?> >
+        <div class='item'>
+         <div class='product_name fl' style='width:118px;overflow:hidden;'><?php echo $product_name; ?></div>
+         <div class='model'><input type='hidden' name='model[]' value='<?php echo $row['model']; ?>'/>
+           <input type='hidden' name='product_id[]' value='<?php echo $row['product_id']; ?>'/>
+           <input type='hidden' name='weight[]' value='<?php echo $row['ups_weight']; ?>'/>
+           <input type='text' name='model_show[]' value='<?php echo substr($row['model'],2,4); ?>' style='width:28px' readonly /></div>
+         <div><input type='text' name='price[]' value='<?php echo $price; ?>' style='width:36px' /></div>
+         <div><input type='number' name='cnt[]' value='<?php echo $row['cnt']; ?>' style='width:20px;background-color:#66ff00;' /></div>
+         <div><input type='text' name='free[]' value='<?php echo $row['free']; ?>' style='width:16px;background-color:#ffcc00;' /></div>
+         <div><input type='text' name='damage[]' value='<?php echo $row['damage']; ?>' style='width:16px' /></div>
+         <div><input type='text' name='discount[]' value='<?php echo $row['dc1']; ?>'  style='width:14px;background-color:#ffff99;' /></div>
+         <div><input type='text' name='discount2[]' value='<?php echo $row['dc2']; ?>' style='width:14px;background-color:#ffff99;' /></div>
+         <div><input type='text' class='total_price' name='total_price[]' value='<?php echo $row['total_price']; ?>' style='width:40px;background-color:#e2e2e2;' readonly />
+              <input type='hidden' name='weight_row[]' value='<?php echo $row['weight_row']; ?>'/></div>
+         <div><input type='text' name='stock[]' value='<?php echo $row['quantity']; ?>' style='width:30px' class='check_locked' readonly/></div>
+        </div>
+        </td>
+      <?php
+        if(fmod($idx,2) == 1) echo '</tr>';
+        $idx++;
+        } // foreach sale
+      ?>
+    </table>
+  <?php
+  } //end foreach
+}else{
+  foreach($catalog as $key => $aModel){
+    $sibling = implode('|',$aModel);
+  ?>
+    <h1 class='header'><?php echo $key; ?></h1>
+    <table id='<?php echo $key; ?>' class='sales_tbl' sibling='<?php echo $sibling; ?>' >
+    </table>
+  <?php
+  } //end foreach
+} // mode
+?>
+
+<script>
+$(document).ready(function(){
+  // defind window.object global
+  var $el_order_date  = $('#form').find('input[name=order_date]'),
+      $el_order_price = $('#form').find('input[name=order_price]'),
+      $tx = 0;
+
+  $('h1.header').bind('click',function(e){
+    if( 'show' == $('#form').find('input[name=mode]').val() )  $tx = 1;
+    $('#form').find('input[name=mode]').val('edit');
+    $tgt = $(e.target);
+    //if(false == $.fn.validateNull($('#form').find('input[name=store_id]'))) return;
+    var $tbl_node = $tgt.next('table'),
+        $id = $tbl_node.attr('id');
+    if( $tx > 0 && $('#form').find('input[name=order_price]').val() > 0 ){
+      $.fn.postSubmit($tbl_node);
+    }else{
+      $.fn.hideGroups($tbl_node);
+    }
+    if( 'hidden' == $('#floatmenu').css('visibility') ) $.fn.floatingMenu($tgt);
+  });
+
+  $.fn.postSubmit = function($tbl_node){
+    // todo. no validation !!!
+    //if($('#freegood_percent').val() > 10)      alert('freegood exceed 10%');  return;
+    if( $('#form').find('input[name=txid]').val() == '' ){
+      //var $t1 = $('#form').serialize(); debugger;
+      $hdr = $.fn.generateTXID();
+      $hdr.success(function($txid){
+        $txid = $txid.replace(/\"/g,"");
+        $('#form').find('input[name=txid]').val($txid);
+        $('#form').find('input[name=ddl]').val('insert');
+        $.post( $('#form').attr('action') , $('#form').serialize() , function(){
+          $('#txid_header').html($txid);
+          $.fn.hideGroups($tbl_node);
+
+        });
+      });
+    }else{
+      $('#form').find('input[name=ddl]').val('update');
+      $.post( $('#form').attr('action') , $('#form').serialize(), function(){
+          if( 'hidden' == $('#floatmenu').css('visibility') ) $.fn.floatingMenu($tgt);
+          $.fn.hideGroups($tbl_node);
+      });
+    }
+  }
+  
+  $.fn.hideGroups = function($exceptNode){
+    $tx++;
+    var $el_groups = $exceptNode.parents('#order').children('table');
+    /* ajax retrieve just data which stored in sales table
+       and dynamically show that models under the category 
+     */
+    $el_groups.each(function(){
+      var $group = $(this);
+      if( $group.attr('id') == $exceptNode.attr('id') ){
+        $models = $exceptNode.attr('sibling');
+        $.fn.retrieveGroup($exceptNode,$models);
+        $group.css('display','block');
+      }else{
+
+        if($group.children().length != 0){ 
+          var $total = 0,
+              $el_total = $group.find('input.total_price');
+          $el_total.each(function($k,$v){
+            $total += parseFloat($v.value);
+          });
+          $total = $total.toFixed(2);
+        }
+        if($total > 0){
+          $group.prev('h1.header').css('background-color','#660000');
+          //console.log($group.prev('h1.header').css('background-color'));
+          if($group.prev('h1.header').html().indexOf('[') == -1){
+            $group.prev('h1.header').html( '<b>[' + $total + ']</b> ' + $group.prev('h1.header').html());
+          }
+        }
+        $group.css('display','none');
+      }
+    });
+  }
+
+  $.fn.generateTXID = function(){
+    var $salesrep = $('#storeinfo').find('input[name=salesrep]'),
+        $store_id = $('#form').find('input[name=store_id]'),
+        $accountno = $('#storeinfo').find('input[name=accountno]'),
+        $weight_sum = $('#form').find('input[name=weight_sum]'),
+        $return = '';
+
+    if(false == $.fn.validateNull($accountno)) return;
+    if(false == $.fn.validateNull($salesrep)) return;
+    if(false == $.fn.validateNull($store_id)) return;
+
+    // saveOrder - txid : JH20110323-IL0004-01
+    // same variable mapping >.,<
+    $salesrep = $salesrep.attr('value').substring(0,2).toUpperCase();
+    $ymd = $el_order_date.attr('value').substring(0,4) + $el_order_date.attr('value').substring(5,7) + $el_order_date.attr('value').substring(8,10);
+    $accountno = $accountno.attr('value');
+    $vTxid = $accountno + '-' + $salesrep + $ymd;
+    // todo. validate $vTxid
+    
+    $hdr = $.ajax({
+             type:'get',
+             url:'/backyard/index.php?route=sales/order/verify_txid',
+             dataType:'text',
+             data:'token=<?php echo $token; ?>&txid=' + $vTxid
+           });
+    // return asysnronous handler
+    return $hdr;
+  }
+
+  // queryProduct
+  // call ajax to query product to fill default value in order
+  $.fn.retrieveGroup = function($exceptNode,$model){
+    $exceptNode.html('');
+    $.ajax({
+			type: 'GET',
+			url: 'index.php?route=sales/atc/getProductBatchProxy2',
+			dataType: 'json',
+			data: 'txid=' + $('#form').find('input[name=txid]').val() + '&model=' + $model,
+			success: function( list ){
+        var node = $exceptNode,
+            $itemHtml = "";
+
+			  $.each(list, function(idx,line){
+			    if( '' == line ){
+			      $itemHtml = "<td></td>";
+			    }else{
+            $itemHtml = "<td>";
+            $itemHtml+= "<div class='item'>";
+            $itemHtml+= " <div class='product_name fl' style='width:120px;overflow:hidden;'></div>";
+            $itemHtml+= " <div class='model'><input type='hidden' name='model[]' value=''/><input type='hidden' name='product_id[]' value=''/>";
+            $itemHtml+= "   <input type='hidden' name='weight[]' value=''/>";
+            $itemHtml+= "   <input type='text' name='model_show[]' style='width:28px' value=''  readonly /></div>";
+            $itemHtml+= " <div><input type='text' name='price[]' value='price' style='width:36px' /></div>";
+            $itemHtml+= " <div><input type='number' name='cnt[]' value='0' style='width:20px;background-color:#FFFF99;' /><input type='hidden' name='_cnt[]' value='0' /></div>";
+            $itemHtml+= " <div><input type='text' name='free[]' value='free' style='width:16px'  /><input type='hidden' name='_free[]' value='0' /></div>";
+            $itemHtml+= " <div><input type='text' name='damage[]' value='dmg' style='width:16px'  /></div>";
+            $itemHtml+= " <div><input type='text' name='discount[]' value='d1' style='width:14px;' /><input type='hidden' name='_discount[]' value='0' /></div>";
+            $itemHtml+= " <div><input type='text' name='discount2[]' value='d2' style='width:14px;' /><input type='hidden' name='_discount2[]' value='0' /></div>";
+            $itemHtml+= " <div><input type='text' class='total_price' name='total_price[]' value='0.00' style='width:40px' readonly /><input type='hidden' name='weight_row[]' value=''/><input type='hidden' name='_total_price[]' value='0' /></div>";
+            $itemHtml+= " <div><input type='text' name='stock[]' value='stock' style='width:30px'  class='check_locked' readonly/></div>";
+            $itemHtml+= "</div>";
+            $itemHtml+= "</td>";
+			    }
+          
+          if( idx%2 == 0 ){
+            if( idx > 0 ){
+    			    thisNode = node.find("tr:last-child");
+    			    thisNode.after('<tr></tr>');
+  			    }else{  // first
+  			      node.append('<tr></tr>');
+  			    }
+  			    thisNode = node.find("tr:last-child");
+  			    thisNode.append($itemHtml);
+  			    thisNode = node.find("tr:last-child");
+  			  }
+ 			    if( idx%2 == 1 ){
+   			    thisNode = node.find("tr:last-child");
+ 			      thisNode.append($itemHtml);
+  			    thisNode = thisNode.find("td:last-child");
+ 			    }
+ 			    
+			    $.each(line, function(key,val){
+            if(key == 'product_name'){
+              pname = val.substring(0,20);
+              thisNode.find('.product_name').html(pname);
+            }
+            if(key == 'model'){
+              thisNode.find('input[name="model[]"]').val(val);
+              model_show = val.substring(2,6);
+              thisNode.find('input[name="model_show[]"]').val(model_show);
+            }
+            if(key == 'product_id'){
+              thisNode.find('input[name="product_id[]"]').val(val);
+            }
+            if(key == 'weight'){
+              thisNode.find('input[name="weight[]"]').val(val);
+            }
+            if(key == 'quantity'){
+              thisNode.find('input[name="stock[]"]').val(val);
+            }
+            if(key == 'dc1'){
+              if( val == 0 ) val = 'd1'; thisNode.find('input[name="_discount[]"]').val(0);
+              thisNode.find('input[name="discount[]"]').val(val);
+              thisNode.find('input[name="_discount[]"]').val(val);
+            }
+            if(key == 'dc2'){
+              if( val == 0 ) val = 'd2'; thisNode.find('input[name="_discount2[]"]').val(0);
+              thisNode.find('input[name="discount2[]"]').val(val);
+              thisNode.find('input[name="_discount2[]"]').val(val);
+            }
+            
+            var storetype = $('input[name="storetype"]').val();
+            //alert(storetype);
+            // todo. null check , besso-201103 
+            // console.log('dynamic product mapping in order (storetype) : ' + storetype);
+            if(storetype == 'W'){
+              if(key == 'ws_price'){
+                thisNode.find('input[name="price[]"]').val(val);
+              }
+            }else{
+              if(key == 'rt_price'){
+                thisNode.find('input[name="price[]"]').val(val);
+              }
+            }
+            
+            // from sales
+            if(key == 'cnt'){
+              if( val == null ) val = '0';
+              thisNode.find('input[name="cnt[]"]').val(val);
+              thisNode.find('input[name="_cnt[]"]').val(val);
+              // todo ugly code. tired
+              if( val > 0 ){
+                if(thisNode.is('tr')){
+                  thisNode.children('td').css( 'border' , '2px solid red' );
+                }else{
+                  thisNode.css( 'border' , '2px solid red' );
+                }
+              }
+            }
+            if(key == 'free'){
+              if( val == null ) val = 'free'; thisNode.find('input[name="_free[]"]').val(0);
+              thisNode.find('input[name="free[]"]').val(val);
+              thisNode.find('input[name="_free[]"]').val(val);
+            }
+            if(key == 'damage'){
+              if( val == null ) val = 'dmg';
+              thisNode.find('input[name="damage[]"]').val(val);
+            }
+            if(key == 'total_price'){
+              if( val == null ) val = '0';  thisNode.find('input[name="_total_price[]"]').val(0);
+              thisNode.find('input[name="total_price[]"]').val(val);
+              thisNode.find('input[name="_total_price[]"]').val(val);
+            }
+            if(key == 'weight_row'){
+              if( val == null ) val = '0';
+              thisNode.find('input[name="weight_row[]"]').val(val);
+            }
+          });
+			  });
+      }
+   });
+  }
+
+  $.fn.floatingMenu = function($tgt){
+    var $p = $tgt.offset();
+    $cssMap = {
+      'top':$p.top,
+      'left':$p.left + 850,
+      'visibility':'visible'
+    };
+    $('#floatmenu').find('input[name=float_order_price]').val($('#form').find('input[name=order_price]').val());
+    $('#floatmenu').find('input[name=float_freegood_percent]').val($('#freegood_percent').val());
+    $('#floatmenu').css($cssMap);
+    $('#floatmenu').draggable();
+  }
+
+  $('#floatmenu').bind('click',function(e){
+    $tgt = $(e.target);
+    if($tgt.is('button')){
+      $mode = $tgt.attr('id');
+      $('#form').find('input[name=mode]').val($mode);
+      $order_price = $('#form').find('input[name=order_price]').val();
+      $order_price = parseFloat($order_price);
+      if($order_price == 0){
+        alert('No Order');
+        return;
+      }
+      if('edit' == $mode){  // just simple redirect
+        location.href = 'index.php?route=sales/order&mode=edit&txid=' + $('#form').find('input[name=txid]').val();
+      }else{
+        if( $('#form').find('input[name=txid]').val() == '' ){
+          $hdr = $.fn.generateTXID();
+          $hdr.success(function($txid){
+            // todo. weird . dont know why
+            $txid = $txid.replace("\"","");
+            //$txid = $txid.substring(1,$txid.length-1);
+            $('#form').find('input[name=txid]').val($txid);
+            $('#form').find('input[name=ddl]').val('insert');
+            $('#txid_header').html($txid);
+            $('#form').submit();
+          });
+        }else{
+          $('#form').find('input[name=ddl]').val('update');
+          $('#form').submit();
+        }
+      }
+    }else{
+      //$('#floatmenu').css('visibility','hidden');
+    }
+  })
+});
+</script>

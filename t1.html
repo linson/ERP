@@ -1,0 +1,14 @@
+<script>
+for(i=2;i<4;i++){
+  var url = 't' + i + '.html',
+      name = 'n' + i;
+  var printWin = window.open(url,name,"height=800,left=100,top=100,width=800");
+  printWin.onload = function(){
+    alert(i);
+  }
+//debugger;
+  //printWin.print();
+  //printWin.close();
+  //setTimeout("printWin.print()",1000);
+}
+</script>

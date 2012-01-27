@@ -1,0 +1,247 @@
+invoice enhancement !!
+[i] show discount in textarea
+[i] invoice UI tuning
+[i] user leveling
+[i] ship history enhancement
+[s] sales leveling
+[s] base data pricing update
+[s] display arrangement with package area
+[s] oem full test
+[s] product discount some differ from case by case (.2 point)
+[s] key arrow management ( left, right do not select cell )
+[s] invoice - special discount is default. and term, core more
+[r] reposting detail design
+[f] quick book export
+[f] need to talk more if we need to set another credit flag at storelocator. or more better way
+[f] sheet.php ar exception.
+[a] enhance basic schema
+[a] change salesrep filter as select box
+[i] several page control
+[i] lift / ups charge 명시
+[i] 40CS/1SKID 명시
+[i] ship via AAA, how to setup trucking company
+[i] invoice/order 에 홀드 명시
+backup scheduler 
+
+./config.php:/* todo. better to use defined VAR
+./language/english/invoice/list.php:// todo. use nothing, i came to be lazy , besso-201103 
+./language/english/ar/list.php:// todo. use nothing, i came to be lazy , besso-201103 
+./language/english/sales/list.php:// todo. use nothing, i came to be lazy , besso-201103 
+./controller/store/btrip.php:todo. batch process for trans , Later , besso-201103 
+./controller/store/btrip.php:   //todo. need to check error and success, besso-201103 
+./controller/store/btrip.php:   //todo. TBD who help me? , besso 201105 
+./controller/store/btrip.php:   //todo. release later! adhoc for test , besso-201103 
+./controller/store/btrip.php:   //todo. release later! adhoc for test , besso-201103
+./controller/store/list.php:    //todo. more neat control
+./controller/store/list.php:    //todo. need to check error and success, besso-201103
+./controller/store/list.php:    //todo. release later! adhoc for test , besso-201103
+./controller/store/list.php:    //todo. release later! adhoc for test , besso-201103
+./controller/store/lookup.php:  //todo. some test show it retain stale account no. , besso 201105 
+./controller/store/lookup.php:  //todo. ajax do not support excel functionality
+./controller/invoice/list.php:  //todo. no any exception check
+./controller/invoice/list.php:  //todo. move to common lib later , besso 201105
+./controller/invoice/sheet.php: //todo. need to make list button
+./controller/invoice/sheet.php: // todo. more simply way please
+./controller/invoice/sheet.php: // todo. fix the commone iterate , besso-201103
+./controller/invoice/sheet.php: // todo. use modal for any fail and mail to it team , besso-201103
+./controller/invoice/sheet.php: // todo. no result
+./controller/invoice/sheet.php: // todo. no result
+./controller/invoice/sheet.php:       // todo. differ from insert/update
+./controller/invoice/sheet.php:    // [todo] it's ugly way to pass session
+./controller/invoice/sheet.php:      // todo. keep logging for any transaction in log
+./controller/invoice/sheet.php:      // todo. need exception
+./controller/invoice/order.php:todo. need to make list button
+./controller/invoice/order.php:    // todo. more simply way please
+./controller/invoice/order.php:    // todo. fix the commone iterate , besso-201103
+./controller/invoice/order.php:        // todo. use modal for any fail and mail to it team , besso-201103
+./controller/invoice/order.php:           // todo. no result
+./controller/invoice/order.php:       // todo. differ from insert/update
+./controller/invoice/order.php:    // [todo] it's ugly way to pass session
+./controller/invoice/order.php:    // todo. need not use this , besso-201103
+./controller/invoice/order.php:    // todo. ship appointment will be replaced with Description , besso 201105
+./controller/invoice/order.php:          // todo. need standard fallback process , besso-201103
+./controller/invoice/order.php:        // todo. salesrep should be uniq, alter table and validation login in adding user , besso-201103
+./controller/invoice/order.php:        // todo. new_store isn't considered yet. need consult
+./controller/invoice/order.php:        // todo. store_grade, daily crond or some batch will record it. , besso-201103
+./controller/invoice/order.php:      // todo. all AR should be done only finance agent , besso 201105
+./controller/invoice/order.php:        // todo. keep logging for any transaction in log
+./controller/invoice/order.php:        // todo. need exception
+./controller/invoice/order.php:        // todo. keep logging for any transaction in log
+./controller/invoice/order.php:        // todo. need exception
+./controller/invoice/order.php:      // todo. keep logging for any transaction in log
+./controller/invoice/order.php:      // todo. need exception
+./controller/invoice/order.php:      // todo. keep logging for any transaction in log
+./controller/invoice/order.php:      // todo. need exception
+./controller/invoice/order.php:      // todo. keep logging for any transaction in log
+./controller/invoice/order.php:      // todo. need exception
+./controller/invoice/order.php:    // todo. all AR should be done only finance agent , besso 201105
+./controller/invoice/order.php:      // todo. keep logging for any transaction in log
+./controller/invoice/order.php:      // todo. need exception
+./controller/ar/list.php:      // todo. measure paid yn
+./controller/ar/order.php:    // todo. fix the commone iterate , besso-201103
+./controller/ar/order.php:        // todo. use modal for any fail and mail to it team , besso-201103
+./controller/ar/order.php:        // todo. no result
+./controller/ar/order.php:        // todo. no result
+./controller/ar/order.php:        // todo. differ from insert/update
+./controller/ar/order.php:    // [todo] it's ugly way to pass session
+./controller/ar/order.php:    // todo. need not use this , besso-201103
+./controller/ar/order.php:      /* todo, if suffix > 10 , the sort will be broken , besso-201103
+./controller/ar/order.php:          // todo. need standard fallback process , besso-201103
+./controller/ar/order.php:        // todo. arrep should be uniq, alter table and validation login in adding user , besso-201103
+./controller/ar/order.php:        // todo. new_store isn't considered yet. need consult
+./controller/ar/order.php:        // todo. store_grade, daily crond or some batch will record it. , besso-201103
+./controller/ar/order.php:        // todo. keep logging for any transaction in log
+./controller/ar/order.php:        // todo. need exception
+./controller/ar/order.php:        // todo. keep logging for any transaction in log
+./controller/ar/order.php:        // todo. need exception
+./controller/ar/order.php:        // todo. keep logging for any transaction in log
+./controller/ar/order.php:        // todo. need exception
+./controller/ar/order.php:        // todo. keep logging for any transaction in log
+./controller/ar/order.php:        // todo. need exception
+./controller/ar/order.php:        // todo. keep logging for any transaction in log
+./controller/ar/order.php:        // todo. need exception
+./controller/ar/order.php:      // todo. keep logging for any transaction in log
+./controller/ar/order.php:      // todo. need exception
+./controller/ar/order.php:      // todo. keep logging for any transaction in log
+./controller/ar/order.php:      // todo. need exception
+./controller/ar/order.php:      // todo. keep logging for any transaction in log
+./controller/ar/order.php:      // todo. need exception
+./controller/ar/order.php:      // todo. keep logging for any transaction in log
+./controller/ar/order.php:      // todo. need exception
+./controller/ar/detail.php:      // todo
+./controller/common/login.php:            // [TODO] need to set for ubp manager with reports page
+./controller/common/login.php:                // [TODO] need to set for ubp manager with reports page
+./controller/common/home.php:      // todo!! do macadress authentication here. , besso 201105
+./controller/common/home.php:      # todo. besso remove all get-driven token from system , besso 201105
+./controller/sales/calendar.php:todo.
+./controller/sales/calendar.php:      //todo. php date incorrect date +%Y%m%d%H , besso-201103
+./controller/sales/list.php:        // todo. need to investigation warning and success , besso-201103
+./controller/sales/atc.php:      // todo. did 777 !!
+./controller/sales/order.php:todo. need to make list button
+./controller/sales/order.php:    // todo. more simply way please
+./controller/sales/order.php:    // todo. fix the commone iterate , besso-201103
+./controller/sales/order.php:        // todo. use modal for any fail and mail to it team , besso-201103
+./controller/sales/order.php:         // todo. no result
+./controller/sales/order.php:         // todo. differ from insert/update
+./controller/sales/order.php:    // [todo] it's ugly way to pass session
+./controller/sales/order.php:    // todo. need not use this , besso-201103
+./controller/sales/order.php:    // todo. ship appointment will be replaced with Description , besso 201105
+./controller/sales/order.php:          // todo. need standard fallback process , besso-201103
+./controller/sales/order.php:        // todo. salesrep should be uniq, alter table and validation login in adding user , besso-201103
+./controller/sales/order.php:        // todo. new_store isn't considered yet. need consult
+./controller/sales/order.php:        // todo. store_grade, daily crond or some batch will record it. , besso-201103
+./controller/sales/order.php:      // todo. all AR should be done only finance agent , besso 201105
+./controller/sales/order.php:        // todo. keep logging for any transaction in log
+./controller/sales/order.php:        // todo. need exception
+./controller/sales/order.php:        // todo. keep logging for any transaction in log
+./controller/sales/order.php:        // todo. need exception
+./controller/sales/order.php:      // todo. keep logging for any transaction in log
+./controller/sales/order.php:      // todo. need exception
+./controller/sales/order.php:      // todo. keep logging for any transaction in log
+./controller/sales/order.php:      // todo. need exception
+./controller/sales/order.php:      // todo. keep logging for any transaction in log
+./controller/sales/order.php:      // todo. need exception
+./controller/sales/order.php:    // todo. all AR should be done only finance agent , besso 201105
+./controller/sales/order.php:      // todo. keep logging for any transaction in log
+./controller/sales/order.php:      // todo. need exception
+./view/template/sales/atc/ajax.php://$cat = '3S';  //todo. need to set dynamic cat via ajax post data
+./view/template/sales/atc/ajax_batch.php://$cat = '3S';  //todo. need to set dynamic cat via ajax post data
+./pear/Spreadsheet/Excel/Reader.php:     * todo
+./pear/Spreadsheet/Excel/Reader.php:     * todo
+./pear/Spreadsheet/Excel/Reader.php:     * todo
+./pear/Spreadsheet/Excel/Reader.php:     * todo
+./pear/Spreadsheet/Excel/Reader.php:     * todo
+./pear/Spreadsheet/Excel/Reader.php:     * @todo return a valid value
+./pear/Spreadsheet/Excel/Reader.php:     * @param todo
+./pear/Spreadsheet/Excel/Reader.php:     * @todo fix return codes
+./pear/Spreadsheet/Excel/Reader.php:     * @param todo
+./pear/Spreadsheet/Excel/Writer/Parser.php:        // TODO: use real error codes
+./pear/Spreadsheet/Excel/Writer/Parser.php:            $encoding = 0;   // TODO: Unicode support
+./pear/Spreadsheet/Excel/Writer/Parser.php:        // TODO: possible class value 0,1,2 check Formula.pm
+./pear/Spreadsheet/Excel/Writer/Parser.php:            // TODO: use real error codes
+./pear/Spreadsheet/Excel/Writer/Parser.php:            // TODO: use real error codes
+./pear/Spreadsheet/Excel/Writer/Parser.php:            // TODO: use real error codes
+./pear/Spreadsheet/Excel/Writer/Format.php:        $encoding   = 0;                    // TODO: Unicode support
+./pear/Spreadsheet/Excel/Writer/Worksheet.php:            // ToDo: Let the error actually have an effect somewhere
+./pear/Spreadsheet/Excel/Writer/Worksheet.php:        /* TODO: add data validity */
+./pear/Spreadsheet/Excel/Writer/Worksheet.php:        // TODO use real error codes
+./pear/Spreadsheet/Excel/Writer/Worksheet.php:            $encoding = 0x0;                  // TODO: Unicode support
+./pear/Spreadsheet/Excel/Writer/Worksheet.php:            $encoding = 0x0;                  // TODO: Unicode support
+./pear/Spreadsheet/Excel/Writer/Workbook.php:            // TODO: assign real error codes
+./pear/Spreadsheet/Excel/Writer/Workbook.php:            /* TODO: store external SUPBOOK records and XCT and CRN records
+./pear/Spreadsheet/Excel/Writer/Workbook.php:            /* TODO: check this works for a lot of strings (> 8224 bytes) */
+./pear/Spreadsheet/Excel/Writer/Workbook.php:                /* TODO: Unicode data should only be split on char (2 byte)
+./pear/Spreadsheet/Excel/Writer/Workbook.php:        /* TODO: not good for performance */
+./model/product/price.php:      //todo. check the status
+./model/product/price.php:      // todo. it's quite manual one , besso 201108
+./model/product/price.php:      // todo. historical package table
+./model/product/main.php:  // todo. adhoc for OEM
+./model/product/oem.php:  // todo. adhoc for OEM
+./model/store/btrip.php:      // todo. export_qry need not limit ext , besso-201103 
+./model/store/btrip.php:        //todo. adhoc for test , besso-201103 
+./model/store/btrip.php:        //todo. cache control , besso-201103
+./model/store/btrip.php:  // todo. get one store
+./model/store/btrip.php:  // todo. get one store
+./model/store/store.php:      // todo. export_qry need not limit ext , besso-201103
+./model/store/store.php:        //todo. adhoc for test , besso-201103
+./model/store/store.php:        //todo. cache control , besso-201103
+./model/store/store.php:        //todo. cache control , besso-201103
+./model/store/store.php:  // todo. get one store
+./model/store/store.php:  // todo. get one store
+./model/material/history.php:       // todo. debug paging one.
+./model/material/lookup.php:    // todo. historical package table
+./model/material/lookup.php:    // todo. historical package table
+./model/invoice/list.php:    // todo. weird one. exclude all default condition from data to cache for * query in mysql , , besso-201103
+./model/invoice/list.php:      // todo. this should be done by trigging , besso-201103
+./model/invoice/list.php:           // todo. some intelligent process need to check whole validation
+./model/invoice/list.php:       // todo. need to change it later under choosen period
+./model/invoice/list.php:      // todo. this should be done by trigging , besso-201103
+./model/invoice/list.php:           // todo. some intelligent process need to check whole validation
+./model/invoice/order.php:todo. need to make copy functionality
+./model/invoice/order.php:              // todo. set flag to control ok , besso-201103
+./model/invoice/order.php:              // todo. set flag to control ok , besso-201103
+./model/invoice/order.php:    // todo. temporary , besso-201103
+./model/ar/list.php:      // todo. is it reasonable to create total_balance culumn in storelocator , besso 201105
+./model/ar/list.php:    // todo. weird one. exclude all default condition from data to cache for * query in mysql , , besso-201103
+./model/ar/list.php:      // todo. this should be done by trigging , besso-201103
+./model/ar/list.php:            // todo. some intelligent process need to check whole validation
+./model/ar/list.php:        // todo. need to change it later under choosen period
+./model/ar/list.php:      // todo. this should be done by trigging , besso-201103
+./model/ar/list.php:            // todo. some intelligent process need to check whole validation
+./model/ar/list.php:    // todo. weird one. exclude all default condition from data to cache for * query in mysql , , besso-201103
+./model/ar/list.php:      // todo. this should be done by trigging , besso-201103
+./model/ar/list.php:            // todo. some intelligent process need to check whole validation
+./model/ar/list.php:        // todo. need to change it later under choosen period
+./model/ar/order.php:     // todo. set flag to control ok , besso-201103
+./model/ar/order.php:           // todo. set flag to control ok , besso-201103
+./model/ar/order.php:           // todo. set flag to control ok , besso-201103
+./model/ar/order.php:    // todo. temporary , besso-201103
+./model/ar/order.php:     // todo. set flag to control ok , besso-201103
+./model/ar/order.php:      // todo. use ship_date as key, it's not strong one , besso-201103
+./model/ar/order.php:     // todo. set flag to control ok , besso-201103
+./model/ar/order.php:      // todo. use pay_price as key, it's not strong one , besso-201103
+./model/ar/order.php:     // todo. set flag to control ok , besso-201103
+./model/ar/detail.php:   * todo. for check num , we need to join with pay , the pay history table
+./model/tool/csv.php:            // todo. jon add for kr employee. need to conditioning.
+./model/tool/csv.php:    //todo. change file as utf8 encoding before thru , besso 201105
+./model/tool/csv.php:    //todo. not use fgetscv for multibyte bug , besso 201105 
+./model/sales/list.php:    // todo. weird one. exclude all default condition from data to cache for * query in mysql , , besso-201103
+./model/sales/list.php:      // todo. this should be done by trigging , besso-201103
+./model/sales/list.php:         // todo. some intelligent process need to check whole validation
+./model/sales/list.php:         // todo. need to change it later under choosen period
+./model/sales/list.php:      // todo. this should be done by trigging , besso-201103
+./model/sales/list.php:         // todo. some intelligent process need to check whole validation
+./model/sales/order.php:todo. need to make copy functionality
+./model/sales/order.php:  // todo. input arg could be different in cases.
+./model/sales/order.php:    // todo. temporary , besso-201103
+./model/sales/order.php:      // todo. set flag to control ok , besso-201103
+./model/sales/order.php:      // todo. use ship_date as key, it's not strong one , besso-201103
+./model/sales/order.php:      // todo. use pay_price as key, it's not strong one , besso-201103
+./model/sales/order.php:    // todo. bad design and no monetized date type lead this exception query , besso 201108
+./model/sales/order.php:    todo. i made Sales to edit Store-information in Order sheet.
+./model/sales/order.php:    todo. Need more htmlentities (aka esacpe in db library ) work
+./system/library/user.php:    // todo. not use username , besso 201105
+./system/library/user.php:  // todo. need exception check , besso , is it used? check
+./system/library/config.php:  // todo , To init Arg1 fail. weird
+./system/library/util.php:  // todo. it's date_diff for php4. use php5 date_diff
+./system/library/util.php:            // todo. what the sucked adhoc, , besso-201103 

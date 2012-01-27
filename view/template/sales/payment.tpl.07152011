@@ -1,0 +1,187 @@
+          <table border='1' cellpadding="0" cellspacing="0">
+            <tr>
+              <td class='label'>
+                Amount
+              </td>
+              <td class='context'>
+                <input type='text' name='order_price' value='<?php echo $order_price; ?>' size=7/>
+                <?php
+                  $diff = $odt->diff($today);
+                  echo "<font color='red'>+" . $diff->format('%d') . "</font>";
+                ?>
+              </td>
+              <td class='label'>
+                P/BLC
+              </td>
+              <td class='context'>
+                <input type='text' name='payed_sum' value='<?php echo $payed_sum; ?>' size=8 /> /
+                <input type='text' name='balance' value='<?php echo $balance; ?>' size=8 style='background-color:yellow' />
+              </td>
+            </tr>
+            
+            <!-- show store level dc -->
+            <?php
+            if(isset($store_dc)){
+              //$this->log->aPrint( $store_dc );
+              $aDC = json_decode($store_dc,true);
+              //$this->log->aPrint( $aDC );
+              $i = 1;
+              foreach($aDC as $dc => $k){
+                if("" != $dc){
+            ?>
+            
+            <tr>
+              <td align='center'>
+                DC . <?php echo $i; ?>
+              </td>
+              <td align='left' colspan='3'>
+                <input type='text' name='dc<?php echo $i; ?>' value='<?php echo $k; ?>' size=2/>% 
+                <input type='text' name='dc<?php echo $i; ?>_desc' value='<?php echo $dc; ?>' size=40 readonly />
+              </td>
+            </tr>
+            <?php
+                }
+                $i++;
+              } // foreach
+            }else{
+            ?>
+            
+            <tr>
+              <td align='center'>
+                DC . 1
+              </td>
+              <td align='left' colspan='3'>
+                <input type='text' name='dc1' value='0' size=2/>% 
+                <input type='text' name='dc1_desc' value='' size=40 />
+              </td>
+            </tr>
+            <tr>
+              <td align='center'>
+                DC . 2
+              </td>
+              <td align='left' colspan='3'>
+                <input type='text' name='dc2' value='0' size=2/>% 
+                <input type='text' name='dc2_desc' value='' size=40 />
+              </td>
+            </tr>
+            <?php
+            }
+            ?>
+        <?php
+        if(!isset($pay)) $pay = array();
+        // todo. need to replace ship_user from order_user
+        if(count($pay) < 1){
+        ?>
+            <tr><td colspan='4' style='background-color:orange; height:3px;'></td></tr>
+            <tr>
+              <td class='label'>
+                <p class='del' style='float:left;margin:0px;margin-left:2px;'></p>
+                <p style='margin:0px;'>Paid</p>
+              </td>
+              <td class='context'>
+                <input type='text' name='pay_price[]' class='pay_price'  value=''/>
+                <input type='hidden' name='pay_id[]' value=''/>
+                <input type='hidden' name='pay_user[]' value='<?php $this->user->getUserName(); ?>'/>            
+              </td>
+              <td class='label'>
+                Pay Date
+              </td>
+              <td class='context'>
+                <input type='text' class='date_pick' name='pay_date[]' value=''/>
+                <span></span>
+              </td>
+            </tr>
+            <tr>
+              <td class='label'>
+                Method
+              </td>
+              <td class='context'>
+                <select name='pay_method[]'>
+                  <option value="check" selected>check</option>
+                  <option value="card">card</option>
+                  <option value="cash">cash</option>
+                  <option value="credit">credit</option>
+                </select>
+              </td>
+              <td class='label'>
+                C.num
+              </td>
+              <td class='context'>
+                <input type='text' name='pay_num[]' value=''/>
+                <p class='plus' style='float:right;margin:0px;margin-right:2px;' />
+              </td>
+            </tr>
+        <?php
+        }else{ // count($pay)
+          foreach($pay as $row){
+        ?>
+            <tr><td colspan='4' style='background-color:orange; height:3px;'></td></tr>
+            <tr>
+              <td class='label'>
+                <p class='del' style='float:left;margin:0px;margin-left:2px;'></p>
+                <p style='margin:0px;'>Paid</p>
+              </td>
+              <td class='context'>
+                <input type='hidden' name='pay_id[]' value='<?php echo $row['id']; ?>'/>
+                <input type='text' name='pay_price[]' class='pay_price'  value='<?php echo $row['pay_price']; ?>'/>
+                <input type='hidden' name='pay_user[]' value='<?php echo $row['pay_user']; ?>'/>
+              </td>
+              <td class='label'>
+                Pay Date
+              </td>
+              <td class='context'>
+                <input type='text' class='date_pick' name='pay_date[]' value='<?php echo $row['pay_date']; ?>'/>
+                <?php 
+                  $pdt = new DateTime($row['pay_date']);
+                  $diff = $odt->diff($pdt);
+                  echo "<font color='red'>+" . $diff->format('%d') . "</font>";
+                ?>
+                <span></span>
+              </td>
+            </tr>
+            <tr>
+              <td class='label'>
+                Method
+              </td>
+              <td class='context'>
+                <select name='pay_method[]'>
+                  <option value="card" <?php if(strtolower($row['pay_method']) == 'card') echo "selected"; ?>>card</option>
+                  <option value="morder" <?php if(strtolower($row['pay_method']) == 'morder') echo "selected"; ?>>M.Order</option>
+                  <option value="paid" <?php if(strtolower($row['pay_method']) == 'paid') echo "selected"; ?>>Paid</option>
+                  <option value="cod" <?php if(strtolower($row['pay_method']) == 'cod') echo "selected"; ?>>Cod</option>
+                </select>
+              </td>
+              <td class='label'>
+                C.num
+              </td>
+              <td class='context'>
+                <input type='text' name='pay_num[]' value='<?php echo $row['pay_num']; ?>'/>
+                <p class='plus' style='float:right;margin:0px;margin-right:2px;' />
+              </td>
+            </tr>
+
+        <?php
+          }  // foreach
+        } // endif count($pay) == 0 
+        ?>
+
+          </table>
+          <!--span id='return_history' class='small_btn'>Return History</span>
+          <span id='pay_history' class='small_btn'>Payment History</span-->
+        </div>
+        <!-- end of payment -->
+
+        <!-- freegood info -->
+        <?php
+        if($order_price > 0) $freegood_percent = ( $freegood_amount / $order_price ) * 100 ;
+        $freegood_percent = round( $freegood_percent , 2);
+        ?>
+        <div id='freegood'>
+          <table>
+            <tr>
+              <td style='width:50%;padding-left:10px;'>
+                FreeGood : <input type=text id='freegood_amount' value='<?php echo $freegood_amount; ?>' readonly></td>
+              <td style='width:50%;padding-left:10px;'>
+                Percent : <input type=text id='freegood_percent' value='<?php echo $freegood_percent; ?>' readonly style='<?php if($freegood_percent > 10) echo "color:red;"?>' ></td>
+            </tr>
+          </table>

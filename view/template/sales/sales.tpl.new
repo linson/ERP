@@ -1,0 +1,44 @@
+<style>
+.header{
+  color:white;
+  font-size:16px;
+  background:black;
+  padding-left:20px;
+  line-height:30px;
+  height:30px;
+  width:80%;
+  margin-bottom:10px;
+}
+</style>
+<style>
+#float_save{
+  position:absolute;
+  top:10px;
+  left:1010px;
+}
+</style>
+<div id='float_save'>
+  <a class="button np" id='save'><span>Save</span></a>
+</div>
+<br/>
+<?php
+foreach($catalog as $key => $sales){
+?>
+
+  <h1 class='header'><?php echo $key; ?></h1>
+  <table id='<?php echo $key; ?>'></table>
+<?php
+} //end foreach
+?>
+
+<script>
+$(document).ready(function(){
+  $('h1.header').bind('click',function(e){
+    alert('1');
+    $tgt = $(e.target);
+    var tbl_node = $tgt.next('table');
+    debugger;
+  
+  });
+});
+</script>

@@ -1,0 +1,24 @@
+Johnson script
+<script type='text/javascript'>
+var abc = function (component) {
+    console.log('component : ' + component);
+    var THIS = this,
+    idx = window.axTestOnDeviceTestIDX;
+    idx = 5;
+    console.log('idx : ' + idx);
+    //debugger;
+    THIS.end(arguments);
+    debugger;
+    testCase('getComponents ' + component, function() {
+        try {
+            var tmp = deviceapis.devicestatus.getComponents(component);
+            for(var i in tmp){
+                ok( true, 'devicestatus.getComponents(' + component + ') : ' + i + ' ' + tmp[i]); }
+                THIS.log(true, 'devicestatus.getComponents' + component, 'devicestatus.getComponents(' + component + ') : ' + tmp, idx);
+        } catch(e) { ok( false, 'devicestatus.getComponents(' + component + ') err : ' + e.message);
+        THIS.log(false, 'devicestatus.getComponents' + component + ' err ', 'devicestatus.getComponents(' + component + ') : ' + e.message, idx);
+        }
+    });
+};
+abc('besso');
+</script>
