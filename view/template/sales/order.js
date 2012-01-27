@@ -179,13 +179,13 @@ $(document).ready(function(){
        $tgt.is('input[name="promotion[]"]') || 
        $tgt.is('input[name="discount[]"]') || 
        $tgt.is('input[name="discount2[]"]') ){
-
-      $ptn = /[0-9]+/;
-      if( $tgt.val().match($ptn) ){
-        $.fn.setOneRow($tgt);
-      }else{
+      $ptn = /\D/;
+//      if( $tgt.val().match($ptn) ){
+      if( $ptn.test($tgt.val()) ){
         //alert('Input is not Number so set to 0 forcelly');
         $tgt.val('0');
+        $.fn.setOneRow($tgt);
+      }else{
         $.fn.setOneRow($tgt);
       }
     }
