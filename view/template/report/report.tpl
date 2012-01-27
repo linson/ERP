@@ -124,8 +124,8 @@
               break;
             }
           }
-          $plnk = HTTPS_SERVER . 'http://168.93.73.186/backyard/index.php?route=common/home&filter_from=' . $pday . '&filter_to=' . $pday;
-          $nlnk = HTTPS_SERVER . 'http://168.93.73.186/backyard/index.php?route=common/home&filter_from=' . $nday . '&filter_to=' . $nday;
+          $plnk = 'index.php?route=common/home&filter_from=' . $pday . '&filter_to=' . $pday;
+          $nlnk = 'index.php?route=common/home&filter_from=' . $nday . '&filter_to=' . $nday;
           ?>
           <tr style='height:20px'>
             <td colspan='10'>
@@ -161,7 +161,7 @@
           ?>
           <tr style='background-color:<?php echo $bg_td ?>'>
             <td class='center'>
-              <a href='http://168.93.73.186/backyard/index.php?route=sales/list&filter_order_user=<?php echo $row['order_user'] ?>&filter_order_date_from=<?php echo $this_day ?>&filter_order_date_to=<?php echo $this_day ?>' target=new>
+              <a href='index.php?route=sales/list&filter_order_user=<?php echo $row['order_user'] ?>&filter_order_date_from=<?php echo $this_day ?>&filter_order_date_to=<?php echo $this_day ?>' target=new>
               <?php echo $row['order_user'] ?>
               </a>
             </td>
@@ -226,7 +226,7 @@
           ?>
           <tr style='background-color:<?php echo $bg_td ?>'>
             <td class='center'>
-              <a href='http://168.93.73.186/backyard/index.php?route=sales/list&filter_order_user=<?php echo $row['order_user'] ?>&filter_order_date_from=<?php echo $filter_from ?>&filter_order_date_to=<?php echo $filter_to ?>' target=new>
+              <a href='index.php?route=sales/list&filter_order_user=<?php echo $row['order_user'] ?>&filter_order_date_from=<?php echo $filter_from ?>&filter_order_date_to=<?php echo $filter_to ?>' target=new>
               <?php echo $row['order_user'] ?>
               </a>
             </td>
