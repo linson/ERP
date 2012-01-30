@@ -44,7 +44,7 @@
     'AE3338',
     'AE3739',
   ),
-  'AE Lotion/Shampoo Dz / AE Spray 12oz Dz box' => array(
+  'AE Lotion/Shampoo Dz / AE Spray 12oz Dz' => array(
     'AE1204',
     'AE1012',
     'AE8109',
@@ -70,7 +70,7 @@
     'SP2004','SP2102',
     'SP2101','SP2103',
   ),
-  'SP REMOVER LOTION / SP REMOVER SHAMPOO' => array(
+  'SP REMOVER LOTION / SHAMPOO' => array(
     'SP2202',
     'SP2305',
     'SP2204',
@@ -104,7 +104,7 @@
     '3S2421',
     '3S2405'
   ),
-  '30 LACE BOND & REMOVER SYSTEM' => array(
+  '30 LACE BOND \ REMOVER SYSTEM' => array(
     '3S2540','3S2550',
     '3S2541','3S2551',
     '3S2542','3S2552',
@@ -252,7 +252,7 @@
     'VN8309',
     'VN8315',
   ),
-  'VIA H Lotion 2oz*24(Flower) / VIA H Lotion 2oz*24pc(Fruit)' => array(        
+  'VIA H Lotion 2oz*24' => array(        
     'VN8326',
     'VN8400',
     'VN8327',
@@ -268,7 +268,7 @@
     'VN0940',
     'VN0930',   
   ),
-  'VIA NATURAL CERAMIC ENHANCING SYSTEM 1 Dz box' => array(
+  'VIA NATURAL CERAMIC ENHANCING' => array(
     'VN6809',
     'VN6811',
     'VN6814',
@@ -276,7 +276,7 @@
     'VN6819',
     'VN6808', 
   ),
-  'VIA NATURAL REVITALIZATION GRO 6pc box' => array(   
+  'VIA NATURAL REVITALIZATION GRO 6pc' => array(   
     'VN5811',
     'VN5815',
     'VN5812',
@@ -308,6 +308,7 @@
   ),
   'OEM 2001' => array(
     'MX2001',
+    'MA2001',
     'MG2001',
     'CL2001',
     'MO2001',
@@ -328,7 +329,6 @@
     'JS2001',
     'KS2001',
     'YK2001',
-    'MA2001',
     'HS2001',
     'HE2001',
     'WE2001',
@@ -340,8 +340,8 @@
   ),
   'OEM 2002' => array(
     'MX2002',
-    'MG2002',
     'MA2002',
+    'MG2002',
     'JS2002',
     'MM2002',
     'KS2002',
@@ -362,8 +362,8 @@
   ),
   'OEM 2004' => array(
     'MX2004',
-    'MG2004',
     'MA2004',
+    'MG2004',
     'MM2004',
     'AA2004',
     'KS2004',
