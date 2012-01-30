@@ -179,10 +179,8 @@ $(document).ready(function(){
        $tgt.is('input[name="promotion[]"]') || 
        $tgt.is('input[name="discount[]"]') || 
        $tgt.is('input[name="discount2[]"]') ){
-      $ptn = /\D\./;
-//      if( $tgt.val().match($ptn) ){
+      $ptn = /\D^\./;
       if( $ptn.test($tgt.val()) ){
-        //alert('Input is not Number so set to 0 forcelly');
         $tgt.val('0');
         $.fn.setOneRow($tgt);
       }else{
@@ -191,7 +189,6 @@ $(document).ready(function(){
     }
   });
 
-  
   // Control one raw and total order price / balance , Weight
   $.fn.setOneRow = function($tgt){
     var $node = $tgt.parents('td'),
