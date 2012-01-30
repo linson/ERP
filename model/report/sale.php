@@ -375,7 +375,7 @@ class ModelReportSale extends Model {
 	public function ordersales($request){
     $from  = $request['filter_from'];
     $to    = $request['filter_to'];
-    $group = $request['group'];
+    $group = html_entity_decode($request['group']);
     $aCat = $this->config->getCatalog();
     $comma = implode("','",$aCat[$group]);
 //    $this->log->aPrint( $comma );
