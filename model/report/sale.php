@@ -3,8 +3,8 @@ class ModelReportSale extends Model {
   public function stat($request){
     // todo. GA4060 removed by JP
     // toto. TX1616,TX2835,TX3947,TX6500 removed by AK
-    $exclude = " and substr(x.txid,1,6) not in ('CA9930','FL9400','GA7477','IL0995','IL9800','PA4035',
-                 'PA5885','PA7473','TX4464')";
+    // todo. 'PA4035', removed by CS
+    $exclude = " and substr(x.txid,1,6) not in ('CA9930','FL9400','GA7477','IL0995','IL9800','PA5885','PA7473','TX4464')";
     // today
     if(!is_null($request['filter_from']) && !is_null($request['filter_to'])){
       $thismonth = mktime(0, 0, 0, date(substr($request['filter_from'],5,2)), date(substr($request['filter_from'],8,2)), date(substr($request['filter_from'],0,4)));
