@@ -1,16 +1,6 @@
 <?php
 /* references by  
 http://www.newmediacampaigns.com/page/create-a-jquery-calendar-with-ajax-php-and-a-remote-data-source
-, besso-201103 
-
-DB
-CREATE TABLE events (
-	id INTEGER PRIMARY KEY,
-	title TEXT,
-	slug TEXT,
-	time INTEGER
-);
-
 todo.
 - move Year level . ask use or not
 - batch insert with area - can do
@@ -19,7 +9,7 @@ todo.
 - lookup list-level
 let me do later.
 */
-class ControllerSalesCalendar extends Controller {
+class ControllerSalesCalendar extends Controller{
 	private $error = array();
  	public function index(){
     # validation check
@@ -54,27 +44,39 @@ class ControllerSalesCalendar extends Controller {
     //$this->log->aPrint( $this->data );
     //Fetch events from database as associative array
     $this->load->model('sales/calendar');
-    
+
     # retrieve recent three months default
     $events = $this->model_sales_calendar->getEvents($start,$end);
-    
+
     $this->data['events'] = $events;
     //$this->log->aPrint( $events );
 	  $this->data['token']  = $this->session->data['token'];
 
     $todayDate =  $this->data['year'] . '-' .  $this->data['month'] . '-' .  $this->data['day'];
+//$this->log->aPrint( $todayDate );
     $dateOneYearPrev = date('Y',strtotime(date("Y-m-d", strtotime($todayDate)) . "-1 year"));
     $dateOneYearNext = date('Y',strtotime(date("Y-m-d", strtotime($todayDate)) . "+1 year"));
-    $dateOneMonthPrev = date('m',strtotime(date("Y-m-d", strtotime($todayDate)) . "-1 month"));
-    $dateOneMonthNext = date('m',strtotime(date("Y-m-d", strtotime($todayDate)) . "+1 month"));
+    $pastMonth = date('Ymd',strtotime(date("Y-m-d", strtotime($todayDate)) . "first day of last month"));
+    $nextMonth = date('Ymd',strtotime(date("Y-m-d", strtotime($todayDate)) . "first day of next month"));
 
-    $prevDate = $this->data['year'] . $dateOneMonthPrev . $this->data['day'] . $this->data['hour'];
-    if($dateOneMonthPrev == '12')     $prevDate =  $dateOneYearPrev . '12' . $this->data['day'] . $this->data['hour'];
-    $nextDate = $this->data['year'] . $dateOneMonthNext . $this->data['day'] . $this->data['hour'];
-    if($dateOneMonthNext == '01')     $nextDate =  $dateOneYearNext . '01' . $this->data['day'] . $this->data['hour'];
+    $pmonth_label = date('Y-m',strtotime("first day of -1 month"));
+    $pmonth_from = date('Y-m-01',strtotime("first day of -1 month"));
+    $pmonth_to = date('Y-m-t',strtotime("first day of -1 month"));
 
-    $this->data['action_prev'] = HTTPS_SERVER . 'index.php?route=sales/calendar&token=' . $this->session->data['token'] . '&time=' . $prevDate;
-    $this->data['action_next'] = HTTPS_SERVER . 'index.php?route=sales/calendar&token=' . $this->session->data['token'] . '&time=' . $nextDate;
+    # strtotime bug , besso 201108
+    # http://www.phpreferencebook.com/tips/fixing-strtotime-1-month/
+    # not work well
+    
+    $nmonth_label = date('Y-m',strtotime("first day of +1 month"));
+    $nmonth_from = date('Y-m-01',strtotime("first day of +1 month"));
+    $nmonth_to = date('Y-m-t',strtotime("first day of +1 month"));
+
+    // need to change 
+    $prevDate = date('Ymd',strtotime(date("Y-m-d", strtotime($todayDate)) . "-1 day"));
+    $nextDate = date('Ymd',strtotime(date("Y-m-d", strtotime($todayDate)) . "+1 day"));
+
+    $this->data['action_prev'] = HTTPS_SERVER . 'index.php?route=sales/calendar&token=' . $this->session->data['token'] . '&time=' . $pastMonth;
+    $this->data['action_next'] = HTTPS_SERVER . 'index.php?route=sales/calendar&token=' . $this->session->data['token'] . '&time=' . $nextMonth;
 
     $this->data['today'] = $date;
 		$this->template = 'sales/calendar.tpl';
@@ -90,21 +92,24 @@ class ControllerSalesCalendar extends Controller {
     isset($this->request->get['title']) ? $this->data['title'] = $this->request->get['title'] :  $this->data['title'] = '' ;
     isset($this->request->get['slug']) ? $this->data['slug'] = $this->request->get['slug'] :  $this->data['slug'] = '' ;
     $this->data['time'] = $this->request->get['time'];
-
     $this->data['token']  = $this->session->data['token'];
-    
+
     $this->template = 'sales/addEventPanel.tpl';
 		$this->response->setOutput($this->render(TRUE), $this->config->get('config_compression'));
-  
   }
 
  	public function updateEvent(){
+
+//$this->log->aPrint( $this->request->get ); exit;
+
     isset($this->request->get['id']) ? $this->data['id'] = $this->request->get['id'] :  $this->data['id'] = '' ;
     isset($this->request->get['start']) ? $this->data['start'] = $this->request->get['start'] :  $this->data['start'] = '' ;
-    isset($this->request->get['end']) ? $this->data['end'] = $this->request->get['end'] :  $this->data['end'] = '' ;
-    isset($this->request->get['title']) ? $this->data['title'] = $this->request->get['title'] :  $this->data['title'] = '' ;
-    isset($this->request->get['slug']) ? $this->data['slug'] = $this->request->get['slug'] :  $this->data['slug'] = '' ;
-    isset($this->request->get['time']) ? $this->data['time'] = $this->request->get['time'] :  $this->data['time'] = '' ;
+    isset($this->request->get['end']) ? $this->data['end']     = $this->request->get['end'] :  $this->data['end'] = '' ;
+    isset($this->request->get['title']) ? $this->data['title'] = html_entity_decode($this->request->get['title']) :  $this->data['title'] = '' ;
+    isset($this->request->get['slug']) ? $this->data['slug']   = html_entity_decode($this->request->get['slug']) :  $this->data['slug'] = '' ;
+    isset($this->request->get['time']) ? $this->data['time']   = $this->request->get['time'] :  $this->data['time'] = '' ;
+
+    //$this->log->aPrint( $this->data ); exit;
 
     $this->load->model('sales/calendar');
     if($this->model_sales_calendar->updateEvent($this->data)){
@@ -113,7 +118,7 @@ class ControllerSalesCalendar extends Controller {
   }
 
  	public function deleteEvent(){
-    isset($this->request->get['id']) ? $this->data['id'] = $this->request->get['id'] :  $this->data['id'] = '' ;
+    $this->data['id'] = isset($this->request->get['id']) ? $this->request->get['id'] : '';
     $this->load->model('sales/calendar');
     if($this->model_sales_calendar->deleteEvent($this->data)){
       echo json_encode('success');
