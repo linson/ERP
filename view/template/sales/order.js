@@ -179,7 +179,7 @@ $(document).ready(function(){
        $tgt.is('input[name="promotion[]"]') || 
        $tgt.is('input[name="discount[]"]') || 
        $tgt.is('input[name="discount2[]"]') ){
-      $ptn = /\D/;
+      $ptn = /\D\./;
 //      if( $tgt.val().match($ptn) ){
       if( $ptn.test($tgt.val()) ){
         //alert('Input is not Number so set to 0 forcelly');
