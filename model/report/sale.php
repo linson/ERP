@@ -69,16 +69,18 @@ class ModelReportSale extends Model {
           $sql = "select target from rep_stat where month = '$month' and rep = '$sales'";
           //$this->log->aPrint( $sql );
           $query = $this->db->query($sql);
-          $target = $query->row['target'];
-          //$this->log->aPrint( $target );
-          $aToday[$i]['target'] = $target;
-          $aToday[$i]['day_target'] = round($target/$working);
-          $aToday[$i]['order_price'] = 0;
-          $aToday[$i]['percent'] = 0;
-          $aToday[$i]['day_percent'] = 0;
-          $aToday[$i]['cnt'] = 0;
-          $aToday[$i]['rcnt'] = 0;
-          $aToday[$i]['wcnt'] = 0;
+          if( isset( $query->row['target'] ) ){
+            $target = $query->row['target'];
+            //$this->log->aPrint( $target );
+            $aToday[$i]['target'] = $target;
+            $aToday[$i]['day_target'] = round($target/$working);
+            $aToday[$i]['order_price'] = 0;
+            $aToday[$i]['percent'] = 0;
+            $aToday[$i]['day_percent'] = 0;
+            $aToday[$i]['cnt'] = 0;
+            $aToday[$i]['rcnt'] = 0;
+            $aToday[$i]['wcnt'] = 0;
+          }
           $i++;
         }
       }
