@@ -282,7 +282,7 @@
             <td class='center'><?php echo $row['order_date'] ?></td>
             <td class='center' colspan=2><?php echo $this->util->formatMoney($row['target']) ?></td>
             <td class='center'><?php echo $this->util->formatMoney($row['order_price']) ?></td>
-            <td class='center'><font color=red><?php echo round($remain) ?></font></td>
+            <td class='center'><font color=red><?php echo $this->util->formatMoney(round($remain)) ?></font></td>
             <td class='center'><b><?php echo $row['percent']; ?></b> %</td>
             <td class='center'><?php echo $row['cnt']; ?></td>
             <td class='center'><?php echo $row['rcnt']; ?></td>
@@ -294,7 +294,7 @@
             <td class='center'></td>
             <td class='center' colspan=2><font size=5><b><?php echo $this->util->formatMoney($target) ?></b></font></td>
             <td class='center'><font size=5><b><?php echo $this->util->formatMoney(round($total)) ?></b></font></td>
-            <td class='center'><font size=5><b><?php echo round($remain_sum) ?></b></font></td>
+            <td class='center'><font size=5><b><?php echo $this->util->formatMoney(round($remain_sum)) ?></b></font></td>
             <td class='center'><font size=5><b><?php echo round( ($total / $target)*100 , 2) ?></b></font> %</td>
             <td class='center'><?php echo $cnt; ?></td>
             <td class='center'><?php echo $rcnt; ?></td>
