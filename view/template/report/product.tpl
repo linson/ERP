@@ -96,7 +96,9 @@
             </td>
           </tr>
           <tr style='height:20px'><td colspan='10'></td></tr>
-
+<?php
+/*********************** BLOCK 
+?>
           <!-- today -->
           <!-- today -->
           <!-- today -->
@@ -212,7 +214,9 @@
           </tr>
           <?php } ?>
           <tr style='height:40px'><td colspan='10'></td></tr>
-          
+<?php
+************/
+?>
           
           
           <!-- this month -->
@@ -267,6 +271,7 @@
               <table id='<?php echo $group ?>' style='margin-left:40px;display:none;'>
                 <?php
                 foreach($stat[$group] as $k => $v){
+//$this->log->aPrint( $stat[$group] );
                 ?>
                 <tr>
                   <td><?php echo $k ?></td>
@@ -347,7 +352,7 @@ $(document).ready(function(){
         type:'get',
         url:'index.php?route=report/product/ordersales',
         dataType:'json',
-        data:'filter_from=<?php echo $this_day ?>&filter_to=<?php echo $this_day ?>&group=' + $group,
+        data:'filter_from=<?php echo $this_day ?>&filter_to=<?php echo $this_day ?>&group=' + encodeURIComponent($group),
         success:function(data){
           //obj = $.parseJSON(data);
           $.each(data,function(i,row){
@@ -367,6 +372,7 @@ $(document).ready(function(){
   $('.prod_detail_month').bind('click',function(e){
     $tgt = $(e.target);
     $group = $tgt.text();
+    //debugger;    console.log($group);
     $pnt = $tgt.parents('td');
     $display = $pnt.find('table').css('display');
     if($display == 'none'){
@@ -377,7 +383,7 @@ $(document).ready(function(){
         type:'get',
         url:'index.php?route=report/product/ordersales',
         dataType:'json',
-        data:'filter_from=<?php echo $filter_from ?>&filter_to=<?php echo $filter_to ?>&group=' + $group,
+        data:'filter_from=<?php echo $filter_from ?>&filter_to=<?php echo $filter_to ?>&group=' + encodeURIComponent($group),
         success:function(data){
           $.each(data,function(i,row){
             html = '<p>' + row['rep'] + ' : ' + row['qty'] + '</p>';
