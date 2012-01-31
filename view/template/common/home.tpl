@@ -271,7 +271,7 @@
             }else{
               $remain = 0;
             }
-            $remain_sum += $remain;
+            
           ?>
           <tr style='background-color:<?php echo $bg_td ?>'>
             <td class='center'>
@@ -288,7 +288,9 @@
             <td class='center'><?php echo $row['rcnt']; ?></td>
             <td class='center'><?php echo $row['wcnt']; ?></td>
           </tr>
-          <?php } // end foreach ?>
+          <?php } // end foreach 
+            $remain_sum = $target - $total;
+          ?>
           <tr style='background-color:#e2e2e2;'>
             <td class='center'></td>
             <td class='center'></td>
@@ -306,8 +308,6 @@
           </tr>
           <?php } ?>
           <tr style='height:40px'><td colspan='10'></td></tr>
-
-
 
           <!-- last month -->
           <!-- last month -->
