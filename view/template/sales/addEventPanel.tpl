@@ -8,7 +8,7 @@
 }
 </style>
 <?php
-  $start = substr($time,0,4) .'-'. substr($time,4,2) .'-'. substr($time,6,2);
+$start = substr($time,0,4) .'-'. substr($time,4,2) .'-'. substr($time,6,2);
 ?>
 <div id="edit_content">
     <div id="tab_general">
@@ -17,7 +17,7 @@
           <td class='lbl'>period</td>
           <td>
             <input type="text" name="start" class='date_pick' size="10" value="<?php echo $start; ?>"/>-
-            <input type="text" name="end"   class='date_pick' size="10" value="" />
+            <input type="text" name="end"   class='date_pick' size="10" value="<?php echo $start; ?>" />
           </td>
         </tr>
         <tr>
@@ -25,13 +25,13 @@
           <td>
             <input type="hidden" name="id" value="<?php echo $id; ?>"/>
             <input type="hidden" name="time" value="<?php echo $time; ?>"/>
-            <input type="text" name="title" size="35" value="<?php echo $title; ?>" />
+            <input type="text" name="title" size="35" value="<?php echo html_entity_decode($title); ?>" />
           </td>
         </tr>
         <tr>
           <td class='lbl'>Content</td>
           <td>
-            <textarea name='slug' style='width:200px;'><?php echo $slug; ?></textarea>
+            <textarea name='slug' style='width:200px;height:150px;'><?php echo html_entity_decode($slug); ?></textarea>
           </td>
         </tr>
         <tr>
