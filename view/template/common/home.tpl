@@ -251,20 +251,27 @@
             <td class="center">Period</td>
             <td class="center" colspan=2>Target</td>
             <td class="center">SUM</td>
-            <td class="center" colspan=2>Percent</td>
+            <td class="center">Remain</td>
+            <td class="center">Percent</td>
             <td class="center">Count</td>
             <td class="center">Retail</td>
             <td class="center">W/S</td>
           </tr>
           <?php
-          $total = $target = $day_target = $percent = $day_percent = $cnt = $rcnt = $wcnt = 0;
+          $total = $target = $day_target = $percent = $day_percent = $cnt = $rcnt = $wcnt = $remain = $remain_sum = 0;
           foreach ($stat as $row){
             $total += $row['order_price'];
             $cnt += $row['cnt'];
             $rcnt += $row['rcnt'];
             $wcnt += $row['wcnt'];
             $target += $row['target'];
-            $percent += $row['percent'];
+            $percent += $row['percent'] - $row['order_price'];
+            if( $row['target'] > $row['order_price'] ){
+              $remain = $row['target'] - $row['order_price'];
+            }else{
+              $remain = 0;
+            }
+            $remain_sum += $remain;
           ?>
           <tr style='background-color:<?php echo $bg_td ?>'>
             <td class='center'>
@@ -275,7 +282,8 @@
             <td class='center'><?php echo $row['order_date'] ?></td>
             <td class='center' colspan=2><?php echo $this->util->formatMoney($row['target']) ?></td>
             <td class='center'><?php echo $this->util->formatMoney($row['order_price']) ?></td>
-            <td class='center' colspan=2><b><?php echo $row['percent']; ?></b> %</td>
+            <td class='center'><font color=red><?php echo round($remain) ?></font></td>
+            <td class='center'><b><?php echo $row['percent']; ?></b> %</td>
             <td class='center'><?php echo $row['cnt']; ?></td>
             <td class='center'><?php echo $row['rcnt']; ?></td>
             <td class='center'><?php echo $row['wcnt']; ?></td>
@@ -286,7 +294,8 @@
             <td class='center'></td>
             <td class='center' colspan=2><font size=5><b><?php echo $this->util->formatMoney($target) ?></b></font></td>
             <td class='center'><font size=5><b><?php echo $this->util->formatMoney(round($total)) ?></b></font></td>
-            <td class='center' colspan=2><font size=5><b><?php echo round( ($total / $target)*100 , 2) ?></b></font> %</td>
+            <td class='center'><font size=5><b><?php echo round($remain_sum) ?></b></font></td>
+            <td class='center'><font size=5><b><?php echo round( ($total / $target)*100 , 2) ?></b></font> %</td>
             <td class='center'><?php echo $cnt; ?></td>
             <td class='center'><?php echo $rcnt; ?></td>
             <td class='center'><?php echo $wcnt; ?></td>
