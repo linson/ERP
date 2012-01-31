@@ -80,8 +80,9 @@ class ModelReportSale extends Model {
             $aToday[$i]['cnt'] = 0;
             $aToday[$i]['rcnt'] = 0;
             $aToday[$i]['wcnt'] = 0;
+            $i++;
           }
-          $i++;
+          
         }
       }
     }
