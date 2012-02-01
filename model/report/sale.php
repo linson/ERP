@@ -40,7 +40,7 @@ class ModelReportSale extends Model {
 		}
     $sql .= " AND substr(x.order_date,1,10) between '" . $from . "' and '" . $to . "'";    
     // exclude
-    if( $request['hidden'] == false ){      $sql .= $exclude;    }
+    //if( $request['hidden'] == false ){      $sql .= $exclude;    }
     $sql .= " group by x.order_user,substr(x.order_date,1,7)";
 
     if( $request['sort'] == '' ){
@@ -153,10 +153,9 @@ class ModelReportSale extends Model {
         }
       }
     }
-
     $rtn['this_month'] = $aMonth;
-    
-    
+
+
 
     /////////////// past month ////////////////////////
     $sql = "
