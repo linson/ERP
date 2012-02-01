@@ -62,7 +62,8 @@ class ModelStoreStore extends Model {
 				$sql .= " AND LCASE(s.status) = '" . $this->db->escape(strtolower($request['filter_status'])) . "'";
 			}
 			if(isset($request['filter_salesrep']) && !is_null($request['filter_salesrep'])){
-				$sql .= " AND s.salesrep = ( select username from user where user_group_id in (1,10,11) and LCASE(username) = '" . $this->db->escape(strtolower($request['filter_salesrep'])) . "')";
+			  //todo. change to like statement
+				$sql .= " AND s.salesrep = ( select username from user where user_group_id in (1,10,11) and LCASE(username) like '%" . $this->db->escape(strtolower($request['filter_salesrep'])) . "%')";
 			}
 			//$sql .= " and substr(s.zipcode,1,1) = '0'";
 			if(isset($request['filter_balance']) && !is_null($request['filter_balance'])){
