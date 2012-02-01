@@ -107,7 +107,7 @@ class ModelReportSale extends Model {
       $to   = date("Y-m-t",$thismonth);
 		}
  		$sql .= " AND substr(x.order_date,1,10) between '" . $from . "' and '" . $to . "'";    
-    if( $request['hidden'] == false ){      $sql .= $exclude;    }
+    //if( $request['hidden'] == false ){      $sql .= $exclude;    }
     $sql .= " group by x.order_user,substr(x.order_date,1,7)";
     
     if( $request['sort'] == '' ){
@@ -177,7 +177,7 @@ class ModelReportSale extends Model {
       $to   = date("Y-m-t",$lastmonth);
 		}
  		$sql .= " AND substr(x.order_date,1,10) between '" . $from . "' and '" . $to . "'";    
-    if( $request['hidden'] == false ){      $sql .= $exclude;    }
+    //if( $request['hidden'] == false ){      $sql .= $exclude;    }
     $sql .= " group by x.order_user,substr(x.order_date,1,7)";
 
     if( $request['sort'] == '' ){
