@@ -120,7 +120,43 @@ class ModelReportSale extends Model {
 
 //    $this->log->aPrint( $sql );
     $query = $this->db->query($sql);
-    $rtn['this_month'] = $query->rows;
+    $aMonth = $query->rows;
+
+    // outer join fail shit
+    $aSales = array();
+    foreach($query->rows as $row){ array_push($aSales,$row['order_user']); }
+
+    $i = count($aMonth);
+    if($i>0){
+      foreach($this->user->getSales() as $sales){
+        if( !in_array($sales,$aSales) ){
+          $aMonth[$i] = $aMonth[$i-1];
+          $aMonth[$i]['order_user'] = $sales;
+          
+          $sql = "select target from rep_stat where month = '$month' and rep = '$sales'";
+          //$this->log->aPrint( $sql );
+          $query = $this->db->query($sql);
+          if( isset( $query->row['target'] ) ){
+            $target = $query->row['target'];
+            //$this->log->aPrint( $target );
+            $aMonth[$i]['target'] = $target;
+            $aMonth[$i]['day_target'] = round($target/$working);
+            $aMonth[$i]['order_price'] = 0;
+            $aMonth[$i]['percent'] = 0;
+            $aMonth[$i]['day_percent'] = 0;
+            $aMonth[$i]['cnt'] = 0;
+            $aMonth[$i]['rcnt'] = 0;
+            $aMonth[$i]['wcnt'] = 0;
+            $i++;
+          }
+          
+        }
+      }
+    }
+
+    $rtn['this_month'] = $aMonth;
+    
+    
 
     /////////////// past month ////////////////////////
     $sql = "
