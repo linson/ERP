@@ -24,7 +24,7 @@ class ControllerSalesCalendar extends Controller{
       $date = $this->request->get['time'];
       $endDay = $this->returnEndDayOfMonth(substr($date,0,4),substr($date,4,2));
       $start = substr($date,0,4).substr($date,4,2).'0100';
-      $end   = substr($date,0,4).substr($date,4,2).$endDay.'00';
+      $end   = substr($date,0,4).substr($date,4,2).$endDay.'24';
       $this->data['year']  = substr($date,0,4);
       $this->data['month'] = substr($date,4,2);
       $this->data['day']  = substr($date,6,2);
@@ -32,7 +32,7 @@ class ControllerSalesCalendar extends Controller{
     }else{  // base is today
       $endDay = $this->returnEndDayOfMonth(date('Y'),date('m'));
       $start = date('Y').date('m').'0100';
-      $end = date('Y').date('m').$endDay.'00';
+      $end = date('Y').date('m').$endDay.'24';
       //todo. php date incorrect date +%Y%m%d%H , besso-201103
       //$date = @exec('date +%Y%m%d%H');
       $date = date('Ymdh');
