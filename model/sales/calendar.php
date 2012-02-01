@@ -22,13 +22,14 @@ class ModelSalesCalendar extends Model {
     $query = $this->db->query($sql);
 		if($query->row > 1){
 		***/
-		//$this->log->aPrint( $data );
+		//$this->log->aPrint( $data ); exit;
 
 		isset($data['id']) ? $id = $data['id'] : $id = '';
 		isset($data['start']) ? $start = $data['start'] : $start = '';
 		isset($data['end']) ? $end = $data['end'] : $end = '';
 		$title = htmlentities($data['title'],ENT_QUOTES);
 		$slug = htmlentities($data['slug'],ENT_QUOTES);
+		//$time = $data['time'].'00';
 		$time = $data['time'];
 
 		# managing period
@@ -44,6 +45,8 @@ class ModelSalesCalendar extends Model {
 		  }
 		}
 
+    //$this->log->aPrint( $title );exit;
+
 		if($id != ''){
 		  $sql = "update events set title = '$title', slug = '$slug', time = $time where id = $id";
       $query = $this->db->query($sql);
@@ -55,6 +58,7 @@ class ModelSalesCalendar extends Model {
         }
       }else{
         $sql = "insert into events (title,slug,time) values('$title','$slug',$time)";
+        //$this->log->aPrint( $sql ); exit;
         $query = $this->db->query($sql);
       }
     }
