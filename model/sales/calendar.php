@@ -2,7 +2,7 @@
 class ModelSalesCalendar extends Model {
   public function getEvents($start,$end){
     $sql = "select * , substr(time,7,2) as day from events where time BETWEEN $start AND $end ORDER BY time ASC";
-    //echo $sql;
+    //$this->log->aPrint( $sql );
 		$query = $this->db->query($sql);
 		$aRtn = array();
 		$i = 0;
