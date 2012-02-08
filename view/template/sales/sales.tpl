@@ -288,8 +288,10 @@ $(document).ready(function(){
   }
   */
 
-  //$beforeNode = null;
-  
+
+  // rollback beforeNode job
+  $beforeNode = null;
+
   if( 'edit' == $('#form').find('input[name=mode]').val() ){
     $('#floatmenu').css('visibility','visible');
     $('#floatmenu').find('input[name=float_order_price]').val($('#form').find('input[name=order_price]').val());
@@ -309,10 +311,28 @@ $(document).ready(function(){
     $tgt = $(e.target);
 
     var $tbl_node = $tgt.next('table'),
-        $id = $tbl_node.attr('id');
-    // todo. enable 0 order for sample
-    //if( $tx > 0 && $c5 > 0 ){
-    if( $tx > 0 ){
+        $id = $tbl_node.attr('id'),
+        $c1 = $c2 = $c3 = $c4 = $c5 = 0;
+
+    if( $beforeNode == null)  $beforeNode = $tbl_node;
+
+    $beforeNode.find('input[name="cnt[]"]').each(function($k,$v){
+      if(!isNaN(parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value))){
+        $c1   += parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value);
+      }
+      if(!isNaN(parseInt($beforeNode.find('input[name="free[]"]')[$k].value))){
+        $c2   += parseInt($beforeNode.find('input[name="free[]"]')[$k].value);
+      }
+      if(!isNaN(parseInt($beforeNode.find('input[name="damage[]"]')[$k].value))){
+        $c3   += parseInt($beforeNode.find('input[name="damage[]"]')[$k].value);
+      }
+      if(!isNaN(parseInt($beforeNode.find('input[name="promotion[]"]')[$k].value))){
+        $c4   += parseInt($beforeNode.find('input[name="promotion[]"]')[$k].value);
+      }
+    });
+    $c5 = $c1 + $c2 + $c3 + $c4;
+
+    if( $tx > 0 && $c5 > 0 ){
       $.fn.postSubmit($tbl_node);
     }else{
       $.fn.hideGroups($tbl_node);
@@ -347,6 +367,43 @@ $(document).ready(function(){
 
   $.fn.hideGroups = function($exceptNode){
     var $el_groups = $exceptNode.parents('#order').children('table');
+    //if($beforeNode != $exceptNode){
+      $total = $c1 = $c2 = $c3 = $c4 = $c5 = 0;
+      $beforeNode.find(".item").each(function(){
+        $this = $(this);
+        $t = $this.find('input.total_price').val();
+        $cnt = $this.find('input[name="cnt[]"]').val();
+        $free = $this.find('input[name="free[]"]').val();
+        $damage = $this.find('input[name="damage[]"]').val();
+        $promotion = $this.find('input[name="promotion[]"]').val();
+        if( !isNaN($t) )        $total += parseFloat($t);
+        if( !isNaN($cnt) )      $c1    += parseInt($cnt);
+        if( !isNaN($free) )     $c2    += parseInt($free);
+        if( !isNaN($damage) )   $c3    += parseInt($damage);
+        if( !isNaN($promotion)) $c4    += parseInt($promotion);
+      });
+      $total = $total.toFixed(2);
+      $c5 = $c1 + $c2 + $c3 + $c4;
+      if($c5 > 0){
+        var $beforeH1 = $beforeNode.prev('h1.header');
+        $beforeH1.css('background-color','#660000');
+        $ptn = /\[.+\]/;
+        //if($beforeH1.html().indexOf('[') == -1){
+        if( $beforeH1.html().match($ptn) ){
+          $beforeH1.html( $beforeH1.html().replace($ptn,'') );
+        }
+        $freMsg = '';  if($c2 > 0) $freMsg = 'F';
+        $dmgMsg = '';  if($c3 > 0) $dmgMsg = 'D';
+        $prmMsg = '';  if($c4 > 0) $prmMsg = 'P';
+        $beforeH1.html( '[ ' + $freMsg + $dmgMsg + $prmMsg + ' ' + $total + ' ] ' + $beforeH1.html());
+      }
+      $beforeNode = $exceptNode;
+    //}
+
+    /* ajax retrieve just data which stored in sales table
+       and dynamically show that models under the category */
+    //$el_groups.each(function(){
+
     $.each($el_groups,function(){
       var $group = $(this);
       if( $group.attr('id') == $exceptNode.attr('id') ){
@@ -354,6 +411,7 @@ $(document).ready(function(){
         $.fn.retrieveGroup($exceptNode,$models);
         $group.css('display','block');
         //$pos = $(this).positon();
+//debugger;
       }else{
         $group.css('display','none');
       }
