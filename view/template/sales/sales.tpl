@@ -288,7 +288,6 @@ $(document).ready(function(){
   }
   */
 
-
   // rollback beforeNode job
   $beforeNode = null;
 
@@ -302,8 +301,15 @@ $(document).ready(function(){
   var $el_order_date  = $('#form').find('input[name=order_date]'),
       $el_order_price = $('#form').find('input[name=order_price]'),
       $tx = 1;
+      
 
-  $('h1.header').bind('click.hdrEvent',function(e){
+  
+  $('h1.header')
+  .bind('dblclick',function(e){
+    alert('NO double click!\nClick again softly and wait!');
+  })
+  .bind('click.hdrEvent',function(e){
+    //console.log( e.type );
     if( 'show' == $('#form').find('input[name=mode]').val() ){
       $tx = 0;
     }
@@ -338,7 +344,7 @@ $(document).ready(function(){
       $.fn.hideGroups($tbl_node);
     }
     $tx++;
-  });
+  })
 
   $.fn.postSubmit = function($tbl_node){
     // todo. no validation !!!
