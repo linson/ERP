@@ -782,7 +782,7 @@ $('#storeinfo').find('#history_account').css('display','none');
 $('#order h1').css($cssMap);
 //$('#order').find('.product_name').css('width','140px');
 $('#order').find('input[name="model_show[]"]').css('width','34px');
-$('#order').find('input[name="pkg[]"]').css('display','inline').css('font-size','28px').css('width','50px').css('height','22px').css('font-weight','bold');
+$('#order').find('input[name="pkg[]"]').css('display','inline').css('font-size','28px').css('width','80px').css('height','22px').css('font-weight','bold');
 $('#order').find('input[name="price[]"]').css('width','45px');
 $('#order').find('input[name="discount[]"]').css('width','20px');
 $('#order').find('input[name="discount2[]"]').css('width','20px');
