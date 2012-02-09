@@ -36,12 +36,13 @@
     </form>
   </div>
   <div style='margin-top:20px'>
-    <h2> Do your account correct </h2>
+    <h2> Account 메뉴, 오더 나올곳을 예측 </h2>
     <p>
-    There are many account that's not <b>YOURS</b>. </br>
-    Go to Account > List menu <br/>
-    Search with city as chicago and REP as you.<br/>
-    Click "MORE" of other's account and set that to correct REP
+    <br/>
+    상점 메뉴에 새로이 회색 Bar 가 생긴것을 아실겁니다.<br/>
+    빨간 점들은 현재 시점으로 부터 오더가 나온 지점입니다.<br/>
+    Good AR 로 상점인데 오더가 없다면 유심히 보셔요<br/>
+    <b>잘 관리된 Account 는 order 지점을 쉽게 합니다</b>
     </p>
   </div>
 
