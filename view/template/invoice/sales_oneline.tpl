@@ -206,7 +206,7 @@ if($mode == 'show'){
          <?php } ?>
          </div>
          <div class='invoice_float_right'>
-          <input type='text' name='pkg[]' value='<?php echo ( $row['cnt'] + $row['free'] + $row['damage'] + $row['promotion'] ) ?>' style='display:none;margin-right:200px;' />
+          <input type='text' name='pkg[]' value='<?php echo ( $row['cnt'] + $row['free'] + $row['damage'] + $row['promotion'] ) ?>' style='display:none;margin-right:150px;' />
          </div>
          <div class=''>
            <?php
