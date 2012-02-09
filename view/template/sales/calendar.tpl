@@ -60,19 +60,23 @@
   color:blue;
 }
 </style>
-
+<?php
+  //$this->log->aPrint( $events );
+?>
 <script type="text/javascript" src="view/javascript/jquery/calendar.js"></script>
 <div class="box">
   <div class="left"></div>
   <div class="right"></div>
   <div class="heading">
     <h1 style="background-image: url('view/image/product.png');">
-      Calendar</h1>
+      Calendar
+      <!--font color=red> Under Construction ( 26 morning ) </font-->
+    </h1>
   </div>
   <div class="content">
   <!-- start of calendar -->
     <div class='nav_calendar'>
-      <a href='<?php echo $action_prev; ?>'>  <<  </a>    <?php echo substr($today,0,8); ?>    <a href='<?php echo $action_next; ?>'>  >>  </a>
+      <a href='<?php echo $action_prev; ?>'>  <<  </a>    <?php echo substr($today,0,4) . ' . ' . substr($today,4,2); ?>    <a href='<?php echo $action_next; ?>'>  >>  </a>
     </div>
     <?php 
 	    $calendar = '<table cellpadding="0" border="1" cellspacing="0" class="calendar">';
@@ -81,12 +85,13 @@
 	    $headings = array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
 	    $calendar.= '<tr class="calendar-row"><td class="day_head-sunday">'.implode('</td><td class="day_head">',$headings).'</td></tr>';
 
-      //echo $year . '<br/>';
-      //echo $month . '<br/>';
+      //echo $year . '<br/>';      echo $month . '<br/>';
 	    /* days and weeks vars now ... */
 	    
       $running_day = date('w',strtotime("first day of $year-$month"));
-	    $days_in_month = date('t',time(0,0,0,$month,1,$year));
+	    //$days_in_month = date('t',time(0,0,0,$month,1,$year));
+	    $days_in_month = date('t',strtotime("last day of $year-$month"));
+	    //$this->log->aPrint( $days_in_month );
 
       //$running_day = date ('Y-m-d', strtotime ( date ( 'Y' ) . 'W' . date ( 'W' ) . '1' ) );
       /*****
@@ -109,7 +114,7 @@
 	    	$calendar.= '<td class="calendar-day-np"> </td>';
 	    	$days_in_this_week++;
 	    endfor;
-    
+
 	    /* keep going with days.... */
 	    $i = 7;
 	    for($list_day = 1; $list_day <= $days_in_month; $list_day++):
@@ -121,7 +126,6 @@
 	    	  $ymdh_day = '0'.$list_day;
 	    	}else{
 	    	  $ymdh_day = $list_day;
-    	
 	    	}
 	    	$ymdh = $year.$month.$ymdh_day.$hour;
 	    	$calendar.= '<div class="day-number">
@@ -136,11 +140,17 @@
             foreach($day_event as $event){
 	    	      //$this->log->aPrint( $event );
 	    	      $id = $event['id'];
-	    	      $title = $event['title'];
+	    	      $css = '';
+	    	      $title = html_entity_decode($event['title']);
+
+              if( strpos(strtolower($title),'chi')  > 0 )  $css = 'color:blue;';
+              if( strpos(strtolower($title),'wi')  > 0 )  $css = 'color:blue;';
+              if( strpos(strtolower($title),'show') > 0 )  $css = 'color:red;';
+
 	    	      $slug = substr($event['slug'],0,20);
 	    	      $time = $event['time'];
 	    	      $html .= "<span><input type='hidden' name=id value='$id' /><input type='hidden' name=slug value='$slug' /><input type='hidden' name=time value='$time' />
-	    	      <p style='cursor:pointer;' class='day_event'>$title</p></span>";
+	    	      <p style='cursor:pointer;$css' class='day_event'>$title</p></span>";
 	    	    }
 	    	  }
         }
@@ -159,17 +169,16 @@
 	    	$days_in_this_week++; $running_day++; $day_counter++;
 	      $i++;
 	    endfor;
-    
+
 	    /* finish the rest of the days in the week */
 	    if($days_in_this_week < 8):
 	    	for($x = 1; $x <= (8 - $days_in_this_week); $x++):
 	    		$calendar.= '<td class="calendar-day-np"> </td>';
 	    	endfor;
 	    endif;
-    
 	    /* final row */
 	    $calendar.= '</tr>';
-    
+
 	    /* end the table */
 	    $calendar.= '</table>';
       echo $calendar;
