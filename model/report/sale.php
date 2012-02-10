@@ -58,14 +58,8 @@ class ModelReportSale extends Model {
 
     // outer join fail shit
     $aSales = array();
-    $i = 0;
-    foreach($aToday as $row){
-      //todo. bitter exepion script for UBP user
-      //if( 'UBP' == $row['order_user'] && $row['order_price'] > 0 ){
-      //  $aToday[$i]['target'] = $aToday[$i]['order_price'];
-      //}
-      array_push($aSales,$row['order_user']); 
-      $i++;
+    foreach($query->rows as $row){
+      if( 'UBP' != $row['order_user'] ) array_push($aSales,$row['order_user']);
     }
 
     $i = count($aToday);
@@ -75,7 +69,7 @@ class ModelReportSale extends Model {
           $aToday[$i] = $aToday[$i-1];
           $aToday[$i]['order_user'] = $sales;
           
-          $sql = "select target from rep_stat where month = '$month' and rep = '$sales'  and rep != 'UBP'";
+          $sql = "select target from rep_stat where month = '$month' and rep = '$sales'";
           //$this->log->aPrint( $sql );
           $query = $this->db->query($sql);
           if( isset( $query->row['target'] ) ){
@@ -134,7 +128,10 @@ class ModelReportSale extends Model {
 
     // outer join fail shit
     $aSales = array();
-    foreach($query->rows as $row){ array_push($aSales,$row['order_user']); }
+    foreach($query->rows as $row){
+      if( 'UBP' != $row['order_user'] ) array_push($aSales,$row['order_user']);
+    }
+
 
     $i = count($aMonth);
     if($i>0){
@@ -143,8 +140,8 @@ class ModelReportSale extends Model {
           $aMonth[$i] = $aMonth[$i-1];
           $aMonth[$i]['order_user'] = $sales;
           
-          $sql = "select target from rep_stat where month = '$month' and rep = '$sales' and rep != 'UBP'";
-          $this->log->aPrint( $sql );
+          $sql = "select target from rep_stat where month = '$month' and rep = '$sales'";
+          //$this->log->aPrint( $sql );
           $query = $this->db->query($sql);
           if( isset( $query->row['target'] ) ){
             $target = $query->row['target'];
