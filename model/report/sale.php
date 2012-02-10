@@ -59,13 +59,13 @@ class ModelReportSale extends Model {
     // outer join fail shit
     $aSales = array();
     foreach($query->rows as $row){
-      if( 'UBP' != $row['order_user'] ) array_push($aSales,$row['order_user']);
+      array_push($aSales,$row['order_user']);
     }
 
     $i = count($aToday);
     if($i>0){
       foreach($this->user->getSales() as $sales){
-        if( !in_array($sales,$aSales) ){
+        if( !in_array($sales,$aSales) && 'UBP' != $sales ){
           $aToday[$i] = $aToday[$i-1];
           $aToday[$i]['order_user'] = $sales;
           
