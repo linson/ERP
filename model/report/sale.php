@@ -129,14 +129,14 @@ class ModelReportSale extends Model {
     // outer join fail shit
     $aSales = array();
     foreach($query->rows as $row){
-      if( 'UBP' != $row['order_user'] ) array_push($aSales,$row['order_user']);
+      array_push($aSales,$row['order_user']);
     }
 
 
     $i = count($aMonth);
     if($i>0){
       foreach($this->user->getSales() as $sales){
-        if( !in_array($sales,$aSales) ){
+          if( !in_array($sales,$aSales) && 'UBP' != $sales ){
           $aMonth[$i] = $aMonth[$i-1];
           $aMonth[$i]['order_user'] = $sales;
           
