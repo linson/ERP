@@ -30,7 +30,8 @@ class ModelReportSale extends Model {
          where rs.month = '$month'
            and x.order_user = rs.rep and x.store_id = st.id
            and x.status in ('1','2','3')
-           and x.approve_status = 'approve'";
+           and x.approve_status = 'approve'
+           and x.order_user != 'UBP'";
     if(!is_null($request['filter_from']) && !is_null($request['filter_to'])){
       if( $request['filter_from'] == $request['filter_to'] ){
         $from = $to = $request['filter_from'];
@@ -39,7 +40,7 @@ class ModelReportSale extends Model {
       }
 		}
     $sql .= " AND substr(x.order_date,1,10) between '" . $from . "' and '" . $to . "'";    
-    // exclude
+    //todo. remove exclude account from default view
     //if( $request['hidden'] == false ){      $sql .= $exclude;    }
     $sql .= " group by x.order_user,substr(x.order_date,1,7)";
 
@@ -57,7 +58,15 @@ class ModelReportSale extends Model {
 
     // outer join fail shit
     $aSales = array();
-    foreach($query->rows as $row){ array_push($aSales,$row['order_user']); }
+    $i = 0;
+    foreach($aToday as $row){
+      //todo. bitter exepion script for UBP user
+      //if( 'UBP' == $row['order_user'] && $row['order_price'] > 0 ){
+      //  $aToday[$i]['target'] = $aToday[$i]['order_price'];
+      //}
+      array_push($aSales,$row['order_user']); 
+      $i++;
+    }
 
     $i = count($aToday);
     if($i>0){
@@ -66,7 +75,7 @@ class ModelReportSale extends Model {
           $aToday[$i] = $aToday[$i-1];
           $aToday[$i]['order_user'] = $sales;
           
-          $sql = "select target from rep_stat where month = '$month' and rep = '$sales'";
+          $sql = "select target from rep_stat where month = '$month' and rep = '$sales'  and rep != 'UBP'";
           //$this->log->aPrint( $sql );
           $query = $this->db->query($sql);
           if( isset( $query->row['target'] ) ){
@@ -82,10 +91,10 @@ class ModelReportSale extends Model {
             $aToday[$i]['wcnt'] = 0;
             $i++;
           }
-          
         }
       }
     }
+
     $rtn['today'] = $aToday;
 
     /////////////// this month ////////////////////////
@@ -100,7 +109,8 @@ class ModelReportSale extends Model {
          where concat(substr(x.order_date,1,4),substr(x.order_date,6,2)) = rs.month
            and x.order_user = rs.rep and x.store_id = st.id
            and x.status in ('1','2','3')
-           and x.approve_status = 'approve'";
+           and x.approve_status = 'approve'
+           and x.order_user != 'UBP'";
     if(!is_null($request['filter_from']) && !is_null($request['filter_to'])){
       $thismonth = mktime(0, 0, 0, date(substr($request['filter_from'],5,2)), date(substr($request['filter_from'],8,2)), date(substr($request['filter_from'],0,4)));
       $from = date("Y-m-01",$thismonth);
@@ -133,7 +143,7 @@ class ModelReportSale extends Model {
           $aMonth[$i] = $aMonth[$i-1];
           $aMonth[$i]['order_user'] = $sales;
           
-          $sql = "select target from rep_stat where month = '$month' and rep = '$sales'";
+          $sql = "select target from rep_stat where month = '$month' and rep = '$sales' and rep != 'UBP'";
           //$this->log->aPrint( $sql );
           $query = $this->db->query($sql);
           if( isset( $query->row['target'] ) ){
@@ -169,7 +179,8 @@ class ModelReportSale extends Model {
          where concat(substr(x.order_date,1,4),substr(x.order_date,6,2)) = rs.month
            and x.order_user = rs.rep and x.store_id = st.id
            and x.status in ('1','2','3')
-           and x.approve_status = 'approve'";
+           and x.approve_status = 'approve'
+           and x.order_user != 'UBP'";
 
     if(!is_null($request['filter_from']) && !is_null($request['filter_to'])){
       $lastmonth = mktime(0, 0, 0, date(substr($request['filter_from'],5,2))-1, date(substr($request['filter_from'],8,2)), date(substr($request['filter_from'],0,4)));
@@ -364,8 +375,7 @@ class ModelReportSale extends Model {
   public function validate($request){
     $from = $request['filter_from'];
     $to = $request['filter_to'];
-    $sql = "
-            select x.txid,
+    $sql = "select x.txid,
                    (x.order_price - x.cod - x.lift) as tx_price,
                    sum( round( s.order_quantity * s.price1 * (100-s.discount) / 100 * (100-s.discount2) / 100 , 2 ) ) as sale_price,
                    x.discount as store_discount
@@ -432,6 +442,5 @@ class ModelReportSale extends Model {
     $query = $this->db->query($sql);
     return $query->rows;
 	}
-
 }
 ?>
