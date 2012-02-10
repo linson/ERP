@@ -144,7 +144,7 @@ class ModelReportSale extends Model {
           $aMonth[$i]['order_user'] = $sales;
           
           $sql = "select target from rep_stat where month = '$month' and rep = '$sales' and rep != 'UBP'";
-          //$this->log->aPrint( $sql );
+          $this->log->aPrint( $sql );
           $query = $this->db->query($sql);
           if( isset( $query->row['target'] ) ){
             $target = $query->row['target'];
