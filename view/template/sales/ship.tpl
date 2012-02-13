@@ -118,12 +118,16 @@ $(document).ready(function(){
   $el_ship_cod
   .bind('focusin',function(){
     $prev = $(this).val();
-    //$(this).select();
+    $(this).select();
   })
   .bind('keydown',function(e){
     if('13' == e.which){
       $existVal = $prev;
       $val = $(this).val();
+      $ptn = /\d/;
+      if( !$ptn.test($val) ){
+        $(this).val('0'); return;
+      }
       $add = parseFloat($val) - parseFloat($existVal);
       $add = $add.toFixed(2);
       $.fn.addAmountBalance($add);
@@ -134,6 +138,10 @@ $(document).ready(function(){
   .bind('focusout',function(e){
     $existVal = $prev;
     $val = $(this).val();
+    $ptn = /\d/;
+    if( !$ptn.test($val) ){
+        $(this).val('0'); return;
+    }
     $add = parseFloat($val) - parseFloat($existVal);
     $add = $add.toFixed(2);
     $.fn.addAmountBalance($add);
@@ -144,12 +152,16 @@ $(document).ready(function(){
   $el_ship_lift
   .bind('focusin',function(){
     $prev = $(this).val();
-    //$(this).select();
+    $(this).select();
   })
   .bind('keydown',function(e){
     if('13' == e.which){
       $existVal = $prev;
       $val = $(this).val();
+      $ptn = /\d/;
+      if( !$ptn.test($val) ){
+        $(this).val('0'); return;
+      }
       $add = parseFloat($val) - parseFloat($existVal);
       $add = $add.toFixed(2);
       $.fn.addAmountBalance($add);
@@ -160,6 +172,10 @@ $(document).ready(function(){
   .bind('focusout',function(e){
     $existVal = $prev;
     $val = $(this).val();
+    $ptn = /\d/;
+    if( !$ptn.test($val) ){
+      $(this).val('0'); return;
+    }
     $add = parseFloat($val) - parseFloat($existVal);
     $add = $add.toFixed(2);
     $.fn.addAmountBalance($add);
