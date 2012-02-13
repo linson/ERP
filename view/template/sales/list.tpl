@@ -28,12 +28,14 @@
       <?php
       $aSales = $this->user->getSales();
       foreach($aSales as $row){
-        echo "<a href='index.php?route=sales/list&filter_order_user=$row'><span style='background-color:#fdf8a0;padding:0 5px;'>$row</span></a>";
+        if( $row != 'UBP' ){
+          echo "<a href='index.php?route=sales/list&filter_order_user=$row'><span style='background-color:#fdf8a0;padding:0 5px;'>$row</span></a>";
+        }
       }
       ?>
       <a onclick="location = '<?php echo $lnk_insert; ?>'" class="button"><span>Insert</span></a>
       <!--a id='batch_ship' class="button"><span>Ship</span></a-->
-      <a id='batch_print' class="button"><span>Print</span></a>
+      <!--a id='batch_print' class="button"><span>Print</span></a-->
       <a onclick="$('#form').submit();" class="button"><span>Delete</span></a>
     </div>
   </div>
@@ -82,7 +84,7 @@
               <a href="<?php echo $sort_order_user; ?>">APPROVE</a>
               <?php } ?>
             </td>
-            <td>HOLD</td>
+            <td>STAT</td>
             <td class="right"></td>
           </tr>
         </thead>
@@ -146,7 +148,13 @@
             	</select>
             </td>
             <td>
-              <!-- status -->
+              <select id="filter_status">
+            		<option value='' selected>---</option>
+            		<option value='0'>YET</option>
+            		<option value='1'>SUBMIT</option>
+            		<option value='2'>POST(HOLD)</option>
+            		<option value='3'>INVOICE</option>
+            	</select>
             </td>
             <td align="right"><a onclick="$.fn.filter();" class="button"><span>Filter</span></a></td>
           </tr>
@@ -207,7 +215,7 @@
             <td class="center">
             <?php 
             if(trim($tx['status']) == '2'){ 
-              echo 'HOLD'; 
+              echo 'POST'; 
             }else if(trim($tx['status']) == '0'){
               echo 'YET'; 
             }else if(trim($tx['status']) == '1'){
@@ -390,6 +398,8 @@ $(document).ready(function(){
   	if(filter_order_user != '') url += '&filter_order_user=' + encodeURIComponent(filter_order_user);
   	var filter_approve_status = $('#filter_approve_status').attr('value');
   	if(filter_approve_status != '') url += '&filter_approve_status=' + encodeURIComponent(filter_approve_status);
+  	var filter_status = $('#filter_status').attr('value');
+  	if(filter_status != '') url += '&filter_status=' + encodeURIComponent(filter_status);
   	location = url;
   }
   $('.filter input').keydown(function(e){
