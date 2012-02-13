@@ -65,6 +65,8 @@ class ModelReportSale extends Model {
     $i = count($aToday);
     if($i>0){
       foreach($this->user->getSales() as $sales){
+        // todo. it's adhoc one. need to recover next month
+        if('YG' == $sales) continue;
         if( !in_array($sales,$aSales) && 'UBP' != $sales ){
           $aToday[$i] = $aToday[$i-1];
           $aToday[$i]['order_user'] = $sales;
@@ -136,7 +138,9 @@ class ModelReportSale extends Model {
     $i = count($aMonth);
     if($i>0){
       foreach($this->user->getSales() as $sales){
-          if( !in_array($sales,$aSales) && 'UBP' != $sales ){
+        // todo. it's adhoc one. need to recover next month
+        if('YG' == $sales) continue;
+        if( !in_array($sales,$aSales) && 'UBP' != $sales ){
           $aMonth[$i] = $aMonth[$i-1];
           $aMonth[$i]['order_user'] = $sales;
           
