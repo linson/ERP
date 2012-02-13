@@ -38,14 +38,14 @@ final class Config {
 
   public function getCatalog(){
     $catalog = array();
-    $categoryFile = $_SERVER["DOCUMENT_ROOT"]."/backyard/data/catalog";
+    $categoryFile = DIR_APPLICATION . "data/catalog";
     require($categoryFile);
     return $catalog;
   }
 
   public function getCatalogMobile(){
     $catalog = array();
-    $categoryFile = $_SERVER["DOCUMENT_ROOT"]."/backyard/data/catalog_mobile";
+    $categoryFile = DIR_APPLICATION . "data/catalog_mobile";
     require($categoryFile);
     return $catalog;
   }
