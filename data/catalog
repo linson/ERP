@@ -67,8 +67,8 @@
     '',
     'SP2002',
     '',
-    'SP2004','SP2102',
-    'SP2101','SP2103',
+    'SP2004','',
+    'SP2103','SP2102',
   ),
   'SP REMOVER LOTION / SHAMPOO' => array(
     'SP2202',
