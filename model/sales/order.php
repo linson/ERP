@@ -144,7 +144,7 @@ class ModelSalesOrder extends Model{
           $sql.= $discount . "," . $total_price . "," . $weight_row ."," . $discount2 .",'" .$data['order_date'] . "',";
           $sql.= $promotion . "," . $backpromotion . ")";
           //$this->log->aPrint( $sql );
-          if( $this->db->query($sql) ){
+          if( !$this->db->query($sql) ){
             $aErr['key'] = $txid;
             $aErr['msg'] = $sql;
             $this->sendBesso($aErr);
