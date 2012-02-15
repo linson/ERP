@@ -142,7 +142,7 @@ class ModelSalesOrder extends Model{
           $sql.= " values ('" . $data['txid']. "','" . $model . "','" . $product_id . "'," . $order_quantity . ",";
           $sql.= $free . "," . $damage . "," . $price1 .",";
           $sql.= $discount . "," . $total_price . "," . $weight_row ."," . $discount2 .",'" .$data['order_date'] . "',";
-          $sql.= $promotion . "," . $backpromotion . ")";
+          $sql.= $promotion . "," . $promotion . ")";
           //$this->log->aPrint( $sql );
           if( !$this->db->query($sql) ){
             $aErr['key'] = $txid;
