@@ -467,9 +467,9 @@ class ControllerSalesOrder extends Controller {
     $aDiscount2 = $this->request->post['discount2'];
     $aTotal_price = $this->request->post['total_price'];
     $aWeight_row = $this->request->post['weight_row'];
-    $aBackorder = $this->request->post['backorder'];
-    $aBackfree = $this->request->post['backfree'];
-    $aBackdamage = $this->request->post['backdamage'];    
+    //$aBackorder = $this->request->post['backorder'];
+    //$aBackfree = $this->request->post['backfree'];
+    //$aBackdamage = $this->request->post['backdamage'];    
     
     // todo. just for Gel. not good 
     $flagDC = false;
@@ -587,9 +587,9 @@ class ControllerSalesOrder extends Controller {
         $aTotal_price,
         $aWeight_row,
         $aDiscount2,  // 10
-        $aBackorder,
-        $aBackfree,
-        $aBackdamage,
+        //$aBackorder,
+        //$aBackfree,
+        //$aBackdamage,
         $aPromotion,
         'order_date' => $order_date,
         'txid' => $txid
