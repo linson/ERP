@@ -365,11 +365,8 @@ $(document).ready(function(){
     }else{
       $('#form').find('input[name=ddl]').val('update');
       $('#form').find('input[name=async]').val('true');
-      $.post( $('#form').attr('action') , $('#form').serialize(), function(data){
+      $.post( $('#form').attr('action') , $('#form').serialize(), function(){
         //if( 'hidden' == $('#floatmenu').css('visibility') ) $.fn.floatingMenu($tgt);
-        if(data){
-          alert('Order Error, Please call to besso \n :' + data);
-        }
         $.fn.hideGroups($tbl_node);
       });
     }
