@@ -2,8 +2,7 @@
 /*
 todo. need to make copy functionality
 */
-class ModelSalesOrder extends Model {
-
+class ModelSalesOrder extends Model{
   public function getSalesQuantity($model){
     $result = array();
     $sql = "select sum(s.order_quantity) as locked
@@ -27,7 +26,7 @@ class ModelSalesOrder extends Model {
     }
  		return $result;
   }
-  
+
   /* lookup existing Txid and retrieve next offset from DB
    * return 1, if exists already
    */ 
@@ -125,7 +124,8 @@ class ModelSalesOrder extends Model {
           $sql = "update sales set ";
           $sql.= " order_quantity = $order_quantity ,free = $free ,damage = $damage ,discount = $discount , total_price = $total_price, ";
           $sql.= " weight_row = $weight_row, discount2 = $discount2 , order_date = '$order_date', price1 = $price1,";
-          $sql.= " backorder = $backorder, backfree = $backfree, backdamage = $backdamage, promotion = $promotion , backpromotion = $backpromotion";
+          //$sql.= " backorder = $backorder, backfree = $backfree, backdamage = $backdamage, promotion = $promotion , backpromotion = $backpromotion";
+          $sql.= " promotion = $promotion ";
           $sql.= " where model = '$model' and txid = '$txid'";
           //if( $model == 'VN7916' )  $this->log->aPrint( $sql );
           if( !$this->db->query($sql) ){
@@ -144,7 +144,7 @@ class ModelSalesOrder extends Model {
           $sql.= $discount . "," . $total_price . "," . $weight_row ."," . $discount2 .",'" .$data['order_date'] . "',";
           $sql.= $promotion . "," . $backpromotion . ")";
           //$this->log->aPrint( $sql );
-          if( !$this->db->query($sql) ){
+          if( $this->db->query($sql) ){
             $aErr['key'] = $txid;
             $aErr['msg'] = $sql;
             $this->sendBesso($aErr);
@@ -166,7 +166,6 @@ class ModelSalesOrder extends Model {
   	}else{
   		//return false;
   	}
-
     for($i=0;$i<count($data[1]);$i++){
       // todo. use ship_date as key, it's not strong one , besso-201103 
       if($data['txid']){
@@ -194,7 +193,6 @@ class ModelSalesOrder extends Model {
   	}else{
   		//return false;
   	}
-
     /*
         $aPay_price,
         $aPay_method,
@@ -203,14 +201,12 @@ class ModelSalesOrder extends Model {
         $aPay_user,
         'txid' => $txid
     */
-    
     /*
     $this->log->aPrint( $data );
     $this->log->aPrint( $balance );
     $this->log->aPrint( $order_price );
     $this->log->aPrint( $payed_sum );
     */
-    
     # Double check the balance and payed
     $tmpPayed = 0;
     for($i=0;$i<count($data[0]);$i++){
@@ -229,14 +225,12 @@ class ModelSalesOrder extends Model {
 		  echo 'Payed Sum Wrong !! call IT team';
 		  exit;
 		}
-
 		$tmpBalance = number_format($order_price - $tmpPayed,2);
 		//$this->log->aPrint( $tmpBalance); exit;
 		if(number_format($balance,2) != $tmpBalance){
 		  echo 'Balance Wrong !! call IT team';
 		  exit;
 		}
-		
     // update balance and payed_sum to tx
     $sql = "update transaction set balance = $balance, payed_sum = $payed_sum where txid = '" . $data['txid'] . "'";
 	  $this->db->query($sql);
@@ -246,9 +240,7 @@ class ModelSalesOrder extends Model {
   public function selectTransaction($txid){
     $sql = "select * from transaction where txid ='$txid'";
 		$query = $this->db->query($sql);
-		
 		//$this->log->aPrint( $sql );
-		
 		$response = $query->row;
     return $response;
   }
@@ -272,8 +264,8 @@ class ModelSalesOrder extends Model {
 		$query = $this->db->query($sql);
 		$data = $query->row;
     return $data;
-  }  
-  
+  }
+
   public function quickbookHistory($store_id){
     $sql = "select a.* from storelocator s, ar_kim a where trim(s.accountno) = trim(a.c1) and s.id = $store_id";
     //echo $sql;
@@ -281,14 +273,8 @@ class ModelSalesOrder extends Model {
 		$data = $query->row;
     return $data;
   }
-  
+
   public function selectStoreHistory($store_id){
-    /***
-    echo '<pre>';
-    print_r($data);
-    echo '</pre>';
-    exit;
-    ***/
     //datediff(date_format(pa.pay_date,'%Y%m%d'),date_format(tx.order_date,'%Y%m%d')) as pay_diff
     // todo. bad design and no monetized date type lead this exception query , besso 201108 
     $sql = "
@@ -312,10 +298,10 @@ class ModelSalesOrder extends Model {
                and format(balance,2) != 0.00 )
              order by txid,pay_price desc
            ";
-//$this->log->aPrint( $sql ); exit;
+    //$this->log->aPrint( $sql ); exit;
 		$query = $this->db->query($sql);
 		$data = $query->rows;
-//    $this->log->aPrint( $data );
+    //$this->log->aPrint( $data );
     $t1 = '';
     $aData = array();
     foreach($data as $k => $v){
@@ -346,10 +332,10 @@ class ModelSalesOrder extends Model {
         $aData[$txid]['pay'][$i]['pay_num'] = $v['pay_num'];
       }
     }
-//    $this->log->aPrint( $aData ); 
+    //$this->log->aPrint( $aData );
     return $aData;
   }
-  
+
   public function selectFreegoodSum($txid){
     //$this->log->aPrint( $txid );
     $sql = "select sum(free * price1) as freegood_sum from sales where txid = '$txid'";
@@ -384,12 +370,10 @@ class ModelSalesOrder extends Model {
                    s.backorder,s.backfree,s.backdamage
               from sales s, product p, product_description pd
              where s.txid ='$txid' and s.product_id = p.product_id and p.product_id = pd.product_id 
-               and substr(s.model,1,2) not in ('SP','AE','3S','VN','IR','QT') order by s.model" ;
+               and substr(s.model,1,2) not in ('SP','AE','3S','VN','IR','QT') order by s.model";
 	  $query = $this->db->query($sql);
 	  $res = $query->rows;
 	  $aSales['OEM'] = $res;
-	  
-    
     return $aSales;
   }
 
@@ -403,7 +387,6 @@ class ModelSalesOrder extends Model {
   	$query = $this->db->query($sql);
 	  $res = $query->rows;
 	  $aData = $res;
-    
     return $aData;
   }
 
@@ -422,7 +405,6 @@ class ModelSalesOrder extends Model {
   	$query = $this->db->query($sql);
 	  $res = $query->rows;
 	  $aData = $res;
-    
     return $aData;
   }
 
@@ -480,7 +462,7 @@ class ModelSalesOrder extends Model {
     $sql.= " order_price    = '" . $data['order_price'] . "'," ;
     $sql.= " balance        = '" . $data['balance'] . "'," ;
     $sql.= " weight_sum     = '" . $data['weight_sum'] . "'," ;
-    // todo. allow to update order_date
+    //todo. allow to update order_date
     $sql.= " order_date     = concat('" . $data['order_date'] ."',substr(order_date,11,9)),";
     $sql.= " executor       = '" . $executor . "',";
     $sql.= " payment        = '" . $data['payment'] . "',";
@@ -521,13 +503,12 @@ class ModelSalesOrder extends Model {
   	$mail->password = $this->config->get('config_smtp_password');
   	$mail->port = $this->config->get('config_smtp_port');
   	$mail->timeout = $this->config->get('config_smtp_timeout');
-    
-    //$subject = 'Sales Report : ' . $filter_from;
+
     //$this->log->aPrint( $subject );
     $aReceiver = array(
       'besso@live.com',
     );
-    
+
     foreach($aReceiver as $receiver){
   	  $mail->setTo($receiver);
   	  $mail->setFrom($this->config->get('config_email'));
