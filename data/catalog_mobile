@@ -81,7 +81,6 @@
     'SP2002',
     'SP2004',
     'SP2102',
-    'SP2101',
     'SP2103',
   ),
   'SP REMOVER LOTION / SHAMPOO' => array(
@@ -186,7 +185,7 @@
     'VN7916',
     'VN7917',
   ),
-  'COLOR' => array(
+  'COLOR 2oz' => array(
     'VN0801',
     'VN0802',
     'VN0803',
@@ -214,7 +213,8 @@
     'VN0825',
     'VN0891',
     'VN0892',
-    '','',
+  ),
+  'COLOR 4oz' => array(
     'VN0901',
     'VN0902',
     'VN0903',
@@ -242,7 +242,6 @@
     'VN0925',
     'VN0991',
     'VN0992',
-
   ),
   'VIA NATURAL GEL' => array( 
     'VN8505',    
