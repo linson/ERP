@@ -301,9 +301,11 @@ $(document).ready(function(){
   var $el_order_date  = $('#form').find('input[name=order_date]'),
       $el_order_price = $('#form').find('input[name=order_price]'),
       $tx = 1;
-      
 
-  
+  /* hard to distinguish if click or dbl-click
+  It is inadvisable to bind handlers to both the click and dblclick events for the same element. The sequence of events triggered varies from browser to browser, with some receiving two click events before the dblclick and others only one. Double-click sensitivity (maximum time between clicks that is detected as a double click) can vary by operating system and browser, and is often user-configurable. 
+  */
+
   $('h1.header')
   .bind('dblclick',function(e){
     alert('NO double click!\nClick again softly and wait!');
@@ -321,7 +323,6 @@ $(document).ready(function(){
         $c1 = $c2 = $c3 = $c4 = $c5 = 0;
 
     if( $beforeNode == null)  $beforeNode = $tbl_node;
-
     $beforeNode.find('input[name="cnt[]"]').each(function($k,$v){
       if(!isNaN(parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value))){
         $c1   += parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value);
@@ -364,9 +365,12 @@ $(document).ready(function(){
     }else{
       $('#form').find('input[name=ddl]').val('update');
       $('#form').find('input[name=async]').val('true');
-      $.post( $('#form').attr('action') , $('#form').serialize(), function(){
-          //if( 'hidden' == $('#floatmenu').css('visibility') ) $.fn.floatingMenu($tgt);
-          $.fn.hideGroups($tbl_node);
+      $.post( $('#form').attr('action') , $('#form').serialize(), function(data){
+        //if( 'hidden' == $('#floatmenu').css('visibility') ) $.fn.floatingMenu($tgt);
+        if(data){
+          alert('Order Error, Please call to besso \n :' + data);
+        }
+        $.fn.hideGroups($tbl_node);
       });
     }
   }
@@ -417,7 +421,7 @@ $(document).ready(function(){
         $.fn.retrieveGroup($exceptNode,$models);
         $group.css('display','block');
         //$pos = $(this).positon();
-//debugger;
+        //debugger;
       }else{
         $group.css('display','none');
       }
@@ -459,8 +463,7 @@ $(document).ready(function(){
 			dataType: 'json',
 			data: 'txid=' + $('#form').find('input[name=txid]').val() + '&model=' + $model,
 			success: function( list ){
-        var node = $exceptNode,
-            $itemHtml = "";
+        var node = $exceptNode,$itemHtml = "";
 
 			  $.each(list, function(idx,line){
 			    if( '' == line ){
@@ -576,20 +579,17 @@ $(document).ready(function(){
               thisNode.find('input[name="damage[]"]').val(val);
               if( val > 0 ){  if(thisNode.is('tr')){  thisNode.children('td').css( 'border' , '2px solid red' );  }else{  thisNode.css( 'border' , '2px solid red' ); } }
             }
-
             if(key == 'p'){
               if( val == 0 ) val = 'p';
               thisNode.find('input[name="promotion[]"]').val(val);
               if( val > 0 ){  if(thisNode.is('tr')){  thisNode.children('td').css( 'border' , '2px solid red' );  }else{  thisNode.css( 'border' , '2px solid red' ); } }
             }
-
             if(key == 'tp'){
               thisNode.find('input[name="total_price[]"]').val(val);
             }
             if(key == 'wr'){
               thisNode.find('input[name="weight_row[]"]').val(val);
             }
-            
             /*****
             if(key == 'bo'){
               thisNode.find('input[name="backorder[]"]').val(val);
@@ -697,11 +697,11 @@ $(document).ready(function(){
     }
   });
 
-  $(window).scroll(function () {  
+  $(window).scroll(function(){
     $p = $('#floatmenu').offset();
     $top = $(window).scrollTop()+200;
     $('#floatmenu').css('top',$top);
-  }); 
+  });
 
   //$('input').attr('autocomplete','off');
 });
