@@ -108,11 +108,13 @@ class ModelSalesOrder extends Model{
       $discount2 = $data[10][$i]; if('d2' == $discount2) $discount2 = 0;
       $total_price = $data[8][$i];
       $weight_row = $data[9][$i];
-      $backorder  = isset($data[11][$i]) ? $data[11][$i] : 0;
-      $backfree   = isset($data[12][$i]) ? $data[12][$i] : 0;
-      $backdamage = isset($data[13][$i]) ? $data[13][$i] : 0;
-      $promotion  = isset($data[14][$i]) ? $data[14][$i] : 0;   if('p' == $promotion) $promotion = 0;
-      $backpromotion  = isset($data[15][$i]) ? $data[15][$i] : 0; 
+      $promotion  = isset($data[11][$i]) ? $data[11][$i] : 0;   if('p' == $promotion) $promotion = 0;
+      //$backorder  = isset($data[11][$i]) ? $data[11][$i] : 0;
+      //$backfree   = isset($data[12][$i]) ? $data[12][$i] : 0;
+      //$backdamage = isset($data[13][$i]) ? $data[13][$i] : 0;
+      //$backpromotion  = isset($data[15][$i]) ? $data[15][$i] : 0; 
+      
+      //$this->log->aPrint( $promotion ); exit;
       
       //$this->log->aPrint( $promotion );
       if( isset($aExist) && in_array($model,$aExist) ) {
@@ -138,11 +140,12 @@ class ModelSalesOrder extends Model{
       }else{
         if($order_quantity || $free || $damage || $promotion){
           $sql = "INSERT INTO sales ";
-          $sql.= " (txid,model,product_id,order_quantity,free,damage,price1,discount,total_price,weight_row,discount2,order_date,promotion,backpromotion)";
+          $sql.= " (txid,model,product_id,order_quantity,free,damage,price1,discount,total_price,weight_row,discount2,order_date,promotion)";
           $sql.= " values ('" . $data['txid']. "','" . $model . "','" . $product_id . "'," . $order_quantity . ",";
           $sql.= $free . "," . $damage . "," . $price1 .",";
           $sql.= $discount . "," . $total_price . "," . $weight_row ."," . $discount2 .",'" .$data['order_date'] . "',";
-          $sql.= $promotion . "," . $promotion . ")";
+          //$sql.= $promotion . "," . $promotion . ")";
+          $sql.= $promotion . ")";
           //$this->log->aPrint( $sql );
           if( !$this->db->query($sql) ){
             $aErr['key'] = $txid;
