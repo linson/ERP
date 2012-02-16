@@ -362,12 +362,10 @@ $(document).ready(function(){
       $('#form').find('input[name=ddl]').val('update');
       $('#form').find('input[name=async]').val('true');
       $.post( $('#form').attr('action') , $('#form').serialize(), function(data){
-          /*** let's store more better tmr
         if('' != data){
-          alert('이 에러는 데이터 누락을 의미합니다 \n Mr Lee 에게 전화부탁드립니다 \n' + data);
+          data = encodeURIComponent(data);
+          $.fn.ajaxLog(data);
         }
-        ***/
-        //if( 'hidden' == $('#floatmenu').css('visibility') ) $.fn.floatingMenu($tgt);
         $.fn.hideGroups($tbl_node);
       });
     }
