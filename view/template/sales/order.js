@@ -1,4 +1,15 @@
 $(document).ready(function(){
+
+  $.fn.ajaxLog = function($msg){
+    $.ajax({
+    	type: 'GET',
+    	url: 'index.php?route=report/log',
+    	dataType: 'data',
+    	data: 'msg=' + $msg,
+    	success: function(){}
+    });
+  }
+  
   var $ele_amount = $('#payment').find('input[name=order_price]'),
       $ele_payed_sum = $('#payment').find('input[name=payed_sum]'),
       $ele_balance = $('#payment').find('input[name=balance]'),
@@ -28,7 +39,6 @@ $(document).ready(function(){
         if( $added.match($ptn) )  $added = $added.replace($ptn,'');
         $added = $added + $msg;
       }
-
       if( $model.substring(2,6) >= '7110' && $model.substring(2,6) <= '7117' ){
         $msg = '[Promotion A] IRIE DRED 10% discount \n';
         $ptn = /(\[Promotion A\] IRIE DRED 10.+\n?)/;
@@ -120,7 +130,7 @@ $(document).ready(function(){
         $upTgt   = $pntTR.prevAll().find('td.right').find($tgtName)[0];
         $downTgt = $pntTR.nextAll().find('td.right').find($tgtName)[0];
       }
-      
+
       //todo. need test
       event.preventDefault();
 
@@ -179,7 +189,6 @@ $(document).ready(function(){
        $tgt.is('input[name="promotion[]"]') || 
        $tgt.is('input[name="discount[]"]') || 
        $tgt.is('input[name="discount2[]"]') ){
-
       $ptn = /\d/;
       if( !$ptn.test($tgt.val()) ){
         $tgt.val('0');
@@ -222,8 +231,7 @@ $(document).ready(function(){
     //if( !$free.match($ptn) )  alert('freegood should be number');
     if(isNaN($_free)) $_free = 0;
     $_free = $free - $_free;
-    
-    
+
     $damage = $damageObj[0].value;
     if(isNaN($_damage)) $_damage = 0;
     $_damage = $damage - $_damage;
@@ -242,10 +250,10 @@ $(document).ready(function(){
     //$total = $total_diff + parseFloat($_total);
     $total = parseFloat( $price * $count );
     $total  = $total.toFixed(2);
-    
+
     // todo. this for freegood without DC apply
     // $total_wo_dc = $total;
-    
+
     // dc is pure sum of current val ( not before value calculation )
     // it's sequencial calc, dc1 first and dc2
     if( $dc1 > 0 ){
@@ -265,7 +273,7 @@ $(document).ready(function(){
       $total = parseFloat( $total * ((100 - $store_dc2) / 100) );
     }
     // used ceil instead of round , besso 201108 
-    if ( $dc1 > 0 || $dc2 > 0 || $store_dc1 > 0 || $store_dc2 > 0 ){
+    if( $dc1 > 0 || $dc2 > 0 || $store_dc1 > 0 || $store_dc2 > 0 ){
       $total = Math.round( $total * 100 ) / 100;
     }
     $node.find('input[name="total_price[]"]').val($total);
@@ -302,7 +310,7 @@ $(document).ready(function(){
     $freegood_amount = $('#form').find('#freegood_amount').val();
     $freegood_amount = parseFloat($freegood_amount) + $free_diff;
     $('#form').find('#freegood_amount').val($freegood_amount);
-    
+
     //if($order_price > 0){
       $origin_order_price = $order_price;
       $cod = $('input[name=ship_cod]').val();
@@ -329,14 +337,12 @@ $(document).ready(function(){
       if($tgt.is('input[name="cnt[]"]')){
         $.fn.managePromotion($model,$countObj.val());
       }
-      
-      // trucking
-    /*  
+    // trucking
+    /*
     }else{
       //alert('You can\'t assign free,damage,promotion under ZERO order !');
       //return false;
     }
     */
   }
-
 });   // end of ready()
