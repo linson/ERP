@@ -164,12 +164,10 @@ if($mode == 'show'){
           if( substr($row['model'],0,4) == 'VN08' && $idx%2 == 1 ){
             echo '<td><td></tr><tr>';
           }
-
           if( substr($row['model'],0,4) == 'VN09' && $idx%2 == 0 ){
             echo '<td></td>'; 
             $idx++;
           }
-
           // color highlight
           $colorAlign = '';
           if( substr($row['model'],0,4) == 'VN08' || substr($row['model'],0,4) == 'VN09'){
@@ -305,7 +303,6 @@ $(document).ready(function(){
   /* hard to distinguish if click or dbl-click
   It is inadvisable to bind handlers to both the click and dblclick events for the same element. The sequence of events triggered varies from browser to browser, with some receiving two click events before the dblclick and others only one. Double-click sensitivity (maximum time between clicks that is detected as a double click) can vary by operating system and browser, and is often user-configurable. 
   */
-
   $('h1.header')
   .bind('dblclick',function(e){
     alert('NO double click!\nClick again softly and wait!');
@@ -325,16 +322,16 @@ $(document).ready(function(){
     if( $beforeNode == null)  $beforeNode = $tbl_node;
     $beforeNode.find('input[name="cnt[]"]').each(function($k,$v){
       if(!isNaN(parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value))){
-        $c1   += parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value);
+        $c1 += parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value);
       }
       if(!isNaN(parseInt($beforeNode.find('input[name="free[]"]')[$k].value))){
-        $c2   += parseInt($beforeNode.find('input[name="free[]"]')[$k].value);
+        $c2 += parseInt($beforeNode.find('input[name="free[]"]')[$k].value);
       }
       if(!isNaN(parseInt($beforeNode.find('input[name="damage[]"]')[$k].value))){
-        $c3   += parseInt($beforeNode.find('input[name="damage[]"]')[$k].value);
+        $c3 += parseInt($beforeNode.find('input[name="damage[]"]')[$k].value);
       }
       if(!isNaN(parseInt($beforeNode.find('input[name="promotion[]"]')[$k].value))){
-        $c4   += parseInt($beforeNode.find('input[name="promotion[]"]')[$k].value);
+        $c4 += parseInt($beforeNode.find('input[name="promotion[]"]')[$k].value);
       }
     });
     $c5 = $c1 + $c2 + $c3 + $c4;
@@ -348,7 +345,6 @@ $(document).ready(function(){
   })
 
   $.fn.postSubmit = function($tbl_node){
-    // todo. no validation !!!
     //if($('#freegood_percent').val() > 10)      alert('freegood exceed 10%');  return;
     if( $('#form').find('input[name=txid]').val() == '' ){
       $hdr = $.fn.generateTXID();
@@ -366,9 +362,11 @@ $(document).ready(function(){
       $('#form').find('input[name=ddl]').val('update');
       $('#form').find('input[name=async]').val('true');
       $.post( $('#form').attr('action') , $('#form').serialize(), function(data){
+          /*** let's store more better tmr
         if('' != data){
           alert('이 에러는 데이터 누락을 의미합니다 \n Mr Lee 에게 전화부탁드립니다 \n' + data);
         }
+        ***/
         //if( 'hidden' == $('#floatmenu').css('visibility') ) $.fn.floatingMenu($tgt);
         $.fn.hideGroups($tbl_node);
       });
@@ -413,7 +411,6 @@ $(document).ready(function(){
     /* ajax retrieve just data which stored in sales table
        and dynamically show that models under the category */
     //$el_groups.each(function(){
-
     $.each($el_groups,function(){
       var $group = $(this);
       if( $group.attr('id') == $exceptNode.attr('id') ){
@@ -464,7 +461,6 @@ $(document).ready(function(){
 			data: 'txid=' + $('#form').find('input[name=txid]').val() + '&model=' + $model,
 			success: function( list ){
         var node = $exceptNode,$itemHtml = "";
-
 			  $.each(list, function(idx,line){
 			    if( '' == line ){
 			      $itemHtml = "<td></td>";
@@ -551,7 +547,7 @@ $(document).ready(function(){
               if( val == 0 ) val = 'd2';
               thisNode.find('input[name="discount2[]"]').val(val);
             }
-            
+
             var storetype = $('input[name="storetype"]').val();
             // todo. null check , besso-201103 
             if(storetype == 'W'){
@@ -702,7 +698,6 @@ $(document).ready(function(){
     $top = $(window).scrollTop()+200;
     $('#floatmenu').css('top',$top);
   });
-
   //$('input').attr('autocomplete','off');
 });
 </script>
