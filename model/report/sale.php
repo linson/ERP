@@ -101,8 +101,10 @@ class ModelReportSale extends Model {
                count(x.txid) as cnt,
                sum(IF(st.storetype = 'R',1,0)) as rcnt,
                sum(IF(st.storetype = 'W',1,0)) as wcnt
-          from transaction x, rep_stat rs, storelocator st
+          from transaction x, rep_stat rs, storelocator st, user u
          where concat(substr(x.order_date,1,4),substr(x.order_date,6,2)) = rs.month
+           and u.username = x.order_user
+           and u.status = 1
            and x.order_user = rs.rep and x.store_id = st.id
            and x.status in ('1','2','3')
            and x.approve_status = 'approve'
