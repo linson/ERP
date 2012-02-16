@@ -126,7 +126,7 @@ class ModelReportSale extends Model {
 
     $sql.= " " . $request['order'];
 
-//    $this->log->aPrint( $sql );
+    $this->log->aPrint( $sql );
     $query = $this->db->query($sql);
     $aMonth = $query->rows;
 
