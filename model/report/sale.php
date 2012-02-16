@@ -126,7 +126,7 @@ class ModelReportSale extends Model {
 
     $sql.= " " . $request['order'];
 
-    $this->log->aPrint( $sql );
+//    $this->log->aPrint( $sql );
     $query = $this->db->query($sql);
     $aMonth = $query->rows;
 
@@ -142,6 +142,7 @@ class ModelReportSale extends Model {
       foreach($this->user->getSales() as $sales){
         // todo. it's adhoc one. need to recover next month
         if('YG' == $sales) continue;
+        if('BJ' == $sales) continue;
         if( !in_array($sales,$aSales) && 'UBP' != $sales ){
           $aMonth[$i] = $aMonth[$i-1];
           $aMonth[$i]['order_user'] = $sales;
