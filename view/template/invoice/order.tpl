@@ -1,7 +1,4 @@
-<?php
-$today = new DateTime();
-$odt = new DateTime($order_date);
-?>
+<?php $today = new DateTime(); $odt = new DateTime($order_date); ?>
 <?php echo $header; ?>
 <?php if ($error_warning){ ?>
 <div class="warning"><?php echo $error_warning; ?></div>
@@ -129,7 +126,6 @@ $odt = new DateTime($order_date);
     </div>
 
     <?php require_once('view/template/sales/payment.tpl'); ?>
-
     <!-- order info -->
     <div id='order'>
       <?php 
@@ -174,6 +170,7 @@ $odt = new DateTime($order_date);
   width:60px;
 }
 </style>
+
 <div id='floatmenu' class='np'>
   <div>
     <input type='text' name='float_order_price' value='' readonly/>
@@ -274,11 +271,9 @@ $(document).ready(function(){
   $('#storeinfo #findstore').click(function(e){
     $.fn.storeSubmit();
   });
-
   $('#storeinfo input[name=\'accountno\']').bind('keydown',function(e){
     if(e.keyCode == 13) $.fn.storeSubmit(e);
   });
-
   $('#storeinfo input[name=\'store_name\']').bind('keydown',function(e){
     if(e.keyCode == 13) $.fn.storeSubmit(e);
   });
@@ -291,7 +286,6 @@ $(document).ready(function(){
   	if(accountno)		param += '&filter_accountno=' + encodeURIComponent(accountno);
   	var salesrep = $('input[name=\'salesrep\']').attr('value');
   	if(salesrep)  param += '&filter_salesrep=' + encodeURIComponent(salesrep);
-
     $.ajax({
       type:'get',
       url:'<?php echo HTTP_SERVER; ?>/index.php?route=store/lookup/callback&token=<?php echo $token; ?>',
@@ -331,7 +325,6 @@ $(document).ready(function(){
       $tgt.parent('td').find('span').css('color','red');      
       $tgt.parent('td').find('span').html( '+' + $diff_days );
     }
-    
     // bind for DC change
     if( $tgt.is('input[name=dc1]') || $tgt.is('input[name=dc2]') || $tgt.is('input[name=dc3]') ){
       $.fn.verifyCorePayment();
@@ -413,7 +406,6 @@ $(document).ready(function(){
   });
 
   // #order section
-  // atc
   $('#order').bind('mousedown',function(event){
     var $tgt = $(event.target),
         $mama = $tgt.parents('table'),
@@ -445,7 +437,6 @@ $(document).ready(function(){
     if($tgt.is('input[name="price[]"]')){
       $count = $tgt.parents('tr').find('.pc').html();
       $price = $tgt.val();
-      
       if( '' != $count && '' != $price){
         $eaPrice = parseFloat( ( parseFloat($price) / parseInt($count) ) , 2 ); 
         $tgt.attr('original-title',$eaPrice);
@@ -457,7 +448,6 @@ $(document).ready(function(){
 
   $('#order').mouseout(function(event){
     var $tgt = $(event.target);
-    
     if($tgt.is('td.plus')){
       $tgt.css('background', 'url(\'\') no-repeat');
     }
@@ -471,7 +461,6 @@ $(document).ready(function(){
       $newRow+= "<img class='preview' title='' src='view/image/preview.jpg' style='diplay:none;' /></td><td class='product_name'></td><td class='pc'></td>";
       $newRow+= "<td style='width:70px'><input type=text name=stock[] size=2 />&nbsp;<img class='check_locked' src='image/data/package/locked.gif' style='display:none;'/></td>";
       $newRow+= "<td><input type=text name=cnt[] value=0 size=2 /></td><td><input type=text name=free[] value=0 size=2 /></td><td><input type=text name=damage[] value=0 size=2 /></td><td><input type=text name=price[] value=0 size=3/></td><td><input type=text name=discount[] value=0 size=2 />% </td><td><input type=text name=discount2[] value=0 size=2 />% </td><td><input type=text name=total_price[] value=0 class=total_price size=4 /><input type=hidden name=weight_row[] value='' /></td><td class=\"plus nostyle\"></td></tr>";
-
   var $clickNode = $('#order table tr');
 
   $('#order').bind('click',function(event){
@@ -530,7 +519,6 @@ $(document).ready(function(){
     if($tgt.is('td.del')){
       $.fn.deleteOneRow($tgt);
       $tgt.parent().remove();
-      
       // tune balance 
       if(false == $.fn.validateAR()){
         alert('AR Problem, all stop and ask IT team');
@@ -600,7 +588,6 @@ $(document).ready(function(){
       update sales set txid = concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1));
       update ship set txid = concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1));
       update pay set txid = concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1));
-      
       */
       $vTxid = $accountno + '-' + $salesrep + $ymd;
       $txid.val($vTxid);  // todo. it not work under below if case. crop
@@ -648,7 +635,6 @@ $(document).ready(function(){
           //console.log('fail : no response from proxy');
         }
       });
-
     }else{
       $ddl.val('update');
       $('#form').submit();
@@ -659,13 +645,12 @@ $(document).ready(function(){
   $('#payment').bind('focusout',function(event){
     var $tgt = $(event.target);
     if($tgt.is('input.pay_price')){
-
       //$default_val = $tgt['context'].defaultValue;
       $default_val = $tgt['context'].defaultValue;
 
       // init , default val , besso-201103 
       if('' == $default_val) $before_val = 0;
-      
+
       // JS do not support value history except defaultValue, custom go , besso-201103 
       if(typeof $before_val != 'undefined'){
         $default_val = $before_val;
@@ -676,12 +661,12 @@ $(document).ready(function(){
 
       // JS do not support value history except defaultValue, custom go , besso-201103 
       $before_val = $changed_val;
-      
+
       if($default_val != $changed_val){
         var $payed_sum =  $ele_payed_sum.val();
         $sum = parseFloat($payed_sum) + parseFloat($added_val);
         $sum.toFixed(2);
-        
+
         if( parseFloat($sum) > $ele_amount.val()){
           alert('Paid-Price cannot over Order-Price');
           $tgt.val($tgt[0].defaultValue);
@@ -689,7 +674,6 @@ $(document).ready(function(){
           return;
         }
         $ele_payed_sum.val($sum);
-
         $balance = $ele_amount.val() - $sum;
         $balance = $balance.toFixed(2);
         $ele_balance.val($balance);
@@ -750,6 +734,7 @@ function printOrder(){
   self.print();
 }
 </script>
+
 <script type='text/javascript' src='view/template/sales/order.js'></script>
 
 <script>
@@ -773,7 +758,7 @@ $cssMap = {
 }
 
 $('#storeinfo').find('tr.no_print_invoice').css('display','none');
-$('#storeinfo').find('input[name=accountno]').css('font-size','20px').css('font-weight','bold').css('width','78px');
+$('#storeinfo').find('input[name=accountno]').css('font-size','20px').css('font-weight','bold').css('width','90px');
 $('#storeinfo').find('input[name=storetype]').css('width','20px');
 $('#storeinfo').find('input[name=store_name]').css('font-size','20px').css('font-weight','bold').css('width','220px');
 $('#storeinfo').find('textarea[name=description]').css('font-size','14px').css('font-weight','bold');
@@ -897,43 +882,43 @@ $('.invoice')
   });
 
   $('.save_order').bind('click',function(e){
-//debugger;
     // store level discount
     //$.fn.storeDiscount();
     //debugger;
-
-      $('#form').find('input[name=mode]').val('show');
-      $order_price = $('#form').find('input[name=order_price]').val();
-      $order_price = parseFloat($order_price);
-      if($order_price == 0){
-        alert('No Order');
-        return;
-      }
-      if( $('#form').find('input[name=txid]').val() == '' ){
-        $hdr = $.fn.generateTXID();
-        $hdr.success(function($txid){
-          // todo. weird . dont know why
-          $txid = $txid.replace("\"","");
-          //$txid = $txid.substring(1,$txid.length-1);
-          $('#form').find('input[name=txid]').val($txid);
-          $('#form').find('input[name=ddl]').val('insert');
-          $('#txid_header').html($txid);
-          $('#form').submit();
-        });
-      }else{
-        $('#form').find('input[name=ddl]').val('update');
+    $('#form').find('input[name=mode]').val('show');
+    $order_price = $('#form').find('input[name=order_price]').val();
+    $order_price = parseFloat($order_price);
+    if($order_price == 0){
+      alert('No Order');
+      return;
+    }
+    if( $('#form').find('input[name=txid]').val() == '' ){
+      $hdr = $.fn.generateTXID();
+      $hdr.success(function($txid){
+        // todo. weird . dont know why
+        $txid = $txid.replace("\"","");
+        //$txid = $txid.substring(1,$txid.length-1);
+        $('#form').find('input[name=txid]').val($txid);
+        $('#form').find('input[name=ddl]').val('insert');
+        $('#txid_header').html($txid);
         $('#form').submit();
-      }
+      });
+    }else{
+      $('#form').find('input[name=ddl]').val('update');
+      $('#form').submit();
+    }
   });
-  $(window).scroll(function () {  
+
+  $(window).scroll(function (){
     $p = $('#floatmenu').offset();
     $top = $(window).scrollTop()+200;
     $('#floatmenu').css('top',$top);
-  }); 
+  });
   $('#show_invoice').bind('click',function(e){
     url = 'index.php?route=invoice/sheet&txid=<?php echo $txid ?>';
     window.open(url);
   });
+
   $('document').ready(function(e){
     document.title = $('input[name=accountno]').val() + '-' + $('input[name=store_name]').val();
     //todo. automatic window.print not print image so blcoked
@@ -943,7 +928,7 @@ $('.invoice')
     ?>
       $('#fileupload').css('display','none');
     <?php } ?>
-    <?php if($txid != 'NNK. LT-BL20120119-1'){ ?>
+    <?php if($txid != 'GA0711-JP20120216-1'){ ?>
       setTimeout(function(){
         window.print(); window.close();
       },1000);
