@@ -928,7 +928,7 @@ $('.invoice')
     ?>
       $('#fileupload').css('display','none');
     <?php } ?>
-    <?php if($txid != 'GA0711-JP20120216-1'){ ?>
+    <?php if($txid != 'MI1651A-WH20120222-1'){ ?>
       setTimeout(function(){
         window.print(); window.close();
       },1000);
