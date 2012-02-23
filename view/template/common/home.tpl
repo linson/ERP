@@ -324,6 +324,16 @@
 <div id='detail' class='ui-widget-content'></div>
 <script type="text/javascript">
 $(document).ready(function(){
+
+  <?php
+  if( $this->user->isManager($this->user->getUsername()) ){ }else{
+  ?>
+    alert('A');
+    $('.manager').html('');
+  <?php
+  }
+  ?>
+
   $.fn.filter = function(){
   	url = 'index.php?route=common/home&token=<?php echo $token; ?>';
   	var filter_from = $('input[name=\'filter_from\']').attr('value');
@@ -354,15 +364,6 @@ $(document).ready(function(){
   });
   $('.btn_filter_hidden').bind('click',function(e){ $.fn.filter_hidden(); });
   $('.btn_filter').bind('click',function(e){  $.fn.filter();  });
-
-  <?php
-  if( $this->user->isManager($this->user->getUsername()) ){ }else{
-  ?>
-    alert('A');
-    $('.manager').html('');
-  <?php
-  }
-  ?>
 
 });
 </script>
