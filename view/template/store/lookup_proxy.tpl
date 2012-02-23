@@ -44,9 +44,7 @@
               <a href="<?php echo $sort_state; ?>">State</a>
               <?php } ?>
             </td>
-            <td class="left">
-              Phone
-            </td>
+            <td class="left">Phone</td>
             <td class="left">
               <?php if($sort == 'salesrep'){ ?>
               <a href="<?php echo $sort_salesrep; ?>" class="<?php echo strtolower($order); ?>">
@@ -97,12 +95,8 @@
                 <?php }?>
               </select>
             </td>
-            <td>
-              <input type="text" name="filter_city" value="<?php echo $filter_city; ?>" size='8' />
-            </td>
-            <td>
-              <input type="text" name="filter_state" value="<?php echo $filter_state; ?>" size='2' />
-            </td>
+            <td><input type="text" name="filter_city" value="<?php echo $filter_city; ?>" size='8' /></td>
+            <td><input type="text" name="filter_state" value="<?php echo $filter_state; ?>" size='2' /></td>
             <td align="left">
               <input type="text" name="filter_phone1" value="<?php echo $filter_phone1; ?>" style="text-align: left;" size='12' />
             </td>
@@ -235,7 +229,6 @@ $(document).ready(function(){
       $("input[name=dc2_desc]").val(dc2_desc);
       storeinfo.find("textarea[name=description]").val(descText);
     }
-
     // set in parent for name click
     storeinfo.find("input[name=store_id]").val(store_id);
     storeinfo.find("input[name=store_name]").val(store_name);
@@ -248,7 +241,6 @@ $(document).ready(function(){
     storeinfo.find("input[name=phone1]").val(phone1);
     storeinfo.find("input[name=fax]").val(fax);
     storeinfo.find("input[name=salesrep]").val(salesrep);
-
     $('#detail').css('visibility','hidden');
     $ptn = /(\\n)/gm;
     if( $('input[name=shipto]').val().match($ptn) ){
@@ -256,7 +248,6 @@ $(document).ready(function(){
     }
     shipto = shipto.replace($ptn,"\n");
     $('textarea[name=shipto]').val(shipto);
-
     // todo, i hate to configure ajax for this bunch of historical data, , besso-201103 
     // so forcely save the naive data having just store info
     // i dont understand why forcely save. plz comment detail Dude Jon
@@ -264,7 +255,6 @@ $(document).ready(function(){
     //$.fn.arHistory(store_id);
     $.fn.qbHistory(store_id);
   });
-  
   $('.pagination>div>a').bind('click',function(e){
     //e.preventDefault();
     $tgt = $(e.target);
@@ -272,9 +262,7 @@ $(document).ready(function(){
     $.fn.fnSearch($page);
     return false;
   });
-
   $('a.btn_filter>span').bind('click',function(){ $.fn.fnSearch();  });
-
   $.fn.fnSearch = function($page){
     if(!$page) $page = '1';
   	param = '';
