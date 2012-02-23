@@ -115,10 +115,10 @@ final class User {
 
   public function getGroupName($username = '') {
     if ($username != '') {
-      $sql = "SELECT ug.name FROM user u, user_group ug WHERE u.user_group_id = ug.user_group_id and u.username = '" . $username . "'";
+      $sql = "SELECT ug.name FROM user u, user_group ug WHERE u.user_group_id = ug.user_group_id and LOWER(u.username) = '" . strtolower($username) . "'";
   		//echo $sql;
   		$query = $this->db->query($sql);
-      return $query->row['name'];
+      return isset($query->row['name']) ? $query->row['name'] : '';
     }
   }
 
@@ -154,7 +154,6 @@ final class User {
 		return $query->rows;
 	}
 
-	
 	public function isSales(){
 	  $sql = "SELECT username FROM user WHERE user_group_id = 11";
 	  $query = $this->db->query($sql);
@@ -167,5 +166,16 @@ final class User {
 		}
 	  return false;
 	}
+
+	public function isManager($user){
+    if('manager' == $this->getGroupName($user) ){
+      return true;
+      echo 'manager';
+    }else{
+      return false;
+      echo 'not manager';
+    }
+	}
+
 }
 ?>
