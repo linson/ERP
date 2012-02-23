@@ -356,7 +356,7 @@ $(document).ready(function(){
   $('.btn_filter').bind('click',function(e){  $.fn.filter();  });
 
   <?php
-  if( !$this->user->isManager($this->user->getUsername()) ){
+  if( $this->user->isManager($this->user->getUsername()) ){ }else{
   ?>
     alert('A');
     $('.manager').html('');
