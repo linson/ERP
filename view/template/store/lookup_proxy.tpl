@@ -24,7 +24,6 @@
             <td width="1" style="text-align: center;">
               <input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" style='display:none;'/>
             </td>
-
             <td class="left">
               <?php if ($sort == 'accountno') { ?>
               <a href="<?php echo $sort_accountno; ?>" class="<?php echo strtolower($order); ?>">
@@ -66,7 +65,6 @@
               <a href="<?php echo $sort_salesrep; ?>">Rep</a>
               <?php } ?>
             </td>
-
             <td class="left">
               <?php if ($sort == 'chrt') { ?>
               <a href="<?php echo $sort_chrt; ?>" class="<?php echo strtolower($order); ?>">
@@ -75,20 +73,17 @@
               <a href="<?php echo $sort_chrt; ?>">Chicago</a>
               <?php } ?>
             </td>
-            
             <td class="left"><?php if ($sort == 'p.status') { ?>
               <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
               <?php } else { ?>
               <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
               <?php } ?></td>
-
-            <td class="right"><?php echo $column_action; ?></td>
-
+            <!--td class="right"><?php echo $column_action; ?></td-->
           </tr>
         </thead>
 
         <tbody>
-          <tr class="filter">
+          <!--tr class="filter">
             <td></td>
             <td>
               <input type="text" name="filter_accountno" value="<?php echo $filter_accountno; ?>" size='6' />
@@ -96,7 +91,6 @@
             <td>
               <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" size='10' />
             </td>
-            
             <td>
               <select name='filter_storetype'>
                 <?php if (strtolower($filter_storetype) == 'w') { ?>
@@ -114,23 +108,18 @@
                 <?php }?>
               </select>
             </td>
-        
             <td>
               <input type="text" name="filter_city" value="<?php echo $filter_city; ?>" size='8' />
             </td>
-
             <td>
               <input type="text" name="filter_state" value="<?php echo $filter_state; ?>" size='2' />
             </td>
-                        
             <td align="left">
               <input type="text" name="filter_phone1" value="<?php echo $filter_phone1; ?>" style="text-align: left;" size='12' />
             </td>
-  
             <td align="left">
               <input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" style="text-align: left;" size='8' />
             </td>
-
             <td>
               <select name="filter_chrt">
                 <option value="1" <?php if($filter_chrt == '1') echo 'selected'; ?> >Y</option>
@@ -138,25 +127,30 @@
                 <option value="" <?php if($filter_chrt == '') echo 'selected'; ?> >--</option>
               </select>
             </td>
-              
-            <td><select name="filter_status">
-                <option value="*"></option>
-                <?php if ($filter_status) { ?>
-                <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                <?php } else { ?>
-                <option value="1"><?php echo $text_enabled; ?></option>
-                <?php } ?>
-                <?php if (!is_null($filter_status) && !$filter_status) { ?>
-                <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                <?php } else { ?>
-                <option value="0"><?php echo $text_disabled; ?></option>
-                <?php } ?>
-              </select></td>
+            <td>
+              <?php
+                $aStoreCode = $this->config->getStoreStatus();
+              ?>
+              <select name="filter_status">
+                <option value="" <?php if(''==$filter_status) echo 'selected'; ?>>All</option>
+                <option value="0" <?php if('0'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['0']; ?></option>
+                <option value="1" <?php if('1'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['1']; ?></option>
+                <option value="2" <?php if('2'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['2']; ?></option>
+                <option value="9" <?php if('9'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['9']; ?></option>
+              </select>
+            </td>
             <td align="right"><a class="button btn_filter"><span>Filter</span></a></td>
-          </tr>
+          </tr-->
           <?php if($store){ ?>
-          <?php foreach ($store as $row) { ?>
-          <tr>
+          <?php 
+          foreach($store as $row){
+            if( $row['status'] == '0' || $row['status'] == '2' ){
+              $cssBG = 'style="background-color:red;"';
+            }else{
+              $cssBG = '';
+            }
+          ?>
+          <tr <?php echo $cssBG; ?>>
             <td style="text-align: center;">
               <?php if ($row['selected']) { ?>
               <input type="checkbox" class='id_in_list' name="selected[]" value="<?php echo $row['id']; ?>" checked="checked" style='display:none;'/>
@@ -169,31 +163,26 @@
               <input type='hidden' class='fax_in_list' name='fax' value='<?php echo $row['fax']; ?>' />
               <input type='hidden' class='discount' name='discount' value='<?php echo $row['discount']; ?>' />
               <input type='hidden' name='shipto' value="<?php echo $row['shipto']; ?>" />
+              <input type='hidden' name='status' value="<?php echo $row['status']; ?>" />
             </td>
             <td class='center accountno_in_list'>
               <?php echo $row['accountno']; ?>
             </td>
-            
             <td class='center name_in_list'>
               <?php echo $row['name']; ?>
             </td>
-            
             <td class='center storetype_in_list'>
               <?php echo $row['storetype']; ?>
             </td>
-            
             <td class='center city_in_list'>
               <?php echo $row['city']; ?>
             </td>
-            
             <td class='center state_in_list'>
               <?php echo $row['state']; ?>
             </td>
-            
             <td class='center phone1_in_list'>
               <?php echo $row['phone1']; ?>
             </td>
-            
             <td class='center salesrep_in_list'>
               <?php echo $row['salesrep']; ?>
             </td>
@@ -206,9 +195,8 @@
                 }
               ?>
             </td>
-            <td class="left" class='status_in_list'><?php echo $row['status']; ?></td>
-            <td class="right">
-            </td>
+            <td class="left" class='status_in_list'><?php echo $aStoreCode[$row['status']]; ?></td>
+            <!--td class="right"></td-->
           </tr>
           <?php } // end foreach ?>
           <?php } else { ?>
@@ -241,11 +229,17 @@ $(document).ready(function(){
         fax = jQuery.trim(node.find(".fax_in_list").attr('value')),
         salesrep = jQuery.trim(node.find(".salesrep_in_list").html()),
         discount = jQuery.trim(node.find(".discount").val()),
+        status = jQuery.trim(node.find("input[name=status]").val()),
         store_name = store_name.replace(/\&amp;/g,'&'),
         shipto = jQuery.trim(node.find("input[name=shipto]").val()),
         descText = "===== Store Discount =====\n",
         flagDC = false;
-    
+
+    if(status == '0' || status == '2'){
+      alert('You couldn\'t proceed with DEAD or BAD account \n Please consult with your manager');
+      return;
+    }
+
     //todo. need to tune later for {"",""} case
     // need to add isset check
     dc1 = 0;
@@ -271,7 +265,6 @@ $(document).ready(function(){
       $("input[name=dc1_desc]").val(dc1_desc);
       $("input[name=dc2]").val(dc2);
       $("input[name=dc2_desc]").val(dc2_desc);
-
       storeinfo.find("textarea[name=description]").val(descText);
     }
 
@@ -289,7 +282,6 @@ $(document).ready(function(){
     storeinfo.find("input[name=salesrep]").val(salesrep);
 
     $('#detail').css('visibility','hidden');
-
     $ptn = /(\\n)/gm;
     if( $('input[name=shipto]').val().match($ptn) ){
       //alert('matched');
@@ -335,7 +327,7 @@ $(document).ready(function(){
     var filter_storetype = $('select[name=\'filter_storetype\']').attr('value');
     if (filter_storetype != '') {
       param += '&filter_storetype=' + encodeURIComponent(filter_storetype);
-    }    
+    }
   	var filter_city = $('input[name=\'filter_city\']').attr('value');
   	if (filter_city) {
   		param += '&filter_city=' + encodeURIComponent(filter_city);
