@@ -324,14 +324,9 @@
 <div id='detail' class='ui-widget-content'></div>
 
 <?php
-echo $this->user->getUsername();
-echo 'A'; echo '<br/>'; echo $this->user->isManager($this->user->getUsername());
-
 if( !$this->user->isManager($this->user->getUsername()) ){
-  echo 'AAAAAAAAAAAAAAAAAAAAAAAA';
 ?>
   <script>
-    alert('A');
     $('.manager').html('');
   </script>
 <?php
