@@ -324,16 +324,6 @@
 <div id='detail' class='ui-widget-content'></div>
 <script type="text/javascript">
 $(document).ready(function(){
-
-  <?php
-  if( $this->user->isManager($this->user->getUsername()) ){ }else{
-  ?>
-    alert('A');
-    $('.manager').html('');
-  <?php
-  }
-  ?>
-
   $.fn.filter = function(){
   	url = 'index.php?route=common/home&token=<?php echo $token; ?>';
   	var filter_from = $('input[name=\'filter_from\']').attr('value');
@@ -368,3 +358,14 @@ $(document).ready(function(){
 });
 </script>
 <?php echo $footer; ?>
+
+<?php
+if( $this->user->isManager($this->user->getUsername()) ){ }else{
+?>
+  <script>
+    alert('A');
+    $('.manager').html('');
+  </script>
+<?php
+}
+?>
