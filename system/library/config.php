@@ -54,9 +54,9 @@ final class Config {
 	public function getStoreStatus(){
 		$aStoreCode = array(
 			'0' => 'DEAD',
-			'1' => 'GOOD-AR',
-			'2' => 'BAD-AR',
-			'3' => 'WORST-AR',
+			'1' => 'GOOD',
+			'2' => 'BAD',
+			'3' => 'WORST',
 			'9' => 'POTENTIAL'
 		);
 		return $aStoreCode;
