@@ -70,60 +70,6 @@
           </tr>
         </thead>
         <tbody>
-          <!--tr class="filter">
-            <td></td>
-            <td>
-              <input type="text" name="filter_accountno" value="<?php echo $filter_accountno; ?>" size='6' />
-            </td>
-            <td>
-              <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" size='10' />
-            </td>
-            <td>
-              <select name='filter_storetype'>
-                <?php if(strtolower($filter_storetype) == 'w'){ ?>
-                  <option value="">--</option>
-                  <option value="w" selected="selected">W</option>
-                  <option value="r">R</option>
-                <?php } elseif(strtolower($filter_storetype) == 'r'){ ?>
-                  <option value="">--</option>
-                  <option value="w">W</option>
-                  <option value="r" selected="selected">R</option>
-                <?php }else{ ?>
-                  <option value="" selected="selected">--</option>
-                  <option value="w">W</option>
-                  <option value="r">R</option>
-                <?php }?>
-              </select>
-            </td>
-            <td><input type="text" name="filter_city" value="<?php echo $filter_city; ?>" size='8' /></td>
-            <td><input type="text" name="filter_state" value="<?php echo $filter_state; ?>" size='2' /></td>
-            <td align="left">
-              <input type="text" name="filter_phone1" value="<?php echo $filter_phone1; ?>" style="text-align: left;" size='12' />
-            </td>
-            <td align="left">
-              <input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" style="text-align: left;" size='8' />
-            </td>
-            <td>
-              <select name="filter_chrt">
-                <option value="1" <?php if($filter_chrt == '1') echo 'selected'; ?> >Y</option>
-                <option value="0" <?php if($filter_chrt == '0') echo 'selected'; ?> >N</option>
-                <option value="" <?php if($filter_chrt == '') echo 'selected'; ?> >--</option>
-              </select>
-            </td>
-            <td>
-              <?php
-                $aStoreCode = $this->config->getStoreStatus();
-              ?>
-              <select name="filter_status">
-                <option value="" <?php if(''==$filter_status) echo 'selected'; ?>>All</option>
-                <option value="0" <?php if('0'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['0']; ?></option>
-                <option value="1" <?php if('1'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['1']; ?></option>
-                <option value="2" <?php if('2'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['2']; ?></option>
-                <option value="9" <?php if('9'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['9']; ?></option>
-              </select>
-            </td>
-            <td align="right"><a class="button btn_filter"><span>Filter</span></a></td>
-          </tr-->
           <?php if($store){ ?>
           <?php 
           foreach($store as $row){
@@ -173,7 +119,6 @@
     <div class="pagination"><?php echo $pagination; ?></div>
   </div>
 </div>
-
 <script>
 $(document).ready(function(){
   $('.name_in_list').click(function(){
@@ -204,10 +149,7 @@ $(document).ready(function(){
 
     //todo. need to tune later for {"",""} case
     // need to add isset check
-    dc1 = 0;
-    dc2 = 0;
-    dc1_desc = '';
-    dc2_desc = '';
+    dc1 = 0;  dc2 = 0;  dc1_desc = '';  dc2_desc = '';
     if( '' != discount ){
       obj = $.parseJSON(discount);
       $.each(obj,function(idx,dc){
