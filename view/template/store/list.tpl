@@ -6,20 +6,15 @@
 <div class="success"><?php echo $success; ?></div>
 <?php } ?>
 <style>
-.box {
+.box{
   z-index:10;
 }
 .content .name_in_list{
-  color:purple;
-  cursor:pointer;
+  color:purple; cursor:pointer;
 }
 #detail{
-  position : absolute;
-  top: 100px;
-  left: 100px;
-  visibility:hidden;
-  border: 1px dotted green;
-  z-index:2;
+  position:absolute;  top:100px;  left:100px;
+  visibility:hidden;  border:1px dotted green;  z-index:2;
 }
 </style>
 <div class="box">
@@ -29,14 +24,10 @@
     <h1 style="background-image: url('view/image/product.png');">
       <?php echo $heading_title; ?></h1>
     <div class="buttons">
-      <?php
-      if(count($total) > 0){
-      ?> 
+      <?php if(count($total) > 0){  ?> 
       <a onclick="location = '<?php echo $export; ?>'" class="button">
         <span><?php echo $total; ?> Export</span></a>
-      <?php
-      }
-      ?>
+      <?php } ?>
       <a class="button btn_insert">
         <span>Insert</span></a>
       <!--a onclick="$('#form').attr('action', '<?php echo $update; ?>'); $('#form').submit();" class="button">
@@ -47,7 +38,6 @@
       <a id='label' class="button"><span>Label</span></a>
     </div>
   </div>
-
   <?php
     // reset filter for quick re-query , besso-201103 
     // $filter_accountno = '';
@@ -63,7 +53,6 @@
   ?>
   <div class="content">
     <?php 
-      // no delete or so
       $delete = ''; 
     ?>
     <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form">
@@ -79,7 +68,7 @@
               <?php if($sort == 'name'){ ?>
               <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">
                 Store Name</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_name; ?>">Store Name</a>
               <?php } ?>
             </td>
@@ -87,7 +76,7 @@
               <?php if($sort == 'storetype'){ ?>
               <a href="<?php echo $sort_storetype; ?>" class="<?php echo strtolower($order); ?>">
                 W/R</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_storetype; ?>">W/R</a>
               <?php } ?>
             </td>
@@ -113,7 +102,7 @@
               <?php if($sort == 'salesrep'){ ?>
               <a href="<?php echo $sort_salesrep; ?>" class="<?php echo strtolower($order); ?>">
                 REP</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_salesrep; ?>">REP</a>
               <?php } ?>
             </td>
@@ -191,8 +180,8 @@
                 <option value="" <?php if(''==$filter_status) echo 'selected'; ?>>All</option>
                 <option value="0" <?php if('0'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['0']; ?></option>
                 <option value="1" <?php if('1'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['1']; ?></option>
-                <!--option value="2" <?php if('2'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['2']; ?></option>
-                <option value="3" <?php if('3'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['3']; ?></option-->
+                <option value="2" <?php if('2'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['2']; ?></option>
+                <!--option value="3" <?php if('3'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['3']; ?></option-->
                 <option value="9" <?php if('9'==$filter_status) echo 'selected'; ?>><?php echo $aStoreCode['9']; ?></option>
               </select>    
             </td>
@@ -215,7 +204,7 @@
           <tr style='background-color:<?php echo $bg_td ?>'>
             <td style="text-align: center;"><?php if($row['selected']){ ?>
               <input type="checkbox" class='id_in_list' name="selected[]" value="<?php echo $row['id']; ?>" checked="checked" />
-              <?php } else { ?>
+              <?php }else{ ?>
               <input type="checkbox" class='id_in_list' name="selected[]" value="<?php echo $row['id']; ?>" />
               <?php } ?>
               <input type='hidden' name='view' value='proxy' />
@@ -259,8 +248,7 @@
           <tr>
             <td colspan=11>
               <?php
-                // 730px;
-                $aDiff = array();
+                $aDiff = array(); // 730px;
                 foreach( $row['tx'] as $tx ){
                   $order_date = substr($tx['order_date'],0,10);
                   $order_ts = mktime(0, 0, 0, date(substr($order_date,5,2)), date(substr($order_date,8,2)), date(substr($order_date,0,4)));
@@ -302,10 +290,8 @@
           <?php
           } // end if count tx
           ?>
-
           <?php } // end foreach ?>
-
-          <?php } else { ?>
+          <?php }else{ ?>
           <tr>
             <td class="center" colspan="11">No Result</td>
           </tr>
@@ -321,7 +307,6 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-
   $('.btn_insert').bind('click',function(event){
     $.ajax({
       type:'get',
@@ -446,14 +431,13 @@ $(document).ready(function(){
   }
 
   $(window).bind('scroll',function(){
-    var winP = $(window).scrollTop()+100;
+    var winP = $(window).scrollTop();
     var mapCss = {
       "position":"absolute",
       "top":winP +'px',
     }
     $("#detail").css(mapCss);
   });
-
 });
 </script>
 <?php echo $footer; ?>
