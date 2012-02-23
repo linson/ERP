@@ -360,7 +360,7 @@ $(document).ready(function(){
 <?php echo $footer; ?>
 
 <?php
-if( $this->user->isManager($this->user->getUsername()) ){ }else{
+if( !$this->user->isManager($this->user->getUsername()) ){
 ?>
   <script>
     alert('A');
