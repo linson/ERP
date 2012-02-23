@@ -56,8 +56,7 @@ table.form tr td:first-child {
           $discount  = $store['discount'];
           $contact   = $store['owner'];
           $aDC = json_decode($discount,true);
-          
-          
+
           if(isset($aDC)){
             foreach($aDC as $k => $v){
               if("" == $v)  $aDC = array(); break;
@@ -89,10 +88,10 @@ table.form tr td:first-child {
                 <option value=""  <?php if(''==$status) echo 'selected'; ?>>--</option>
                 <option value="0" <?php if('0'==$status) echo 'selected'; ?>><?php echo $aStoreCode['0']; ?></option>
                 <option value="1" <?php if('1'==$status) echo 'selected'; ?>><?php echo $aStoreCode['1']; ?></option>
-                <!--option value="2" <?php if('2'==$status) echo 'selected'; ?>><?php echo $aStoreCode['2']; ?></option>
-                <option value="3" <?php if('3'==$status) echo 'selected'; ?>><?php echo $aStoreCode['3']; ?></option-->
+                <option value="2" <?php if('2'==$status) echo 'selected'; ?>><?php echo $aStoreCode['2']; ?></option>
+                <!--option value="3" <?php if('3'==$status) echo 'selected'; ?>><?php echo $aStoreCode['3']; ?></option-->
                 <option value="9" <?php if('9'==$status) echo 'selected'; ?>><?php echo $aStoreCode['9']; ?></option>
-              </select>   
+              </select>
             </td>
           </tr>
           <tr>
@@ -279,7 +278,7 @@ table.form tr td:first-child {
 		  	$('#gmap_type').bind('change',function(){
   		  	$('#btn_get_lat_and_lng').click();
 		  	});
-		  	
+
 		  	$('#btn_get_lat_and_lng').click(function(){
 		  		if($('#gmap_width').val() == "" || $('#gmap_height').val() == ""){
 		  			alert("<?php echo $error_gmap_size; ?>");
@@ -322,13 +321,11 @@ table.form tr td:first-child {
                       position:results[0].geometry.location
                     });
                   }
-
-
 		  				  }else{
 		  				    	alert("Geocoding failed: " + status);
 		  				  }
 		  			  });
-		     		}    
+		     		}
 		  		}
 		  	});
 		  	<?php
@@ -359,9 +356,9 @@ $(document).ready(function(){
       }
     });
   }
-  
+
   $.fn.arHistory();
-  
+
   $('#update_store').click(function(e){
     url = $('form#updateForm').attr('action');
     data= $('form#updateForm').serialize();
