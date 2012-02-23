@@ -361,6 +361,7 @@ $(document).ready(function(){
 
 <?php
 if( !$this->user->isManager($this->user->getUsername()) ){
+  echo 'AAAAAAAAAAAAAAAAAAAAAAAA';
 ?>
   <script>
     alert('A');
