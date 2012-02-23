@@ -70,6 +70,7 @@
           </tr>
         </thead>
         <tbody>
+          <?php $aStoreCode = $this->config->getStoreStatus();  ?>
           <?php if($store){ ?>
           <?php 
           foreach($store as $row){
