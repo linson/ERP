@@ -1,23 +1,12 @@
 <style>
-@media print {
-  body, td, th, input, select, textarea, option, optgroup {
-    font-size: 14px;
-  }
-  #header,#menu,#footer{
-    display:none;
-  }
-  #content .left,.right{
-    display:none;
-  }
-  #content .heading div.buttons{
-    display:none;
-  }
-  .np{
-    display:none;
-  }
-} 
+@media print{
+  body, td, th, input, select, textarea, option, optgroup{  font-size: 14px;  }
+  #header,#menu,#footer{  display:none; }
+  #content .left,.right{  display:none; }
+  #content .heading div.buttons{  display:none; }
+  .np{  display:none; }
+}
 </style>
-
 <?php
   $heading_title = 'Montly';
   $export = '';
@@ -31,43 +20,26 @@
 <div class="success"><?php echo $success; ?></div>
 <?php } ?>
 <style>
-.box {
-  z-index:10;
-}
-.content .name_in_list{
-  color:purple;
-  cursor:pointer;
-}
+.box{ z-index:10; }
+.content .name_in_list{ color:purple; cursor:pointer; }
 #detail{
-  position : absolute;
-  top: 100px;
-  left: 100px;
-  visibility:hidden;
-  border: 1px dotted green;
-  z-index:2;
+  position:absolute;  top: 100px;
+  left:100px; visibility:hidden;
+  border: 1px dotted green; z-index:2;
 }
-#content{
-  width:900px;
-}
-.box .content{
-  border:none;
-}
+#content{ width:900px;  }
+.box .content{  border:none;  }
 </style>
-
 <div class="box">
-  <div class="left"></div>
-  <div class="right"></div>
+  <div class="left"></div><div class="right"></div>
   <div class="heading">
-    <h1>
-      <?php echo $heading_title; ?>
-    </h1>
+    <h1><?php echo $heading_title; ?></h1>
     <h1 style='float:right;'>
       <a href="index.php?route=report/product">Product</a>
       &nbsp;
       <a href="index.php?route=report/account">Account</a>
     </h1>
   </div>
-
   <div class="content">
     <form action="<?php echo $lnk_action; ?>" method="post" enctype="multipart/form-data" id="form">
       <table class="list">
@@ -80,37 +52,21 @@
                 <input type="text" class='date_pick' name="filter_to" value="<?php echo $filter_to; ?>" style='width:70px;' />
               </div>
               <!--div>
-                <a href='<?php echo $lnk_pday ?>'>
-                <?php echo $pday_label ?>
-                </a>&nbsp;
-                <a href='<?php echo $lnk_tday ?>'>
-                <?php echo $tday_label ?>
-                </a>
+                <a href='<?php echo $lnk_pday ?>'><?php echo $pday_label ?></a>&nbsp;
+                <a href='<?php echo $lnk_tday ?>'><?php echo $tday_label ?></a>
               </div-->
               <div>
-                <a href='<?php echo $lnk_pmonth ?>'>
-                <?php echo $pmonth_label ?>
-                </a>&nbsp;
-                <a href='<?php echo $lnk_tmonth ?>'>
-                <?php echo $tmonth_label ?>
-                </a>&nbsp;
-                <a href='<?php echo $lnk_nmonth ?>'>
-                <?php echo $nmonth_label ?>
-                </a>
+                <a href='<?php echo $lnk_pmonth ?>'><?php echo $pmonth_label ?></a>&nbsp;
+                <a href='<?php echo $lnk_tmonth ?>'><?php echo $tmonth_label ?></a>&nbsp;
+                <a href='<?php echo $lnk_nmonth ?>'><?php echo $nmonth_label ?></a>
               </div>
               <!--div>
-                <a href='<?php echo $lnk_pquarter ?>'>
-                <?php echo $pquarter_label ?>
-                </a>&nbsp;
-                <a href='<?php echo $lnk_tquarter ?>'>
-                <?php echo $tquarter_label ?>
-                </a>
+                <a href='<?php echo $lnk_pquarter ?>'><?php echo $pquarter_label ?></a>&nbsp;
+                <a href='<?php echo $lnk_tquarter ?>'><?php echo $tquarter_label ?></a>
               </div-->
             </td>
             <td colspan='1'>
-              <a onclick='filter();' class="button btn_filter">
-                <span>Search</span>
-              </a>
+              <a onclick='filter();' class="button btn_filter"><span>Search</span></a>
             </td>
             <td colspan='4'></td>
             <td colspan='1'>
@@ -119,14 +75,10 @@
               </a-->
             </td>
             <td colspan='1'>
-              <a class="btn_filter_hidden">
-                <span style='color:#E7EFEF'>STAT</span>
-              </a>
+              <a class="btn_filter_hidden"><span style='color:#E7EFEF'>STAT</span></a>
             </td>
           </tr>
-
           <tr style='height:20px'><td colspan='10'></td></tr>
-
           <!-- today -->
           <!-- today -->
           <!-- today -->
@@ -140,11 +92,7 @@
                 $this_day = $filter_from;
             }
           }
-
-//$this->log->aPrint( $this_day );
-
           $lbl_this_day = date("Y-m-d [D]",mktime(0, 0, 0, date(substr($this_day,5,2)), date(substr($this_day,8,2)), date(substr($this_day,0,4))));
-
           for($i=1;$i<7;$i++){
             $week = date("w",mktime(0, 0, 0, date(substr($this_day,5,2)), date(substr($this_day,8,2))-$i, date(substr($this_day,0,4))));
             if( $week != 6 && $week != 0 ){
@@ -271,7 +219,6 @@
             }else{
               $remain = 0;
             }
-            
           ?>
           <tr style='background-color:<?php echo $bg_td ?>'>
             <td class='center'>
@@ -294,9 +241,9 @@
           <tr style='background-color:#e2e2e2;'>
             <td class='center'></td>
             <td class='center'></td>
-            <td class='center' colspan=2><font size=5><b><?php echo $this->util->formatMoney($target) ?></b></font></td>
-            <td class='center'><font size=5><b><?php echo $this->util->formatMoney(round($total)) ?></b></font></td>
-            <td class='center'><font size=5><b><?php echo $this->util->formatMoney(round($remain_sum)) ?></b></font></td>
+            <td class='center manager' colspan=2><font size=5><b><?php echo $this->util->formatMoney($target) ?></b></font></td>
+            <td class='center manager'><font size=5><b><?php echo $this->util->formatMoney(round($total)) ?></b></font></td>
+            <td class='center manager'><font size=5><b><?php echo $this->util->formatMoney(round($remain_sum)) ?></b></font></td>
             <td class='center'><font size=5><b><?php echo round( ($total / $target)*100 , 2) ?></b></font> %</td>
             <td class='center'><?php echo $cnt; ?></td>
             <td class='center'><?php echo $rcnt; ?></td>
@@ -308,6 +255,8 @@
           </tr>
           <?php } ?>
           <tr style='height:40px'><td colspan='10'></td></tr>
+
+
 
           <!-- last month -->
           <!-- last month -->
@@ -354,8 +303,8 @@
           <tr style='background-color:#e2e2e2;'>
             <td class='center'></td>
             <td class='center'></td>
-            <td class='center' colspan=2><?php echo $this->util->formatMoney($target) ?></td>
-            <td class='center'><?php echo $this->util->formatMoney(round($total)) ?></td>
+            <td class='center manager' colspan=2><?php echo $this->util->formatMoney($target) ?></td>
+            <td class='center manager'><?php echo $this->util->formatMoney(round($total)) ?></td>
             <td class='center' colspan=2><?php echo round( ($total / $target)*100 , 2) ?> %</td>
             <td class='center'><?php echo $cnt; ?></td>
             <td class='center'><?php echo $rcnt; ?></td>
@@ -366,16 +315,13 @@
             <td class="center" colspan="8">No Result</td>
           </tr>
           <?php } ?>
-
         </tbody>
       </table>
     </form>
-
   </div>
 </div>
 <!-- common detail div -->
 <div id='detail' class='ui-widget-content'></div>
-
 <script type="text/javascript">
 $(document).ready(function(){
   $.fn.filter = function(){
@@ -386,7 +332,6 @@ $(document).ready(function(){
   	if(filter_to)  url += '&filter_to=' + encodeURIComponent(filter_to);
   	location = url;
   }
-
   $.fn.filter_hidden = function(){
   	url = 'index.php?route=common/home&token=<?php echo $token; ?>&hidden=true';
   	var filter_from = $('input[name=\'filter_from\']').attr('value');
@@ -395,7 +340,6 @@ $(document).ready(function(){
   	if(filter_to)  url += '&filter_to=' + encodeURIComponent(filter_to);
   	location = url;
   }
-
   // date picker binding
   $('#form').bind('focusin',function(event){
     var $tgt = $(event.target);
@@ -408,14 +352,16 @@ $(document).ready(function(){
       });
     }
   });
-  $('.btn_filter_hidden').bind('click',function(e){
-//  debugger;
-    $.fn.filter_hidden();
-  });
+  $('.btn_filter_hidden').bind('click',function(e){ $.fn.filter_hidden(); });
+  $('.btn_filter').bind('click',function(e){  $.fn.filter();  });
 
-  $('.btn_filter').bind('click',function(e){
-    $.fn.filter();
-  });
+  <?php
+  if( !$this->user->isManager($this->user->getUsername()) ){
+  ?>
+    $('.manager').html('');
+  <?php
+  }
+  ?>
 
 });
 </script>
