@@ -325,6 +325,7 @@
 
 <?php
 echo $this->user->getUsername();
+echo $this->user->isManager($this->user->getUsername());
 if( !$this->user->isManager($this->user->getUsername()) ){
   echo 'AAAAAAAAAAAAAAAAAAAAAAAA';
 ?>
