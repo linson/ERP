@@ -169,7 +169,7 @@
           <tr style='background-color:#e2e2e2;'>
             <td class='center'></td>
             <td class='center'></td>
-            <td class='center'><?php echo $this->util->formatMoney($target) ?></td>
+            <td class='center manager'><?php echo $this->util->formatMoney($target) ?></td>
             <td class='center'><?php echo $this->util->formatMoney($day_target) ?></td>
             <td class='center'><?php echo $this->util->formatMoney(round($total)) ?></td>
             <td class='center'><?php echo round( ($total / $target)*100 , 2) ?> %</td>
@@ -358,6 +358,7 @@ $(document).ready(function(){
   <?php
   if( !$this->user->isManager($this->user->getUsername()) ){
   ?>
+    alert('A');
     $('.manager').html('');
   <?php
   }
