@@ -323,11 +323,18 @@
 <!-- common detail div -->
 <div id='detail' class='ui-widget-content'></div>
 
-
 <?php
-echo 'BBBBBBBBBBBBBBB';
+echo $this->user->getUsername();
+if( !$this->user->isManager($this->user->getUsername()) ){
+  echo 'AAAAAAAAAAAAAAAAAAAAAAAA';
 ?>
-
+  <script>
+    alert('A');
+    $('.manager').html('');
+  </script>
+<?php
+}
+?>
 
 <script type="text/javascript">
 $(document).ready(function(){
