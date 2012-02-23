@@ -1,15 +1,9 @@
 <style>
-.box {
-  z-index:10;
-}
-.content .name_in_list{
-  color:purple;
-  cursor:pointer;
-}
+.box{ z-index:10; }
+.content .name_in_list{ color:purple; cursor:pointer; }
 </style>
 <div class="box">
-  <div class="left"></div>
-  <div class="right"></div>
+  <div class="left"></div><div class="right"></div>
   <div class="heading">
     <div class="buttons">
       <a onclick="$('#detail').html(); $('#detail').css('visibility','hidden');" class="button">
@@ -25,32 +19,28 @@
               <input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" style='display:none;'/>
             </td>
             <td class="left">
-              <?php if ($sort == 'accountno') { ?>
+              <?php if($sort == 'accountno'){ ?>
               <a href="<?php echo $sort_accountno; ?>" class="<?php echo strtolower($order); ?>">
                 Acct.no</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_accountno; ?>">Acct.no</a>
               <?php } ?>
             </td>
             <td class="left">
-              <?php if ($sort == 'name') { ?>
+              <?php if($sort == 'name'){ ?>
               <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">
                 Store.Name</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_name; ?>">Store.Name</a>
               <?php } ?>
             </td>
+            <td class="left">W/R</td>
+            <td class="left">City</td>
             <td class="left">
-              W/R
-            </td>
-            <td class="left">
-              City
-            </td>
-            <td class="left">
-              <?php if ($sort == 'state') { ?>
+              <?php if($sort == 'state'){ ?>
               <a href="<?php echo $sort_state; ?>" class="<?php echo strtolower($order); ?>">
                 State</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_state; ?>">State</a>
               <?php } ?>
             </td>
@@ -58,30 +48,29 @@
               Phone
             </td>
             <td class="left">
-              <?php if ($sort == 'salesrep') { ?>
+              <?php if($sort == 'salesrep'){ ?>
               <a href="<?php echo $sort_salesrep; ?>" class="<?php echo strtolower($order); ?>">
                 Rep</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_salesrep; ?>">Rep</a>
               <?php } ?>
             </td>
             <td class="left">
-              <?php if ($sort == 'chrt') { ?>
+              <?php if($sort == 'chrt'){ ?>
               <a href="<?php echo $sort_chrt; ?>" class="<?php echo strtolower($order); ?>">
                 Chicago</a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_chrt; ?>">Chicago</a>
               <?php } ?>
             </td>
-            <td class="left"><?php if ($sort == 'p.status') { ?>
+            <td class="left"><?php if($sort == 'p.status'){ ?>
               <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
-              <?php } else { ?>
+              <?php }else{ ?>
               <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
               <?php } ?></td>
             <!--td class="right"><?php echo $column_action; ?></td-->
           </tr>
         </thead>
-
         <tbody>
           <!--tr class="filter">
             <td></td>
@@ -93,11 +82,11 @@
             </td>
             <td>
               <select name='filter_storetype'>
-                <?php if (strtolower($filter_storetype) == 'w') { ?>
+                <?php if(strtolower($filter_storetype) == 'w'){ ?>
                   <option value="">--</option>
                   <option value="w" selected="selected">W</option>
                   <option value="r">R</option>
-                <?php } elseif (strtolower($filter_storetype) == 'r') { ?>
+                <?php } elseif(strtolower($filter_storetype) == 'r'){ ?>
                   <option value="">--</option>
                   <option value="w">W</option>
                   <option value="r" selected="selected">R</option>
@@ -152,9 +141,9 @@
           ?>
           <tr <?php echo $cssBG; ?>>
             <td style="text-align: center;">
-              <?php if ($row['selected']) { ?>
+              <?php if($row['selected']){ ?>
               <input type="checkbox" class='id_in_list' name="selected[]" value="<?php echo $row['id']; ?>" checked="checked" style='display:none;'/>
-              <?php } else { ?>
+              <?php }else{ ?>
               <input type="checkbox" class='id_in_list' name="selected[]" value="<?php echo $row['id']; ?>" style='display:none;' />
               <?php } ?>
               <input type='hidden' name='view' value='proxy' />
@@ -165,41 +154,21 @@
               <input type='hidden' name='shipto' value="<?php echo $row['shipto']; ?>" />
               <input type='hidden' name='status' value="<?php echo $row['status']; ?>" />
             </td>
-            <td class='center accountno_in_list'>
-              <?php echo $row['accountno']; ?>
-            </td>
-            <td class='center name_in_list'>
-              <?php echo $row['name']; ?>
-            </td>
-            <td class='center storetype_in_list'>
-              <?php echo $row['storetype']; ?>
-            </td>
-            <td class='center city_in_list'>
-              <?php echo $row['city']; ?>
-            </td>
-            <td class='center state_in_list'>
-              <?php echo $row['state']; ?>
-            </td>
-            <td class='center phone1_in_list'>
-              <?php echo $row['phone1']; ?>
-            </td>
-            <td class='center salesrep_in_list'>
-              <?php echo $row['salesrep']; ?>
-            </td>
+            <td class='center accountno_in_list'><?php echo $row['accountno']; ?></td>
+            <td class='center name_in_list'><?php echo $row['name']; ?></td>
+            <td class='center storetype_in_list'><?php echo $row['storetype']; ?></td>
+            <td class='center city_in_list'><?php echo $row['city']; ?></td>
+            <td class='center state_in_list'><?php echo $row['state']; ?></td>
+            <td class='center phone1_in_list'><?php echo $row['phone1']; ?></td>
+            <td class='center salesrep_in_list'><?php echo $row['salesrep']; ?></td>
             <td class="left">
-              <?php 
-                if('1'==$row['chrt']){
-                  echo 'Y';
-                }else{
-                  echo 'N';
-                }
-              ?>
+              <?php if('1'==$row['chrt']){  echo 'Y'; }else{  echo 'N'; } ?>
             </td>
             <td class="left" class='status_in_list'><?php echo $aStoreCode[$row['status']]; ?></td>
             <!--td class="right"></td-->
           </tr>
           <?php } // end foreach ?>
-          <?php } else { ?>
+          <?php }else{ ?>
           <tr>
             <td class="center" colspan="11">No Result</td>
           </tr>
@@ -234,7 +203,6 @@ $(document).ready(function(){
         shipto = jQuery.trim(node.find("input[name=shipto]").val()),
         descText = "===== Store Discount =====\n",
         flagDC = false;
-
     if(status == '0' || status == '2'){
       alert('You couldn\'t proceed with DEAD or BAD account \n Please consult with your manager');
       return;
@@ -305,57 +273,33 @@ $(document).ready(function(){
     return false;
   });
 
-  $('a.btn_filter>span').bind('click',function(){
-    $.fn.fnSearch();
-  });
-  
+  $('a.btn_filter>span').bind('click',function(){ $.fn.fnSearch();  });
+
   $.fn.fnSearch = function($page){
     if(!$page) $page = '1';
   	param = '';
   	var filter_name = $('input[name=\'filter_name\']').attr('value');
-  	if (filter_name) {
-  		param += '&filter_name=' + encodeURIComponent(filter_name);
-  	}
+  	if(filter_name) param += '&filter_name=' + encodeURIComponent(filter_name);
   	var filter_accountno = $('input[name=\'filter_accountno\']').attr('value');
-  	if (filter_accountno) {
-  		param += '&filter_accountno=' + encodeURIComponent(filter_accountno);
-  	}
+  	if(filter_accountno)  param += '&filter_accountno=' + encodeURIComponent(filter_accountno);
   	var filter_storetype = $('input[name=\'filter_storetype\']').attr('value');
-  	if (filter_storetype) {
-  		param += '&filter_storetype=' + encodeURIComponent(filter_storetype);
-  	}
+  	if(filter_storetype)  param += '&filter_storetype=' + encodeURIComponent(filter_storetype);
     var filter_storetype = $('select[name=\'filter_storetype\']').attr('value');
-    if (filter_storetype != '') {
-      param += '&filter_storetype=' + encodeURIComponent(filter_storetype);
-    }
+    if(filter_storetype != '')  param += '&filter_storetype=' + encodeURIComponent(filter_storetype);
   	var filter_city = $('input[name=\'filter_city\']').attr('value');
-  	if (filter_city) {
-  		param += '&filter_city=' + encodeURIComponent(filter_city);
-  	}
+  	if(filter_city) param += '&filter_city=' + encodeURIComponent(filter_city);
   	var filter_state = $('input[name=\'filter_state\']').attr('value');
-  	if (filter_state) {
-  		param += '&filter_state=' + encodeURIComponent(filter_state);
-  	}
+  	if(filter_state)  param += '&filter_state=' + encodeURIComponent(filter_state);
   	var filter_phone1 = $('input[name=\'filter_phone1\']').attr('value');
-  	if (filter_phone1) {
-  		param += '&filter_phone1=' + encodeURIComponent(filter_phone1);
-  	}
+  	if(filter_phone1) param += '&filter_phone1=' + encodeURIComponent(filter_phone1);
   	var filter_salesrep = $('input[name=\'filter_salesrep\']').attr('value');
-  	if (filter_salesrep) {
-  		param += '&filter_salesrep=' + encodeURIComponent(filter_salesrep);
-  	}
+  	if(filter_salesrep) param += '&filter_salesrep=' + encodeURIComponent(filter_salesrep);
   	var filter_status = $('select[name=\'filter_status\']').attr('value');
-  	if (filter_status != '*') {
-  		param += '&filter_status=' + encodeURIComponent(filter_status);
-  	}
+  	if(filter_status != '*')  param += '&filter_status=' + encodeURIComponent(filter_status);
   	var filter_chrt = $('select[name=\'filter_chrt\']').attr('value');
-  	if(filter_chrt != '') {
-  		param += '&filter_chrt=' + encodeURIComponent(filter_chrt);
-  	}
+  	if(filter_chrt != '') param += '&filter_chrt=' + encodeURIComponent(filter_chrt);
   	var filter_page = $page;
-  	if (filter_page != '1') {
-  		param += '&filter_page=' + encodeURIComponent(filter_page);
-  	}
+  	if(filter_page != '1')  param += '&filter_page=' + encodeURIComponent(filter_page);
     $.ajax({
       type:'get',
       url:'index.php?route=store/lookup/callback',
@@ -365,8 +309,7 @@ $(document).ready(function(){
         $('#detail').css('visibility','visible');
         $('#detail').html(html);
       },
-      fail:function(){
-      }
+      fail:function(){}
     });
   }
 });
