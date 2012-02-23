@@ -322,6 +322,13 @@
 </div>
 <!-- common detail div -->
 <div id='detail' class='ui-widget-content'></div>
+
+
+<?php
+echo 'BBBBBBBBBBBBBBB';
+?>
+
+
 <script type="text/javascript">
 $(document).ready(function(){
   $.fn.filter = function(){
@@ -358,15 +365,3 @@ $(document).ready(function(){
 });
 </script>
 <?php echo $footer; ?>
-
-<?php
-if( !$this->user->isManager($this->user->getUsername()) ){
-  echo 'AAAAAAAAAAAAAAAAAAAAAAAA';
-?>
-  <script>
-    alert('A');
-    $('.manager').html('');
-  </script>
-<?php
-}
-?>
