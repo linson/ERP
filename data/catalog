@@ -62,7 +62,7 @@
     'SP8104',
     'SP8106',
   ),
-  'SP HAIR BONDING GLUE' => array(     
+  'SP HAIR BONDING GLUE' => array(
     'SP2001',
     '',
     'SP2002',
@@ -102,7 +102,8 @@
     '3S2411',
     '3S2413',
     '3S2421',
-    '3S2405'
+    '3S2405',
+    '','3S2440',
   ),
   '30 LACE BOND REMOVER SYSTEM' => array(
     '3S2540','3S2550',
@@ -146,7 +147,6 @@
     '3S2608',
     '3S2596',
   ),
-
 /***
   'COLOR' => array(
     'VN0801',
@@ -205,7 +205,6 @@
     'VN0992',
   ),
 ***/
-
   'COLOR 2oz' => array(
     'VN0801','',
     'VN0802','',
@@ -274,14 +273,14 @@
     'IR7111',
     'IR7117',
   ),
-  'VIA NATURAL EDGE-GEL.1 Dz' => array(      
+  'VIA NATURAL EDGE-GEL.1 Dz' => array(
     'VN7911',
     'VN7910',
     'VN7912',
     'VN7916',
     'VN7917',
   ),
-  'VIA NATURAL GEL' => array( 
+  'VIA NATURAL GEL' => array(
     'VN8505',
     'VN8605',
     'VN8510',
@@ -291,7 +290,7 @@
     'VN8520',
     'VN8620',
   ),
-  'VIA NATURAL STYLE SHINING GEL' => array( 
+  'VIA NATURAL STYLE SHINING GEL' => array(
     'VN8346','VN8347',
     'VN8345','',
     'VN8344','',
@@ -302,7 +301,7 @@
     '','',
     'VN8337','VN8338',
   ),
-  'VIA Spray 8oz*12pc . VIA SHINE 4OZ*12pc' => array( 
+  'VIA Spray 8oz*12pc . VIA SHINE 4OZ*12pc' => array(
     'VN8704',
     'VN8312',
     'VN8110',
@@ -312,7 +311,7 @@
     'VN8309',
     'VN8315',
   ),
-  'VIA H Lotion 2oz*24' => array(        
+  'VIA H Lotion 2oz*24' => array(
     'VN8326',
     'VN8400',
     'VN8327',
@@ -336,7 +335,7 @@
     'VN6819',
     'VN6808', 
   ),
-  'VIA NATURAL REVITALIZATION GRO 6pc' => array(   
+  'VIA NATURAL REVITALIZATION GRO 6pc' => array(
     'VN5811',
     'VN5815',
     'VN5812',
@@ -346,7 +345,7 @@
     'VN5814',
     'VN5818',
   ),
-  'VIA NATURAL Botanical GEL' => array(   
+  'VIA NATURAL Botanical GEL' => array(
     'VN5003',
     'VN5004',
     'VN5007',
@@ -360,7 +359,7 @@
     'VN5013',
     'VN5014',
   ),
-  'VIA NATURAL Oil-Free WIG SHINE' => array(  
+  'VIA NATURAL Oil-Free WIG SHINE' => array(
     'VN8351',
     'VN8353',
     'VN8352',
