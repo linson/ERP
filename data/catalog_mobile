@@ -76,7 +76,7 @@
     'SP8104',
     'SP8106',
   ),
-  'SP HAIR BONDING GLUE' => array(     
+  'SP HAIR BONDING GLUE' => array(
     'SP2001',
     'SP2002',
     'SP2004',
@@ -117,6 +117,7 @@
     '3S2447',
     '3S2413',
     '3S2421',
+    '3S2440',
   ),
   '30 LACE BOND REMOVER SYSTEM' => array(
     '3S2540',
@@ -144,7 +145,7 @@
     '3S2579',
     'SP2611',
   ),
-  '30 WEAVE WONDER WRAP' => array(   
+  '30 WEAVE WONDER WRAP' => array(
     '3S8623',
     '3S8627',
     '3S8625',
@@ -243,19 +244,17 @@
     'VN0991',
     'VN0992',
   ),
-  'VIA NATURAL GEL' => array( 
-    'VN8505',    
-    'VN8510',    
-    'VN8515',    
+  'VIA NATURAL GEL' => array(
+    'VN8505',
+    'VN8510',
+    'VN8515',
     'VN8520',
     'VN8605',
     'VN8610',
     'VN8615',
     'VN8620',
-    
   ),
-  
-  'VIA NATURAL STYLE SHINING GEL' => array( 
+  'VIA NATURAL STYLE SHINING GEL' => array(
     'VN8346',
     'VN8345',
     'VN8344',
@@ -282,7 +281,7 @@
     'VN8309',
     'VN8315',
   ),
-  'VIA H Lotion 2oz*24' => array(        
+  'VIA H Lotion 2oz*24' => array(
     'VN8326',
     'VN8327',
     'VN8328',
@@ -307,23 +306,23 @@
     'VN6815',
     'VN6808',
   ),
-  'VIA NATURAL REVITALIZATION GRO 6pc' => array(   
-    'VN5811',    
-    'VN5812',    
-    'VN5813',    
-    'VN5814',    
+  'VIA NATURAL REVITALIZATION GRO 6pc' => array(
+    'VN5811',
+    'VN5812',
+    'VN5813',
+    'VN5814',
     'VN5815',
     'VN5816',
     'VN5817',
     'VN5818',
   ),
-  'VIA NATURAL Botanical GEL' => array(   
-    'VN5003',    
-    'VN5007',    
-    'VN5017',    
-    'VN5023',    
-    'VN5025',    
-    'VN5013',    
+  'VIA NATURAL Botanical GEL' => array(
+    'VN5003',
+    'VN5007',
+    'VN5017',
+    'VN5023',
+    'VN5025',
+    'VN5013',
     '',
     'VN5004',
     'VN5008',
@@ -332,7 +331,7 @@
     'VN5026',
     'VN5014',
   ),
-  'VIA NATURAL Oil-Free WIG SHINE' => array(  
+  'VIA NATURAL Oil-Free WIG SHINE' => array(
     'VN8351',
     'VN8352',
     'VN8353',
@@ -492,7 +491,6 @@
     'SAM007',
     'SAM008',
     'SAM009',
-    
   )
 );
 ?>
