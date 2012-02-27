@@ -18,38 +18,34 @@
         <thead>
           <tr>
             <td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
-            <td class="center">Code</td>
-            <td class="left"><?php if($sort == 'name'){ ?>
+            <td></td>
+            <td class="center">Model</td>
+            <td class="center"><?php if($sort == 'name'){ ?>
               <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Name</a>
               <?php } else { ?>
               <a href="<?php echo $sort_name; ?>">Name</a>
               <?php } ?></td>
-            <td class="left"><?php if($sort == 'cat'){ ?>
+            <!--td class="left"><?php if($sort == 'cat'){ ?>
               <a href="<?php echo $sort_cat; ?>" class="<?php echo strtolower($order); ?>">Category</a>
               <?php } else { ?>
               <a href="<?php echo $sort_cat; ?>">Category</a>
-              <?php } ?></td>
-            <td class="left"><?php if($sort == 'price'){ ?>
+              <?php } ?></td-->
+            <!--td class="left"><?php if($sort == 'price'){ ?>
               <a href="<?php echo $sort_price; ?>" class="<?php echo strtolower($order); ?>">Price</a>
               <?php } else { ?>
               <a href="<?php echo $sort_price; ?>">Price</a>
-              <?php } ?></td>
-            <td class="right"><?php if($sort == 'quantity'){ ?>
+              <?php } ?></td-->
+            <td class="center"><?php if($sort == 'quantity'){ ?>
               <a href="<?php echo $sort_quantity; ?>" class="<?php echo strtolower($order); ?>">Quantity</a>
               <?php } else { ?>
               <a href="<?php echo $sort_quantity; ?>">Quantity</a>
               <?php } ?></td>
-            <td class="right"><?php if($sort == 'thres'){ ?>
+            <td class="center"><?php if($sort == 'thres'){ ?>
               <a href="<?php echo $sort_thres; ?>" class="<?php echo strtolower($order); ?>">Thres</a>
               <?php } else { ?>
               <a href="<?php echo $sort_thres; ?>">Thres</a>
               <?php } ?></td>
-            <td class="left"><?php if($sort == 'p.status'){ ?>
-              <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>">Status</a>
-              <?php } else { ?>
-              <a href="<?php echo $sort_status; ?>">Status</a>
-              <?php } ?></td>
-            <td class="right">Action</td>
+            <td class="center">Action</td>
           </tr>
         </thead>
         <tbody>
@@ -58,9 +54,10 @@
         ?>
           <tr class="filter">
             <td></td>
-            <td class="center"><input type="text" name="filter_code" value="<?php echo $filter_code; ?>" size=5 /></td>
+            <td></td>
+            <td class="center"><input type="text" name="filter_model" value="<?php echo $filter_model; ?>" size=5 /></td>
             <td class="center"><input type="text" name="filter_name" value="<?php echo $filter_name; ?>" size=30 /></td>
-            <td>
+            <!--td>
               <select name="filter_cat">
                 <option value="" <?php if(''==$filter_cat) echo 'selected'; ?>>---</option>
                 <option value="BOTTLE" <?php if('BOTTLE'==$filter_cat) echo 'selected'; ?>>BOTTLE</option>
@@ -77,22 +74,17 @@
                 <option value="LACE" <?php if('LACE'==$filter_cat) echo 'selected'; ?>>LACE</option>
                 <option value="MISC" <?php if('MISC'==$filter_cat) echo 'selected'; ?>>MISC</option>
               </select>
-            </td>
-            <td>
-              > <input type="text" name="filter_price" value="<?php echo $filter_price; ?>" size='3' /></td>
-            <td align="right">
+            </td-->
+            <!--td>
+              > <input type="text" name="filter_price" value="<?php echo $filter_price; ?>" size='3' /></td-->
+            <td align="center">
               < <input type="text" name="filter_quantity" value="<?php echo $filter_quantity; ?>" size='3' /></td>
-            <td align="right"><input type="text" name="filter_thres" value="<?php echo $filter_thres; ?>" size='3' /></td>
-            <td>
-              <select name="filter_status">
-                <option value="0" <?php if('0'==$filter_status) echo 'selected'; ?>>Unuse</option>
-                <option value="1" <?php if('1'==$filter_status) echo 'selected'; ?>>IN USE</option>
-              </select>
-            </td>
-            <td align="right"><a class="button btn_filter"><span>filter</span></a></td>
+            <td align="center">
+              < <input type="text" name="filter_thres" value="<?php echo $filter_thres; ?>" size='3' /></td>
+            <td align="center"><a class="button btn_filter"><span>filter</span></a></td>
           </tr>
           <?php 
-          if($packages){ 
+          if( isset($packages) ){
           ?>
           <?php foreach ($packages as $package){ ?>
           <tr>
@@ -104,23 +96,23 @@
             <td class="center">
               <img src="<?php echo $package['image']; ?>" alt="<?php echo $package['name']; ?>" style="padding: 1px; border: 1px solid #DDDDDD;" class='img_code' />
             </td>
-            <td class="left"><?php echo $package['name']; ?></td>
-            <td class="left"><?php echo $package['cat']; ?></td>
-            <td class="center"><input type=text name='price' value='<?php echo $package['price']; ?>' size='5' /></td>
-            <td class="right">
+            <td class="center"><?php echo $package['model']; ?></td>
+            <td class="center"><?php echo $package['name']; ?></td>
+            <!--td class="left"><?php echo $package['cat']; ?></td-->
+            <!--td class="center"><input type=text name='price' value='<?php echo $package['price']; ?>' size='5' /></td-->
+            <td class="center">
               <a class='quick_update button'><span>UP</span></a>
               <input type=text name='quantity' value='<?php echo $package['quantity']; ?>' size='5' />
             </td>
-            <td class="left"><?php echo $package['thres']; ?></td>
-            <td class="left"><?php echo $package['status']; ?></td>
-            <td class="right"><?php foreach ($package['action'] as $action){ ?>
+            <td class="center"><?php echo $package['thres']; ?></td>
+            <td class="center"><?php foreach ($package['action'] as $action){ ?>
               <a class='button edit'><span>Edit</span></a>
               <?php } ?></td>
           </tr>
           <?php } ?>
           <?php } else { ?>
           <tr>
-            <td class="center" colspan="9"><?php echo $text_no_results; ?></td>
+            <td class="center" colspan="7"><?php echo $text_no_results; ?></td>
           </tr>
           <?php } ?>
         </tbody>
@@ -148,31 +140,25 @@ $(document).ready(function(){
   $('.btn_filter').bind('click',function(){
     $.fn.filter();
   });
-  
+
   $.fn.filter = function(){
-  	url = 'index.php?route=material/lookup&token=<?php echo $token; ?>';
-  	var filter_code = $('input[name=\'filter_code\']').attr('value');
-  	if(filter_code)  url += '&filter_code=' + encodeURIComponent(filter_code);
+  	url = 'index.php?route=material/productpackage&token=<?php echo $token; ?>';
+  	var filter_model = $('input[name=\'filter_model\']').attr('value');
+  	if(filter_model)  url += '&filter_model=' + encodeURIComponent(filter_model);
   	var filter_name = $('input[name=\'filter_name\']').attr('value');
   	if(filter_name) url += '&filter_name=' + encodeURIComponent(filter_name);
-  	var filter_cat = $('select[name=\'filter_cat\']').attr('value');
-  	if(filter_cat){
-  		url += '&filter_cat=' + encodeURIComponent(filter_cat);
-  	}
-  	var filter_price = $('input[name=\'filter_price\']').attr('value');
-  	if(filter_price){
-  		url += '&filter_price=' + encodeURIComponent(filter_price);
-  	}
   	var filter_quantity = $('input[name=\'filter_quantity\']').attr('value');
-  	if(filter_quantity){
-  		url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
-  	}
-  	var filter_status = $('select[name=\'filter_status\']').attr('value');
-  	if(filter_status != '*'){
-  		url += '&filter_status=' + encodeURIComponent(filter_status);
-  	}
+  	if(filter_quantity) url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+  	var filter_thres = $('input[name=\'filter_thres\']').attr('value');
+  	if(filter_thres)  url += '&filter_thres=' + encodeURIComponent(filter_thres);
   	location = url;
   }
+
+  $('.filter input').bind('keydown',function(e){
+    if(e.keyCode == 13){
+      $.fn.filter();
+    }
+  });
 
   $('.btn_insert').bind('click',function(event){
     $.ajax({
