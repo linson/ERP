@@ -27,7 +27,7 @@ if($order_price > 0){
       </td>
       <td class='context no_print_invoice'>
         <?php
-        if( isset($sales) ){
+        if( isset($sales) && $order_price > 0 ){
         $aLast = end($sales); 
         ?>
         <input type='text' name='promotion_sum' value='<?php echo $aLast[count($aLast)-1]['promotion_sum']; ?>' size=6 />
@@ -43,7 +43,7 @@ if($order_price > 0){
       </td>
       <td class='context no_print_invoice'>
         <?php
-        if( isset($sales) ){
+        if( isset($sales) && $order_price > 0 ){
         ?>
         <input type='text' name='damage_sum' value='<?php echo $aLast[count($aLast)-1]['damage_sum']; ?>' size=6 />
         (<?php echo round($aLast[count($aLast)-1]['damage_sum']/$order_price*100,1); ?> %)
