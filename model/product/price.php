@@ -402,9 +402,12 @@ class ModelProductPrice extends Model{
   	if(isset($data['filter_price']) && !is_null($data['filter_price'])){
   		$sql .= " AND LCASE(p.price) LIKE '" . $this->db->escape(strtolower($data['filter_price'])) . "%'";
   	}
-  	if(isset($data['filter_quantity']) && !is_null($data['filter_quantity'])){
-  		$sql .= " AND p.quantity = '" . $this->db->escape($data['filter_quantity']) . "'";
-  	}
+		if(isset($data['filter_quantity']) && !is_null($data['filter_quantity'])){
+			$sql .= " AND p.quantity <= '" . $this->db->escape($data['filter_quantity']) . "'";
+		}
+		if(isset($data['filter_thres']) && !is_null($data['filter_thres'])){
+			$sql .= " AND p.thres <= '" . $this->db->escape($data['filter_thres']) . "'";
+		}
 		if( isset($data['filter_cat']) && '' != $data['filter_cat'] ){
 		  if( 'oem' == strtolower($data['filter_cat']) ){
 		    $sql .= " AND Substr(LCASE(p.model),1,2) not in ('sp','ae','vn','3s','ir','qt')";
@@ -417,7 +420,7 @@ class ModelProductPrice extends Model{
 	}
 
 	public function getProducts($data = array(),&$export_qry){
-	  $out_column = 'p.product_id,p.image,pd.name as name, p.model,p.ws_price,p.rt_price,p.quantity,p.pc,p.status';
+	  $out_column = 'p.product_id,p.image,pd.name as name, p.model,p.ws_price,p.rt_price,p.quantity,p.pc,p.status,p.thres';
 		if($data){
 			$sql = "SELECT " . $out_column . " FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) ";
 			// status is only for mall , besso-201103 
@@ -443,7 +446,10 @@ class ModelProductPrice extends Model{
 				$sql .= " AND LCASE(p.price) LIKE '" . $this->db->escape(strtolower($data['filter_price'])) . "%'";
 			}
 			if(isset($data['filter_quantity']) && !is_null($data['filter_quantity'])){
-				$sql .= " AND p.quantity = '" . $this->db->escape($data['filter_quantity']) . "'";
+				$sql .= " AND p.quantity <= '" . $this->db->escape($data['filter_quantity']) . "'";
+			}
+			if(isset($data['filter_thres']) && !is_null($data['filter_thres'])){
+				$sql .= " AND p.thres <= '" . $this->db->escape($data['filter_thres']) . "'";
 			}
 			if( isset($data['filter_cat']) && '' != $data['filter_cat'] ){
 			  if( 'oem' == strtolower($data['filter_cat']) ){
