@@ -1,7 +1,5 @@
 <?php
-/*
-todo. need to make copy functionality
-*/
+/* todo. need to make copy functionality */
 class ModelSalesOrder extends Model{
   public function getSalesQuantity($model){
     $result = array();
@@ -28,8 +26,7 @@ class ModelSalesOrder extends Model{
   }
 
   /* lookup existing Txid and retrieve next offset from DB
-   * return 1, if exists already
-   */ 
+   * return 1, if exists already */
   public function getTxid($txid){
     $sql = "select max( substr(txid,-1) + 1 ) as offset from transaction where txid like '%{$txid}%' order by txid";
 		$query = $this->db->query($sql);
@@ -42,7 +39,7 @@ class ModelSalesOrder extends Model{
     $today = date('Y-m-d');
     $approve_user = $this->user->getUserName();
     $sql = "update transaction set approve_status = '$status', approved_user = '$approve_user', ";
-    $sql.= " approved_date = '$today' where txid = '$txid'";
+    $sql.= " approved_date = '$today', order_date = now() where txid = '$txid'";
     //$this->log->aPrint( $sql );
     if($query = $this->db->query($sql)){
       return true;
@@ -84,18 +81,17 @@ class ModelSalesOrder extends Model{
   // so it's better to check if already existed model or not
   public function insertSales($data){
     //$this->log->aPrint( $data ); exit;
-    
     $aExist = array();
     $txid = $data['txid'];
     $order_date = $data['order_date'];
-    
+
     $sql = "select model from sales where txid = '$txid'";
     //$this->log->aPrint( $sql ); exit;
     $this->db->query($sql);
     $query = $this->db->query($sql);
     foreach($query->rows as $exist) $aExist[] = $exist['model'];
     //$this->log->aPrint( $aExist );
-    
+
     for($i=0;$i<count($data[1]);$i++){
       $aErr = array();
       $model = $data[0][$i];
@@ -113,13 +109,12 @@ class ModelSalesOrder extends Model{
       //$backfree   = isset($data[12][$i]) ? $data[12][$i] : 0;
       //$backdamage = isset($data[13][$i]) ? $data[13][$i] : 0;
       //$backpromotion  = isset($data[15][$i]) ? $data[15][$i] : 0; 
-      
       //$this->log->aPrint( $promotion ); exit;
-      
       //$this->log->aPrint( $promotion );
-      if( isset($aExist) && in_array($model,$aExist) ) {
+      if( isset($aExist) && in_array($model,$aExist) ){
         //echo 'exist : ' . $model;
-        if( 0 == $order_quantity && 0 == $free && 0 == $damage && 0 == $backorder && 0 == $backfree && 0 == $backdamage && 0 == $promotion ){
+        //if( 0 == $order_quantity && 0 == $free && 0 == $damage && 0 == $backorder && 0 == $backfree && 0 == $backdamage && 0 == $promotion ){
+        if( 0 == $order_quantity && 0 == $free && 0 == $damage && 0 == $promotion ){
           $sql = "delete from sales where txid = '$txid' and model = '$model'";
           $this->db->query($sql);
         }else{
@@ -156,15 +151,15 @@ class ModelSalesOrder extends Model{
 		    }
       }
     } // end for
-    
+
     // todo. temporary , besso-201103 
     return true;
   }
 
   public function insertShip($data){
-    $sql = "delete from ship where txid = '" . $data['txid'] . "'";        
+    $sql = "delete from ship where txid = '" . $data['txid'] . "'";
     if($this->db->query($sql)){
-  	  // todo. set flag to control ok , besso-201103 
+  	  // todo. set flag to control ok , besso-201103
   	  //return true;
   	}else{
   		//return false;
@@ -190,7 +185,7 @@ class ModelSalesOrder extends Model{
   }
 
   public function insertPay($data,$balance,$payed_sum,$order_price){
-    $sql = "delete from pay where txid = '" . $data['txid'] . "'";        
+    $sql = "delete from pay where txid = '" . $data['txid'] . "'";
     if($this->db->query($sql)){
   	  //return true;
   	}else{
@@ -394,12 +389,6 @@ class ModelSalesOrder extends Model{
   }
 
   public function selectPay($txid){
-    /*
-    echo '<pre>';
-    print_r($data);
-    echo '</pre>';
-    //exit;
-    */
     $aData = array();
     $sql = "select *
               from pay
@@ -410,20 +399,6 @@ class ModelSalesOrder extends Model{
 	  $aData = $res;
     return $aData;
   }
-
-  /*** always update store information
-        'id' => $store_id,
-        'name' => $store_name,
-        'accountno' => $accountno,
-        'salesrep' => $salesrep,
-        'address1' => $address1,
-        'city' => $city,
-        'state' => $state,
-        'zipcode' => $zipcode,
-        'storetype' => $storetype,
-        'phone1' => $phone1,
-        'fax' => $fax
-  ***/
 
   /*
     Update store information
@@ -495,7 +470,7 @@ class ModelSalesOrder extends Model{
       }
 		}
   }
-  
+
   public function sendBesso($request){
     $subject = $request['key'];
     $html    = $request['msg'];
@@ -511,7 +486,6 @@ class ModelSalesOrder extends Model{
     $aReceiver = array(
       'besso@live.com',
     );
-
     foreach($aReceiver as $receiver){
   	  $mail->setTo($receiver);
   	  $mail->setFrom($this->config->get('config_email'));
