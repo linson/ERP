@@ -26,20 +26,32 @@ if($order_price > 0){
         Promo
       </td>
       <td class='context no_print_invoice'>
-        <?php $aLast = end($sales); ?>
+        <?php
+        if( isset($sales) ){
+        $aLast = end($sales); 
+        ?>
         <input type='text' name='promotion_sum' value='<?php echo $aLast[count($aLast)-1]['promotion_sum']; ?>' size=6 />
         (<?php echo round($aLast[count($aLast)-1]['promotion_sum']/$order_price*100,1); ?> %)
         <!-- use later -->
         <input type='hidden' name='payed_sum' value='<?php echo $payed_sum; ?>' size=8 />
+        <?php
+        }
+        ?>
       </td>
       <td class='label no_print_invoice'>
         Damage
       </td>
       <td class='context no_print_invoice'>
+        <?php
+        if( isset($sales) ){
+        ?>
         <input type='text' name='damage_sum' value='<?php echo $aLast[count($aLast)-1]['damage_sum']; ?>' size=6 />
         (<?php echo round($aLast[count($aLast)-1]['damage_sum']/$order_price*100,1); ?> %)
         <!-- use later -->
         <input type='hidden' name='balance' value='<?php echo $balance; ?>' size=8 style='background-color:yellow' />
+        <?php
+        }
+        ?>
       </td>
       <td class='label'>
         Free
