@@ -185,7 +185,7 @@
     'VN7916',
     'VN7917',
   ),
-  'COLOR 2oz' => array(
+  'COLOR 2oz 4oz' => array(
     'VN0801',
     'VN0802',
     'VN0803',
@@ -213,8 +213,6 @@
     'VN0825',
     'VN0891',
     'VN0892',
-  ),
-  'COLOR 4oz' => array(
     'VN0901',
     'VN0902',
     'VN0903',
