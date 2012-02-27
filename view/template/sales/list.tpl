@@ -61,9 +61,7 @@
               <a href="<?php echo $sort_order_price; ?>">RATE</a>
               <?php } ?></td>
             <td class="center">Ship</td>
-            <td class="center">
-              Balance
-            </td>
+            <!--td class="center">Balance</td-->
             <td class="left">
               <?php if($sort == 'x.order_user'){ ?>
               <a href="<?php echo $sort_order_user; ?>" class="<?php echo strtolower($order); ?>">REP</a>
@@ -100,7 +98,7 @@
                 <option value="N" <?php if($filter_ship == 'N') echo 'selected' ?> >N</option>
               </select>
             </td>
-            <td>
+            <!--td>
               <select name="filter_payed">
                 <?php if($filter_payed == 'done'){ ?>
                 <option value="done" selected="selected">Done</option>
@@ -118,7 +116,7 @@
                 <option value="">all</option>
                 <?php } ?>
               </select>
-            </td>
+            </td-->
             <td>
               <select name='filter_order_user'>
                 <option value=''>---</option>
@@ -200,7 +198,7 @@
               <!--input type=text name=sign_yn value=<?php echo $tx['sign_yn'] ?>       style='width:16px' /-->
               <input type=text name=shipped_yn value=<?php echo $tx['shipped_yn'] ?> style='width:16px' />
             </td>
-            <td class="left"><?php echo $tx['balance']; ?></td>
+            <!--td class="left"><?php echo $tx['balance']; ?></td-->
             <td class="left"><?php echo $order_user ?></td>
             <td class="left"><?php echo $approve_status ?></td>
             <td class="center">
