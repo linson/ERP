@@ -10,19 +10,13 @@
   <div class="right"></div>
   <div class="heading">
     <h1 style='padding-left:10px;'>
-      <?php
-      if($manager == true){
-      ?>
-      <input type=text name='notice' style='width:400px;' id='update_notice' value='<?php echo $notice[0]['notice'] ?>' />
-      <?php
-      }else{
-      ?>
-      <font color='red'>
-      <?php echo $notice[0]['notice'] ?>
-      </font>
-      <?php
-      }
-      ?>
+      <?php if($manager == true){ ?>
+        <input type=text name='notice' style='width:400px;' id='update_notice' value='<?php echo $notice[0]['notice'] ?>' />
+      <?php }else{  ?>
+        <font color='red'>
+        <?php echo $notice[0]['notice'] ?>
+        </font>
+      <?php } ?>
     </h1>
     <div class="buttons">
       <?php
@@ -158,9 +152,7 @@
             </td>
             <td align="right"><a onclick="$.fn.filter();" class="button"><span>Filter</span></a></td>
           </tr>
-          <?php
-          if($txs){ 
-          ?>
+          <?php if($txs){ ?>
           <?php
           $total = 0;
           foreach ($txs as $tx){ 
@@ -183,7 +175,6 @@
             }
             $approve_status = $tx['approve_status'];
             if($approve_status == 'pending')  $approve_status = "<font color='red'>$approve_status</font>";
-            
             $order_user = ( $tx['executor'] != $tx['order_user'] ) ? $tx['order_user'] . ' / <font size=1>' . $tx['executor'] . '</font>' : $tx['order_user'];
             $total += $tx['order_price'];
           ?>
@@ -213,8 +204,8 @@
             <td class="left"><?php echo $order_user ?></td>
             <td class="left"><?php echo $approve_status ?></td>
             <td class="center">
-            <?php 
-            if(trim($tx['status']) == '2'){ 
+            <?php
+            if(trim($tx['status']) == '2'){
               echo 'POST'; 
             }else if(trim($tx['status']) == '0'){
               echo 'YET'; 
@@ -238,13 +229,9 @@
       </table>
     </form>
     <div id='show_total' style='float:right;padding-right:20px;'>
-      <?php
-      if( isset($total) ){
-      ?>
+      <?php if( isset($total) ){  ?>
       Total : <?php echo $total ?> ( <?php echo count($txs) ?> )
-      <?php
-      }
-      ?>
+      <?php } ?>
     </div>
     <div class="pagination"><?php echo $pagination; ?></div>
   </div>
@@ -339,7 +326,7 @@ $(document).ready(function(){
       frame = 'frame' + idx;
       $html = "<iframe id='" + frame + "' name='" + frame + "' src='' width=1px height=1px></iframe>";
       $('#content').append($html);
-      
+
       // we must use relative path for iframe control , besso 201105 
       // http://huuah.com/jquery-and-iframe-manipulation/ sigh~
       var $ele_iframe = $('iframe#'+frame),
@@ -442,7 +429,6 @@ $(document).ready(function(){
           }
         });
       }
-
       // shipped_yn
       if($tgt.is('input[name=shipped_yn]')){
         var $pnt = $tgt.parents('tr'),
