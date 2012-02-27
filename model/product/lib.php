@@ -126,23 +126,31 @@ select p.model, pd.name_for_sales
              order by p.sort_order,p.model";
     //$this->log->aPrint( $sql );
 		$query = $this->db->query($sql);
-    
     if( isset($this->request->get['debug']) ){
       $catalog = $this->config->getCatalogMobile();
     }else{
       $catalog = $this->config->getCatalog();
     }
 
-    
     $aRtn = array();
     $aOrdered = $query->rows;
     //$this->log->aPrint( $catalog );
+    $promotion_sum = $damage_sum = 0;
     foreach($catalog as $key => $aModel){
       foreach( $aOrdered as $ordered ){
-        //$this->log->aPrint( $ordered );
         //$this->log->aPrint( $aModel );
         if(in_array($ordered['model'],$aModel)){
+          //$this->log->aPrint( $ordered );
+          if( $ordered['promotion'] > 0 ){
+            $promotion_sum += $ordered['promotion'] * $ordered['rate'];
+          }
+          if( $ordered['damage'] > 0 ){
+            $damage_sum    += $ordered['damage'] * $ordered['rate'];
+          }
+          $ordered['promotion_sum'] = $promotion_sum;
+          $ordered['damage_sum'] = $damage_sum;
           $aRtn[$key][] = $ordered;
+          //$this->log->aPrint( $promotion_sum ); $this->log->aPrint( $damage_sum );
         }
       }
     }
