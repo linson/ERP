@@ -2,12 +2,11 @@
 <?php if($error_warning){ ?><div class="warning"><?php echo $error_warning; ?></div><?php } ?>
 <?php if($success){ ?><div class="success"><?php echo $success; ?></div><?php } ?>
 <div class="box">
-  <div class="left"></div>
-  <div class="right"></div>
+  <div class="left"></div><div class="right"></div>
   <div class="heading">
     <h1 style="background-image: url('view/image/product.png');">Metarial - Package</h1>
     <div class="buttons">
-      <a class="button btn_insert"><span><?php echo $button_insert; ?></span></a>
+      <!--a class="button btn_insert"><span><?php echo $button_insert; ?></span></a-->
       <!--a onclick="$('#form').attr('action', '<?php echo $copy; ?>'); $('#form').submit();" class="button"><span><?php echo $button_copy; ?></span></a-->
       <!--a onclick="$('form').submit();" class="button"><span><?php echo $button_delete; ?></span></a-->
     </div>
@@ -102,7 +101,8 @@
             <!--td class="center"><input type=text name='price' value='<?php echo $package['price']; ?>' size='5' /></td-->
             <td class="center">
               <a class='quick_update button'><span>UP</span></a>
-              <input type=text name='quantity' value='<?php echo $package['quantity']; ?>' size='5' />
+              <input type=text name='quantity' value='<?php echo $package['quantity']; ?>' size='5' style='background-color:#e2e2e2' />
+              <input type="number" size="4" value="" class="plus" name="plus">
             </td>
             <td class="center"><?php echo $package['thres']; ?></td>
             <td class="center"><?php foreach ($package['action'] as $action){ ?>
@@ -137,65 +137,8 @@
 
 <script>
 $(document).ready(function(){
-  $('.btn_filter').bind('click',function(){
-    $.fn.filter();
-  });
-
-  $.fn.filter = function(){
-  	url = 'index.php?route=material/productpackage&token=<?php echo $token; ?>';
-  	var filter_model = $('input[name=\'filter_model\']').attr('value');
-  	if(filter_model)  url += '&filter_model=' + encodeURIComponent(filter_model);
-  	var filter_name = $('input[name=\'filter_name\']').attr('value');
-  	if(filter_name) url += '&filter_name=' + encodeURIComponent(filter_name);
-  	var filter_quantity = $('input[name=\'filter_quantity\']').attr('value');
-  	if(filter_quantity) url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
-  	var filter_thres = $('input[name=\'filter_thres\']').attr('value');
-  	if(filter_thres)  url += '&filter_thres=' + encodeURIComponent(filter_thres);
-  	location = url;
-  }
-
-  $('.filter input').bind('keydown',function(e){
-    if(e.keyCode == 13){
-      $.fn.filter();
-    }
-  });
-
-  $('.btn_insert').bind('click',function(event){
-    $.ajax({
-      type:'get',
-      url:'index.php?route=material/lookup/callUpdatePannel',
-      dataType:'html',
-      data:'token=<?php echo $token; ?>&ddl=insert',
-      beforesend:function(){
-        //console.log('beforesend');
-      },
-      complete:function(){
-        //console.log('complete');
-      },
-      success:function(html){
-        $('#detail').css('visibility','visible');
-        $('#detail').html(html);
-        //$('#detail').draggable(); 
-      },
-      fail:function(){
-        //console.log('fail : no response from proxy');
-      }
-    });
-  });
-
-  // todo. tune the blocking later
-  /*
-  $('.list').bind('focuson',function(event){
-    var $tgt = $(event.target);
-    if($tgt.is('input')){
-      $tgt.select();
-    }
-  });
-  */
-
   $('.list').live('click',function(event){
     var $tgt = $(event.target);
-
     // image click show detail history
     if($tgt.is('img.img_code')){
       var $pnt = $tgt.parents('tr'),
@@ -219,49 +162,39 @@ $(document).ready(function(){
     }
 
     if($tgt.is('a.edit>span')){
-      var $pnt = $tgt.parents('tr'),
-          $ele_chkbox = $pnt.find('.id_in_list'),
+      var $parent = $tgt.parents('tr'),
+          $ele_chkbox = $parent.find('.id_in_list'),
           $id = $ele_chkbox.val();
       $.ajax({
         type:'get',
-        url:'index.php?route=material/lookup/callUpdatePannel',
+        url:'index.php?route=material/productpackage/callMapping',
         dataType:'html',
-        data:'token=<?php echo $token; ?>&ddl=update&id=' + $id,
-        beforesend:function(){
-          //console.log('beforesend');
-        },
-        complete:function(){
-          //console.log('complete');
-        },
+        data:'product_id=' + $id,
         success:function(html){
-          $p = $tgt.position();
-          $('#detail').css('top',$p.top-200);
-          $('#detail').css('visibility','visible');
-          $('#detail').html(html);
-          //$('#detail').draggable(); 
-        },
-        fail:function(){
-          //console.log('fail : no response from proxy');
+          //$p = $tgt.position();
+          $('#detail').css('left','30px').css('top','50px').css('visibility','visible')
+            .css('background-color','white').html(html);
+          $('#detail').draggable();
         }
       });
     }
+
     // todo. no null check
     if($tgt.is('a.quick_update>span')){
-      $.fn.callQuickUpdate($tgt);
+      $.fn.updateQuantity($tgt);
     }
   }); // end of click event
 
-  $.fn.callQuickUpdate = function($tgt){
+  $.fn.updateQuantity = function($tgt){
         var $pnt = $tgt.parents('tr'),
           $ele_chkbox = $pnt.find('.id_in_list'),
           $id = $ele_chkbox.val(),
           $quantity = $pnt.find('input[name=quantity]').val();
-          $price = $pnt.find('input[name=price]').val();
       $.ajax({
         type:'get',
-        url:'index.php?route=material/lookup/callQuickUpdate',
+        url:'index.php?route=material/lookup/updateQuantity',
         dataType:'html',
-        data:'token=<?php echo $token; ?>&id=' + $id + '&quantity=' + $quantity + '&price=' + $price,
+        data:'token=<?php echo $token; ?>&id=' + $id + '&quantity=' + $quantity,
         success:function(html){
           $p = $tgt.position();
           $imgCss = {
@@ -280,12 +213,78 @@ $(document).ready(function(){
         },
       });
   }
-  
-  $('.filter input').keydown(function(e){
-  	if(e.keyCode == 13){
-      $.fn.filter();
-  	}
+
+  $('#form').bind('keydown',function(event){
+    if(event.keyCode == '13'){
+      var $tgt = $(event.target);
+      if($tgt.is('input.plus')){
+        $pnt = $tgt.parents('tr'),
+               $ele_quantity = $pnt.find('input[name=quantity]'),
+               $quantity = $ele_quantity.val(),
+               $plus = $tgt.val(),
+               $product_id = $pnt.find('.id_in_list').val();
+        if('' == $plus){
+          alert('No number'); 
+          return false;
+        }
+        $sum = parseInt($quantity) + parseInt($plus);
+        $.fn.updateQuantity2($product_id,$sum,$tgt);
+        $ele_quantity.val($sum);
+        $tgt.val('');
+      }
+    }
   });
+  $.fn.updateQuantity2 = function(id,quantity,$tgt){
+    $.ajax({
+      type:'get',
+      url:'index.php?route=material/lookup/updateQuantity',
+      dataType:'html',
+      data:'id=' + id + '&quantity=' + quantity,
+      success:function(){
+        $p = $tgt.position();
+        $imgCss = {
+          'visibility':'visible',
+          'width':'120px',
+          'height':'20px',
+          'top':$p.top-30,
+          'left':$p.left-30,
+          'background-color':'black',
+          'color':'white',
+          'text-align':'center'
+        }
+        $('#detail').css($imgCss);
+        $('#detail').html('success : ' + quantity );
+        $('#detail').draggable();
+      },
+      fail:function(){
+      }
+    });
+  }
+
+  // filter is reserved method so you should not use it
+  $.fn.search = function(){
+  	url = 'index.php?route=material/productpackage&token=<?php echo $token; ?>';
+  	var filter_model = $('input[name=\'filter_model\']').attr('value');
+  	if(filter_model)  url += '&filter_model=' + encodeURIComponent(filter_model);
+  	var filter_name = $('input[name=\'filter_name\']').attr('value');
+  	if(filter_name) url += '&filter_name=' + encodeURIComponent(filter_name);
+  	var filter_quantity = $('input[name=\'filter_quantity\']').attr('value');
+  	if(filter_quantity) url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+  	var filter_thres = $('input[name=\'filter_thres\']').attr('value');
+  	if(filter_thres)  url += '&filter_thres=' + encodeURIComponent(filter_thres);
+  	location = url;
+  };
+
+  $('.btn_filter').bind('click',function(){
+    $.fn.search();
+  });
+  
+  $('.filter input').bind('keydown',function(e){
+    if(e.keyCode == 13){
+      $.fn.search();
+    }
+  });
+
 });
 </script>
 <?php echo $footer; ?>
