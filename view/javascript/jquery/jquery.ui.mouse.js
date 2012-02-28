@@ -1,5 +1,5 @@
 /*!
- * jQuery UI Mouse 1.8.13
+ * jQuery UI Mouse 1.8.18
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -13,7 +13,7 @@
 (function( $, undefined ) {
 
 var mouseHandled = false;
-$(document).mousedown(function(e) {
+$( document ).mouseup( function( e ) {
 	mouseHandled = false;
 });
 
@@ -47,31 +47,20 @@ $.widget("ui.mouse", {
 		this.element.unbind('.'+this.widgetName);
 	},
 
-	_mouseDown: function(event){
+	_mouseDown: function(event) {
 		// don't let more than one widget handle mouseStart
-		if(mouseHandled) {return};
+		if( mouseHandled ) { return };
 
 		// we may have missed mouseup (out of window)
 		(this._mouseStarted && this._mouseUp(event));
 
 		this._mouseDownEvent = event;
 
-    // todo. it's related with draggable error
-    // element : 1. ui-draggable , 2. ui-widget-content
 		var self = this,
 			btnIsLeft = (event.which == 1),
-			c1 = this.options.cancel,
-			t1 = typeof c1;
-//debugger;
-			if(typeof this.options.cancel == "string"){
-			  var $tgt = $(event.target),
-			      $pnt = $tgt.parents();
-			  elIsCancel = $pnt.add(event.target).filter(this.options.cancel).length;
-			}else{
-			  elIsCancel = false;
-			}
-			//elIsCancel = (typeof this.options.cancel == "string" ? $(event.target).parents().add(event.target).filter(this.options.cancel).length : false);
-
+			// event.target.nodeName works around a bug in IE 8 with
+			// disabled inputs (#7620)
+			elIsCancel = (typeof this.options.cancel == "string" && event.target.nodeName ? $(event.target).closest(this.options.cancel).length : false);
 		if (!btnIsLeft || elIsCancel || !this._mouseCapture(event)) {
 			return true;
 		}
