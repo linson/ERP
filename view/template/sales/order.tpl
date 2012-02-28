@@ -243,7 +243,6 @@ $(document).ready(function(){
     //todo. date picker callback is not work !
     // so i binded focusout manually, not good
     //onSelect: function(){console.log('call callback');
-    
   })
   .bind('change',function(e){
     var $tgt = $(e.target);
