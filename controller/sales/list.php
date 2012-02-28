@@ -2,7 +2,7 @@
 class ControllerSalesList extends Controller {
 	private $error = array();
 	private $bManager = false;
-	
+
  	public function index(){
     $this->bManager = false;
     if('manager' == $this->user->getGroupName($this->user->getUserName()) ){
@@ -28,14 +28,12 @@ class ControllerSalesList extends Controller {
 		}else{
 			$sort = 'x.order_date';
 		}
-
 		isset($this->request->get['order'])? $order = $this->request->get['order'] : $order = 'DESC';
 		if(isset($this->request->get['page'])){
 		  $url = '&order=' + $order;
 		}else{
 		  $url = ($order == 'ASC') ? '&order=DESC' : '&order=ASC';
 		}
-
 		if(isset($this->request->get['filter_txid'])){
 				$url .= '&filter_txid=' . $this->request->get['filter_txid'];
 		  	$filter_txid = $this->request->get['filter_txid'];
@@ -87,6 +85,12 @@ class ControllerSalesList extends Controller {
   	}else{
       $filter_approve_status = 'all';
   	}
+		if(isset($this->request->get['filter_status'])){
+      $url .= '&filter_status=' . $this->request->get['filter_status'];
+		  $filter_status = $this->request->get['filter_status'];
+  	}else{
+      $filter_status = NULL;
+  	}
 
 		if(isset($this->request->get['filter_order_user'])){
 				$url .= '&filter_order_user=' . $this->request->get['filter_order_user'];
@@ -103,25 +107,22 @@ class ControllerSalesList extends Controller {
       */
       $filter_order_user = NULL;
   	}
-
     $this->data['manager'] = $this->bManager;
 
     # link
 		$this->data['lnk_insert'] = HTTP_SERVER . 'index.php?route=sales/order&token=' . $this->session->data['token'] . $url;
 		$this->data['lnk_delete'] = HTTP_SERVER . 'index.php?route=sales/list/delete&token=' . $this->session->data['token'] . $url;
-    
+
     # filter & sort
  		$this->data['sort_store_name'] = HTTP_SERVER . 'index.php?route=sales/list&token=' . $this->session->data['token'] . '&sort=s.name'  . $url;
  		$this->data['sort_order_date'] = HTTP_SERVER . 'index.php?route=sales/list&token=' . $this->session->data['token'] . '&sort=x.order_date'  . $url;
  		$this->data['sort_order_user'] = HTTP_SERVER . 'index.php?route=sales/list&token=' . $this->session->data['token'] . '&sort=x.order_user'  . $url;
- 		
+
  		// let's do for additional requirement , besso-201103 
  		//$this->data['sort_accountno'] = HTTP_SERVER . 'store/lookup/' . $this->session->data['token'] . '&sort=accountno' . $url;
  		//$this->data['sort_state'] = HTTP_SERVER . 'store/lookup/' . $this->session->data['token'] . '&sort=state' . $url;
-
     # call data
     $this->load->model('sales/list');
-    
 		$this->data['txs'] = array();
     $request = array(
 			'filter_txid'	  => $filter_txid,
@@ -133,6 +134,7 @@ class ControllerSalesList extends Controller {
 			'filter_payed'     => $filter_payed,
 			'filter_order_user'  => $filter_order_user,
 			'filter_approve_status'  => $filter_approve_status,
+			'filter_status'  => $filter_status,
 			'sort'            => $sort,
 			'order'           => $order,
 			//'start'           => ($page - 1) * $this->config->get('config_admin_limit'),
@@ -196,11 +198,10 @@ class ControllerSalesList extends Controller {
 		//$pagination->limit = $this->config->get('config_admin_limit');
 		$pagination->limit = 40;
 		$pagination->text = $this->language->get('text_pagination');
-
 		$pagination->url = HTTP_SERVER . 'index.php?route=sales/list&token=' . $this->session->data['token'] . $url . '&page={page}';
 
 		$this->data['pagination'] = $pagination->render();
-		
+
 		// todo. need to investigation warning and success , besso-201103 
  		if(isset($this->error['warning'])){
 			$this->data['error_warning'] = $this->error['warning'];
@@ -213,7 +214,7 @@ class ControllerSalesList extends Controller {
 		}else{
 			$this->data['success'] = '';
 		}
-		
+
 		$this->data['filter_txid'] = $filter_txid;
 		$this->data['filter_store_name'] = $filter_store_name;
 		$this->data['filter_order_price'] = $filter_order_price;
@@ -228,7 +229,6 @@ class ControllerSalesList extends Controller {
 		$this->data['order'] = $order;
     
     $this->data['token'] = $this->session->data['token'];
-
     $this->data['notice'] = $this->selectNotice();
 //    $this->log->aPrint( $this->data['notice'] );
 
@@ -262,12 +262,11 @@ class ControllerSalesList extends Controller {
 		foreach($deleteList as $txid){
 		  $this->model_sales_list->deleteTransaxtion($txid);
 		}
-
 		$this->session->data['success'] = "Delete done : " . count($deleteList);
 		$this->redirect(HTTP_SERVER . 'index.php?route=sales/list&token=' . $this->session->data['token']);
    	$this->getList();
  	}
-  
+
   // it's temporary for sales only system
   public function updateShippedYN(){
   	$this->load->model('sales/list');
