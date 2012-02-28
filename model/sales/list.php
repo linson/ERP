@@ -57,24 +57,21 @@ class ModelSalesList extends Model {
 		  	}
 		  }
 		  if( isset($request['sort']) ){
-		  	$sql .= " ORDER BY " . $request['sort'];
+		  	$sql .= " ORDER BY " . $request['sort'] . " DESC";
 		  }else{
-		  	$sql .= " ORDER BY x.order_date";
+		  	$sql .= " ORDER BY x.order_date DESC";
 		  }
-
+		  /***
 		  if(isset($request['order']) && ($request['order'] == 'ASC')){
 		  	$sql .= " ASC";
 		  }else{
 		  	$sql .= " DESC";
 		  }
+		  ***/
 		  //$this->log->aPrint( $request );
 		  if(isset($request['limit']) || isset($request['limit'])){
-		  	if($request['start'] < 0){
-		  		$request['start'] = 0;
-		  	}
-		  	if($request['limit'] < 1){
-		  		$request['limit'] = 40;
-		  	}
+		  	if($request['start'] < 0) $request['start'] = 0;
+		  	if($request['limit'] < 1) $request['limit'] = 40;
 		  	$sql .= " LIMIT " . (int)$request['start'] . "," . (int)$request['limit'];
 		  }
       //$this->log->aPrint( $sql );
@@ -156,13 +153,10 @@ class ModelSalesList extends Model {
   public function deleteTransaxtion($txid){
     $sql = "delete from transaction where txid = '$txid'";
     $query = $this->db->query($sql);
-
     $sql = "delete from sales where txid = '$txid'";
     $query = $this->db->query($sql);
-
     $sql = "delete from ship where txid = '$txid'";
     $query = $this->db->query($sql);
-
     $sql = "delete from pay where txid = '$txid'";
     $query = $this->db->query($sql);
   }
