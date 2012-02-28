@@ -392,7 +392,6 @@ $(document).ready(function(){
   		$.fn.filter();
   	}
   });
-
   $('#form input')
   .bind('focusin',function(e){
     $(e.target).select();
@@ -482,7 +481,7 @@ $(document).ready(function(){
     var $tgt = $(event.target);
     if($tgt.is('input.date_pick')){
       //$(".date-pick").datePicker({startDate:'01/01/1996'});
-      $(".date_pick").datePicker({
+      $(".date_pick").datepicker({
         clickInput:true,
         createButton:false,
         startDate:'2000-01-01'
