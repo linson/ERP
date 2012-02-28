@@ -1,19 +1,8 @@
-<?php
-$today = new DateTime();
-$odt = new DateTime($order_date);
-?>
 <?php echo $header; ?>
 <?php if ($error_warning){ ?>
 <div class="warning"><?php echo $error_warning; ?></div>
 <?php } ?>
 <link rel='stylesheet' type='text/css' href='view/template/sales/order.css' />
-<script type='text/javascript' src='view/template/sales/atc/jquery/jquery.metadata.js'></script>
-<script type='text/javascript' src='view/template/sales/atc/src/jquery.auto-complete.js'></script>
-<link rel='stylesheet' type='text/css' href='view/template/sales/atc/src/jquery.auto-complete.css' />
-<!--[if IE]>
-<script type="text/javascript" src="view/javascript/jquery/flot/excanvas.js"></script>
-<![endif]-->
-<script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.js"></script>
 <div class="box">
   <div class="left"></div>
   <div class="right"></div>
@@ -32,7 +21,7 @@ $odt = new DateTime($order_date);
     </div>
   </div>
   <div id="ubporder">
-    <form action='<?php echo $order_action; ?>' method='post' id='form' autocomplete='off'>
+    <form action='<?php echo $order_action; ?>' method='post' id='form' autocomplete="off">
     <div id='base'>
       <div id='brief'>
         <?php require_once('view/template/sales/approve.tpl'); ?>
@@ -43,11 +32,9 @@ $odt = new DateTime($order_date);
         </div>
       </div>
       <div style='width:400px;float:left'>
-        <!-- ship info : start -->
         <div id='ship'>
           <?php require_once('view/template/sales/ship.tpl'); ?>
         </div>
-        <!-- end of ship -->
         <div>
           <div style='float:left;width:100px;'>
             <table style='width:200px' id='cpay'>
@@ -127,24 +114,6 @@ $odt = new DateTime($order_date);
     <!--button type="button" id='edit'>Edit</button-->
   </div>
 </div>
-
-<style>
-.tipsy{ padding:5px; font-size:10px; position: absolute; z-index: 100000; }
-.tipsy-inner{
-  padding: 5px 8px 4px 8px; background-color: black; color: white; max-width: 200px; text-align: center; 
-  font-size:14px;
-}
-.tipsy-inner { border-radius: 3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
-.tipsy-arrow { position: absolute; background: url('../images/tipsy.gif') no-repeat top left; width: 9px; height: 5px; }
-.tipsy-n .tipsy-arrow { top: 0; left: 50%; margin-left: -4px; }
-.tipsy-nw .tipsy-arrow { top: 0; left: 10px; }
-.tipsy-ne .tipsy-arrow { top: 0; right: 10px; }
-.tipsy-s .tipsy-arrow { bottom: 0; left: 50%; margin-left: -4px; background-position: bottom left; }
-.tipsy-sw .tipsy-arrow { bottom: 0; left: 10px; background-position: bottom left; }
-.tipsy-se .tipsy-arrow { bottom: 0; right: 10px; background-position: bottom left; }
-.tipsy-e .tipsy-arrow { top: 50%; margin-top: -4px; right: 0; width: 5px; height: 9px; background-position: top right; }
-.tipsy-w .tipsy-arrow { top: 50%; margin-top: -4px; left: 0; width: 5px; height: 9px; }
-</style>
 
 <script type="text/javascript" src="view/javascript/jquery/jquery.tipsy.js"></script>
 
@@ -267,7 +236,7 @@ $(document).ready(function(){
     $tgt = $(e.target);
     $_date = $tgt.val();
   })
-  .datePicker({
+  .datepicker({
     clickInput:true,
     createButton:false,
     startDate:'2000-01-01'
@@ -294,26 +263,6 @@ $(document).ready(function(){
     }
   });
 
-  //automatically show how many days be passed from order_date
-  //todo. need to make whole validation process
-
-  /*** todo
-  before submit , let's call whole validation logic
-  need to enhance , besso 201108 
-  ***/
-  $.fn.verifyCorePayment = function(){
-    var $aTotalPrice = $('#order').find('input[name="total_price[]"]'),
-        $orderSum = 0;
-    $.each($aTotalPrice,function(idx,object){
-      if(object.name == 'total_price[]' && object.value > 0){
-        $orderSum += parseFloat($aTotalPrice[idx].value);
-      }
-    });
-    $ele_amount.val($orderSum);
-    $ele_balance.val($orderSum);
-    $.fn.storeDiscount();
-  }
-
   // todo. move to lib. common lib to calculate date difference
   $.fn.calculateDiffDays = function(day1,day2){
     d1 = $.fn.parseDate(day1);
@@ -327,156 +276,9 @@ $(document).ready(function(){
     return new Date(Ymd[0],Ymd[1],Ymd[2]);
   };
 
-  // Dynamic row binding , shipment
-  $('#ship>table').mouseover(function(event){
-    var $tgt = $(event.target),
-        $pnt = $tgt.parents('tr');
-    if($tgt.is('p.plus') && $pnt.is('tr') ){
-      $tgt.css('background', 'url(\'view/image/plus_icn.jpg\') no-repeat');
-    }
-    if($tgt.is('p.del') && $pnt.is('tr')){
-      if($pnt[0].rowIndex != 2){
-        $tgt.css('background', 'url(\'view/image/del_icn.jpg\') no-repeat');
-      }
-    }
-  });
-
-  $('#ship>table').mouseout(function(event){
-    var $tgt = $(event.target),
-        $pnt = $tgt.parents('tr');
-    if($tgt.is('p.plus')){
-      $tgt.css('background', 'url(\'\') no-repeat');
-    }
-    if($tgt.is('p.del') && $pnt.is('tr')){
-      if($pnt[0].rowIndex != 2){
-        $tgt.css('background', 'url(\'\') no-repeat');
-      }else{
-        $tgt.css('cursor','default');
-      }
-    }
-  });
-
-  /**** deprecated
-  // todo. border-bottom not work correctly , besso-201103 
-  var $newShipRow = "<tr><td class='label' style='width:50px'><p class='del' style='float:left;margin:0px;margin-left:2px;'></p><input type='hidden' name='ship_id[]' value='' /><input type='hidden' name='ship_user[]' value='' />M</td><td class='context' style='width:50px'><select name='method[]'><option value='truck'>truck</option><option value='ups' selected>ups</option><option value='delivery'>delivery</option><option value='pickup'>pickup</option></select></td><td class='label'>LFT/COD</td><td class='context'><input type='number' name='lift[]' value='0' size='2' /> / <input type='number' name='cod[]' value='0' size='2' /></td><td class='label'>DATE</td><td class='context'><input type='text' class='date_pick' name='ship_date[]' value='' size='8' /><p class='plus' style='float:right;margin:0px;margin-right:2px;' /></td></tr>";
-  $('#ship').click(function(event){
-    var $tgt = $(event.target),
-        $pnt = $tgt.parents('tr');
-    if($tgt.is('p.plus') && $pnt.is('tr') ){
-      $tgt.parent().parent().after($newShipRow);
-      $tgt.parent().parent().next().css('border-top','2px solid orange');
-    }
-    if( $tgt.is('p.del') && $pnt.is('tr') ){
-      if($pnt[0].rowIndex != 2){
-        $tgt.parent().parent().remove();
-      }else{
-        $tgt.css('cursor','default');
-      }
-    }
-  });
-  ***/
-
-  // #order section
-  // atc
-  $('#order').bind('mousedown',function(event){
-    var $tgt = $(event.target),
-        $mama = $tgt.parents('table'),
-        $cat = $mama.attr('id'),
-        $atcObject = $mama.find('input.atc'),
-        $ele_store = $('#storeinfo').find('input[name=store_id]');
-
-    if($atcObject.is('input.atc')){
-      if(false == $.fn.validateNull($ele_store)) return;
-      $atcObject.autoComplete({cat:$cat});
-    }
-  });
-  // atc-end
-
-  // Dynamic row binding , order
-  $('#order').mouseover(function(event){
-    var $tgt = $(event.target);
-    if($tgt.is('td.plus')){
-      $tgt.css('background', 'url(\'view/image/plus_icn.jpg\') no-repeat');
-    }
-    $trCnt = $tgt.parent().parent().children().length;
-    //if($tgt.is('td.del') && $trCnt > 1){
-    // todo. temporarily release first row distriction, , besso-201103 
-    if($tgt.is('td.del')){
-      $tgt.css('background', 'url(\'view/image/del_icn.jpg\') no-repeat');
-    }
-  });
-
-  $('#order').mouseout(function(event){
-    var $tgt = $(event.target);
-    
-    if($tgt.is('td.plus')){
-      $tgt.css('background', 'url(\'\') no-repeat');
-    }
-    if($tgt.is('td.del')){
-      $tgt.css('background', 'url(\'\') no-repeat');
-    }
-  });
-
   var $clickNode = $('#order table tr');
 
   $('#order').bind('click',function(event){
-    var $tgt = $(event.target),
-        $pnt = $tgt.parents('td');
-    // todo. why dont use jquery library, , besso 201108
-    if($tgt.is('img.preview')){
-      var $imgUrl = $tgt.attr('title').trim();
-      var html  = "<a onclick=\"$('#detail').html();$('#detail').css('visibility','hidden');\" class=\"button\"><span>Close</span></a><br/>";
-          html += '<img src=' + $imgUrl + ' />';  
-      $p = $tgt.position();
-      $imgCss = {
-        'visibility':'visible',
-        'width':'500px',
-        'height':'520px',
-        'top':$p.top,
-        'left':$p.left
-      }
-      $('#detail').css($imgCss);
-      $('#detail').html(html);
-      $('#detail').draggable();
-    }
-
-    if($tgt.is('input.check_locked')){
-      $model = $pnt.find('input[name="model[]"]').val();
-      $.ajax({
-        type:'get',
-        // this just return json
-        url:'index.php?route=sales/order/callLockedPannel',
-        dataType:'html',
-        data:'token=<?php echo $token; ?>&model=' + $model,
-        success:function(html){
-          if(html){
-            $p = $tgt.position();
-            $cssMap = {
-              'visibility':'visible',
-              'height':'30px',
-              'width':'300px',
-              'border':'0',
-              'top':$p.top + 300,
-              'left':$p.left - 400
-            }
-            $('#detail').css($cssMap);
-            $('#detail').html(html);
-          } // success
-        }
-      });
-    }
-
-    // $trCnt = $tgt.parent().parent().children().length;
-    // To remove invoke to each all object loop
-    if($tgt.is('td.del')){
-      $.fn.deleteOneRow($tgt);
-      $tgt.parent().remove();
-      
-      // tune balance 
-      if(false == $.fn.validateAR()){
-        alert('AR Problem, all stop and ask IT team');
-      }
-    }
     if($tgt.is('input')){
       $tgt.select();
     }
