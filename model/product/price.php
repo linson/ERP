@@ -696,5 +696,14 @@ class ModelProductPrice extends Model{
     $query = $this->db->query("SELECT model FROM product WHERE product_id = $product_id");
 		return $query->row['model'];
 	}
+	
+	// for simple update quantity
+	public function updateQuantity($req){
+    $id = $req['id'];
+    $quantity = $req['quantity'];
+    $sql = "update product set quantity = $quantity where product_id = $id";
+    //$this->log->aPrint( $sql );
+    if($this->db->query($sql)){ return true; }else{ return false; }
+	}
 }
 ?>
