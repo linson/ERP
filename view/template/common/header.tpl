@@ -12,24 +12,28 @@
 <?php foreach ($styles as $style){ ?>
 <link rel="<?php echo $style['rel']; ?>" type="text/css" href="<?php echo $style['href']; ?>" media="<?php echo $style['media']; ?>" />
 <?php } ?>
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<!--link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/-->
 
-<!--script type="text/javascript" src="http://jqueryui.com/jquery-1.5.1.js"></script-->
-<!--script type="text/javascript" src="view/javascript/jquery/jquery-1.5.1.js"></script-->
-<script type="text/javascript" src="view/javascript/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="view/javascript/jquery/jquery-1.7.1.js"></script>
+<!--script type="text/javascript" src="view/javascript/jquery/jquery.min.js"></script-->
 
-<!--script type="text/javascript" src="view/javascript/jquery/ui/ui.core.js"></script-->
-<script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.core.js"></script>
+<!--script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.core.js"></script-->
+<script type="text/javascript" src="view/javascript/jquery/jquery.ui.core.js"></script>
 
-<script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.widget.js"></script>
+<!--script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.widget.js"></script-->
+<script type="text/javascript" src="view/javascript/jquery/jquery.ui.widget.js"></script>
+
+<!--script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.mouse.js"></script-->
 <script type="text/javascript" src="view/javascript/jquery/jquery.ui.mouse.js"></script>
+
+<!--script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.draggable.js"></script-->
+<!--script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.droppable.js"></script-->
+<script type="text/javascript" src="view/javascript/jquery/jquery.ui.draggable.js"></script>
+<script type="text/javascript" src="view/javascript/jquery/jquery.ui.droppable.js"></script>
 
 <script type="text/javascript" src="view/javascript/jquery/superfish/js/superfish.js"></script>
 <script type="text/javascript" src="view/javascript/jquery/tab.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
-
-<script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.draggable.js"></script>
-<script type="text/javascript" src="http://jqueryui.com/ui/jquery.ui.droppable.js"></script>
 
 <script type="text/javascript" src="view/javascript/jquery/autoresize.jquery.js"></script>
 
@@ -269,13 +273,19 @@ $(document).ready(function(){
     <li><a class="top" id='change_password' href='index.php?route=user/user/changepassword'>Password</a></li>
     <li><a class="top" href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>
   </ul>
-  <!--ul class="nav right">
+  <?php
+    if($this->user->hasPermission('access', 'report/excel')){
+  ?>
+  <ul class="nav right">
     <li id="excel"><a class="top">Report</a>
       <ul>
-        <li><a href="#" onclick="alert('blocked for security');">CSV</a></li>
+        <li><a href="index.php?route=report/excel">CSV</a></li>
       </ul>
     </li>
-  </ul-->
+  </ul>
+  <?php
+  }
+  ?>
 
 <script type="text/javascript">
 $(document).ready(function(){
