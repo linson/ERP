@@ -20,8 +20,8 @@
     <h1 style="background-image: url('view/image/product.png');">
       Package Mapping <?php if($total) echo "(" . $total . ")";?> </h1>
     <div class="buttons">
-      <a class="button"><span id='save'>save</span></a>
-      <a class="button"><span id='close'>close</span></a>
+      <a class="button"><span id='save'>Save</span></a>
+      <a class="button"><span id='close'>Close</span></a>
     </div>
   </div>
   <?php
@@ -103,33 +103,32 @@
           </tr>
   		  </table>
       </div>
-      
-<?php
-  if(isset($package)){
-    $pkgHtml = '<tbody>';
-    foreach($package as $exist){
-      //$this->log->aPrint( $exist );
-      $code = $exist['code'];
-      $name = $exist['name'];
-      $pkgHtml .=<<<HTML
-        <tr class='ui-draggable'>
-            <td class='center accountno_in_list'>
-              <input name='id' class='id_in_list' value='$code' type='hidden'>
-              <input name='view' value='proxy' type='hidden'>
-              $code
-            </td>
-            <!--td class='center name_in_list'-->
-            <td>
-              <a onclick='' class='edit'>
-              $name
-              </a>
-            </td>
-        </tr>
+      <?php
+        if(isset($package)){
+          $pkgHtml = '<tbody>';
+          foreach($package as $exist){
+            //$this->log->aPrint( $exist );
+            $code = $exist['code'];
+            $name = $exist['name'];
+            $pkgHtml .=<<<HTML
+              <tr class='ui-draggable'>
+                  <td class='center accountno_in_list'>
+                    <input name='id' class='id_in_list' value='$code' type='hidden'>
+                    <input name='view' value='proxy' type='hidden'>
+                    $code
+                  </td>
+                  <!--td class='center name_in_list'-->
+                  <td>
+                    <a onclick='' class='edit'>
+                    $name
+                    </a>
+                  </td>
+              </tr>
 HTML;
-    }
-    $pkgHtml .= '</tbody>';
-  }
-?>
+          }
+          $pkgHtml .= '</tbody>';
+        }
+      ?>
       <div>
         <table id='btripTable'>
         <?php   if(isset($package)) echo $pkgHtml; ?>
@@ -208,19 +207,5 @@ $(document).ready(function(){
       $('#btripTable').append(ui.draggable);
     }
   });
-
-  $.fn.btripDND = function(){
-    $('#btripTable tr').draggable({
-      revert:'invalid',
-      helper:'clone'
-    });
-    $('#storeTable').droppable({
-      drop:function(event,ui){
-        $('#storeTable').append(ui.draggable);
-      }
-    });
-  }
-  $.fn.btripDND();
-  
 });
 </script>
