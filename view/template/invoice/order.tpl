@@ -307,7 +307,7 @@ $(document).ready(function(){
   $('#form').bind('focusin',function(event){
     var $tgt = $(event.target);
     if($tgt.is('input.date_pick')){
-      $(".date_pick").datePicker({
+      $(".date_pick").datepicker({
         clickInput:true,
         createButton:false,
         startDate:'2000-01-01'
