@@ -195,6 +195,7 @@ class ControllerMaterialLookup extends Controller{
     $id = $this->request->get['id'];
     $quantity = $this->request->get['quantity'];
     $price    = $this->request->get['price'];
+
     isset($this->request->get['desc']) ? $desc = $this->request->get['desc'] : $desc = 'stored';
 		$this->load->model('material/lookup');
     $this->model_material_lookup->callQuickUpdate($id,$quantity,$price,$desc);
@@ -284,5 +285,12 @@ class ControllerMaterialLookup extends Controller{
 		$this->load->library('json');
 		$this->response->setOutput(Json::encode($package_data));
 	}
+	
+	public function updateQuantity(){
+  	$this->load->model('product/price');
+    if(!$this->model_product_price->updateQuantity($this->request->get)){
+      echo "Update Fail";
+    }
+  }
 }
 ?>
