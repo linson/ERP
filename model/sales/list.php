@@ -32,6 +32,7 @@ class ModelSalesList extends Model {
 		  if(isset($request['filter_ship']) && !is_null($request['filter_ship'])){
 		  	$sql .= " AND LCASE(x.shipped_yn) = '" . $this->db->escape(strtolower($request['filter_ship'])) . "'";
 		  }
+		  /*** no need for paid or not yet
 		  if(isset($request['filter_payed']) && !is_null($request['filter_payed'])){
         if($request['filter_payed'] == 'yet'){
   	  		$sql .= " AND (x.order_price - x.payed_sum) > 0 ";
@@ -40,6 +41,7 @@ class ModelSalesList extends Model {
 	        $sql .= " AND (x.order_price - x.payed_sum) <= 0 ";
 	      }
 		  }
+		  ***/
 		  if(isset($request['filter_order_user']) && !is_null($request['filter_order_user'])){
 		  	//$sql .= " AND x.order_user = ( select user_id from user where user_group_id = (select user_group_id from user_group where name = 'sales') and LCASE(username) LIKE '%" . $this->db->escape(strtolower($request['filter_order_user'])) . "%')";
         $sql .= " AND LCASE(u.username) = '" . $this->db->escape(strtolower($request['filter_order_user'])) . "'";
@@ -118,6 +120,7 @@ class ModelSalesList extends Model {
 		  if(isset($request['filter_ship']) && !is_null($request['filter_ship'])){
 		  	$sql .= " AND LCASE(x.shipped_yn) = '" . $this->db->escape(strtolower($request['filter_ship'])) . "'";
 		  }
+		  /***
 		  if(isset($request['filter_payed']) && !is_null($request['filter_payed'])){
         if($request['filter_payed'] == 'yet'){
   	  		$sql .= " AND (x.order_price - x.payed_sum) > 0 ";
@@ -126,6 +129,7 @@ class ModelSalesList extends Model {
 	        $sql .= " AND (x.order_price - x.payed_sum) <= 0 ";
 	      }
 		  }
+		  ***/
 		  if(isset($request['filter_order_user']) && !is_null($request['filter_order_user'])){
 		  	//$sql .= " AND x.order_user = ( select user_id from user where user_group_id = (select user_group_id from user_group where name = 'sales') and LCASE(username) LIKE '%" . $this->db->escape(strtolower($request['filter_order_user'])) . "%')";
         $sql .= " AND LCASE(u.username) = '" . $this->db->escape(strtolower($request['filter_order_user'])) . "'";
@@ -206,6 +210,5 @@ class ModelSalesList extends Model {
 		$query = $this->db->query($sql);
   	return $query->rows;
   }
-
 }
 ?>
