@@ -239,10 +239,8 @@ $(document).ready(function(){
   .datepicker({
     clickInput:true,
     createButton:false,
-    startDate:'2000-01-01'
-    //todo. date picker callback is not work !
-    // so i binded focusout manually, not good
-    //onSelect: function(){console.log('call callback');
+    startDate:'2000-01-01',
+    dateFormat:'yy-mm-dd'
   })
   .bind('change',function(e){
     var $tgt = $(e.target);
