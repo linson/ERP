@@ -209,5 +209,18 @@ $(document).ready(function(){
     }
   });
 
+  $.fn.btripDND = function(){
+    $('#btripTable tr').draggable({
+      revert:'invalid',
+      helper:'clone'
+    });
+    $('#storeTable').droppable({
+      drop:function(event,ui){
+        $('#storeTable').append(ui.draggable);
+      }
+    });
+  }
+  $.fn.btripDND();
+  
 });
 </script>
