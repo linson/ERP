@@ -56,6 +56,10 @@ class ModelSalesList extends Model {
 		  	  $sql .= " AND LCASE(x.approve_status) = '" . $this->db->escape(strtolower($request['filter_approve_status'])) . "'";
 		  	}
 		  }
+		  if( isset($request['filter_status']) ){
+		  	$status = $request['filter_status'];
+	  	  $sql .= " AND x.status = $status";
+		  }
 		  if( isset($request['sort']) ){
 		  	$sql .= " ORDER BY " . $request['sort'] . " DESC";
 		  }else{
@@ -140,6 +144,10 @@ class ModelSalesList extends Model {
 		  	}else{
 		  	  $sql .= " AND LCASE(x.approve_status) = '" . $this->db->escape(strtolower($request['filter_approve_status'])) . "'";
 		  	}
+		  }
+		  if( isset($request['filter_status']) ){
+		  	$status = $request['filter_status'];
+	  	  $sql .= " AND x.status = $status";
 		  }
 		  //$this->log->aPrint( $sql );
 			$query = $this->db->query($sql);
