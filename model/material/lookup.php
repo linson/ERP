@@ -437,6 +437,7 @@ class ModelMaterialLookup extends Model{
 		if(isset($data['filter_status']) && '' != $data['filter_status']){
 			$sql .= " AND status = '" . (int)$data['filter_status'] . "'";
 		}
+		//$this->log->aPrint( $sql );
 		$query = $this->db->query($sql);
 		return $query->row['total'];
 	}
