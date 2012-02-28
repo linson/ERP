@@ -6,7 +6,7 @@
 <?php echo $header; ?>
 
 <style>
-.box {
+.box{
   z-index:10;
 }
 .content .name_in_list{
@@ -14,7 +14,7 @@
   cursor:pointer;
 }
 #detail{
-  position : absolute;
+  position:absolute;
   top: 100px;
   left: 200px;
   visibility:hidden;
@@ -54,7 +54,6 @@
 #btripTable tr{
   vertical-align:top;
 }
-
 </style>
   <div class="content" style='min-height:900px;width:800px;'>
     <div id='lpanel'>
@@ -84,9 +83,6 @@
 	    <form id='form_promotion' action='index.php?route=sales/promotion/insert'>
 	    <div id="startingPoint">
         <!-- start of map -->
-        <?php
-        //$this->log->aPrint( $product );
-        ?>
         <table>
           <tr style='background:peru;'>
             <td colspan=2>
@@ -271,7 +267,7 @@ $(document).ready(function(){
     var $tgt = $(event.target);
     if($tgt.is('input.date_pick')){
       //$(".date-pick").datePicker({startDate:'01/01/1996'});
-      $(".date_pick").datePicker({
+      $(".date_pick").datepicker({
         clickInput:true,
         createButton:false,
         startDate:'2000-01-01'
