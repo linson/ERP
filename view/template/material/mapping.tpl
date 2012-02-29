@@ -30,9 +30,8 @@
   ?>
   <div class="content" style='min-height:900px;width:800px;'>
     <div id='lpanel'>
-    <?php 
-      // no delete or so
-      $delete = ''; 
+    <?php
+      $delete = '';
     ?>
     <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form">
       <table class="list" id='storeTable'>
@@ -80,14 +79,11 @@
     <div id='rpanel'>
 	    <div id="startingPoint">
         <!-- start of map -->
-        <?php
-        //$this->log->aPrint( $product );
-        ?>
+        <?php //$this->log->aPrint( $product ); ?>
         <table>
           <tr style='background:peru;'>
             <td colspan=2>
-              <p style='color:white;width:16px;width:300px;height:20px;padding-left:20px;font-size:14px;font-wegiht:bold;'>
-              Product</p>
+              <p style='color:white;width:16px;width:300px;height:20px;padding-left:20px;font-size:14px;font-wegiht:bold;'>Product</p>
             </td></tr>
           <tr>
             <td>
@@ -185,27 +181,23 @@ $(document).ready(function(){
     });
   });
 
-  $('#close').click(function(e){
-    $('#detail').css('visibility','hidden');
-  });
+  $('#close').click(function(e){  $('#detail').css('visibility','hidden');  });
 
   $(window).bind('scroll',function(){
     var winP = $(window).scrollTop()+215;
-    var mapCss = {
-      "position":"absolute",
-      "top":winP +'px',
-    }
+    var mapCss = {  "position":"absolute","top":winP +'px'  }
     $("#btripTable").css(mapCss);
   });
 
-  $('#storeTable tr').draggable({
-    revert:'invalid',
-    helper:'clone'
+  $('#storeTable tr').draggable({ revert:'invalid',helper:'clone' });
+  $('#btripTable').droppable({  
+    drop:function(event,ui){  $('#btripTable').append(ui.draggable);  }
   });
-  $('#btripTable').droppable({
-    drop:function(event,ui){
-      $('#btripTable').append(ui.draggable);
-    }
+
+  $('#btripTable tr').draggable({ revert:'invalid',helper:'clone' });
+  $('#storeTable').droppable({
+    drop:function(event,ui){  $('#storeTable').append(ui.draggable);  }
   });
+
 });
 </script>
