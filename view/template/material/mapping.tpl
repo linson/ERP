@@ -27,12 +27,10 @@
   <?php
     $filter_code = '';
     $filter_name = '';
+    $delete = '';
   ?>
   <div class="content" style='min-height:900px;width:800px;'>
     <div id='lpanel'>
-    <?php
-      $delete = '';
-    ?>
     <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form">
       <table class="list" id='storeTable'>
         <thead>
@@ -149,8 +147,7 @@ $(document).ready(function(){
       data:'token=<?php echo $token; ?>&product_id=' + $product_id + '&filter_code=' + $filter_code + '&filter_name=' + $filter_name,
       success:function(html){
         $('#detail').css('visibility','visible');
-        $('#detail').html(html);
-        $('#btripTable').html($srcHtml);
+        $('#detail').html(html);  $('#btripTable').html($srcHtml);
       }
     });
   }
