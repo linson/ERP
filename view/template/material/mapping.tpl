@@ -34,10 +34,7 @@
     <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form">
       <table class="list" id='storeTable'>
         <thead>
-          <tr>
-            <td class="left">code</td>
-            <td class="left">name</td>
-          </tr>
+          <tr><td class="left">code</td><td class="left">name</td></tr>
           <!-- it's only for page module , besso-201103 -->
           <tr class="filter">
             <td>
@@ -58,16 +55,11 @@
               <?php echo $row['code']; ?>
             </td>
             <!--td class='center name_in_list'-->
-            <td>
-              <a onclick='' class='edit'>
-              <?php echo $row['name']; ?></a>
-            </td>
+            <td><a onclick='' class='edit'><?php echo $row['name']; ?></a></td>
           </tr>
           <?php } // end foreach ?>
           <?php } else { ?>
-          <tr>
-            <td class="center" colspan="11">No Result</td>
-          </tr>
+          <tr><td class="center" colspan="11">No Result</td></tr>
           <?php } ?>
         </tbody>
       </table>
