@@ -235,8 +235,9 @@
             <td class='center'><?php echo $row['rcnt']; ?></td>
             <td class='center'><?php echo $row['wcnt']; ?></td>
           </tr>
-          <?php } // end foreach 
-            $remain_sum = $target - $total;
+          <?php 
+            $remain_sum += $remain;
+            } // end foreach 
           ?>
           <tr style='background-color:#e2e2e2;'>
             <td class='center'></td>
@@ -357,7 +358,7 @@ $(document).ready(function(){
     if($tgt.is('input.date_pick')){
       //$(".date-pick").datePicker({startDate:'01/01/1996'});
       $(".date_pick").datePicker({
-        clickInput:true,
+        clickInput:true,  
         createButton:false,
         startDate:'2000-01-01'
       });
@@ -365,7 +366,6 @@ $(document).ready(function(){
   });
   $('.btn_filter_hidden').bind('click',function(e){ $.fn.filter_hidden(); });
   $('.btn_filter').bind('click',function(e){  $.fn.filter();  });
-
 });
 </script>
 <?php echo $footer; ?>
