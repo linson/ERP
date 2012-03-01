@@ -39,8 +39,8 @@ class ModelSalesOrder extends Model{
     $today = date('Y-m-d');
     $approve_user = $this->user->getUserName();
     $sql = "update transaction set approve_status = '$status', approved_user = '$approve_user', ";
-    $sql.= " approved_date = '$today', order_date = now() where txid = '$txid'";
-    //$this->log->aPrint( $sql );
+    $sql.= " approved_date = '$today', order_date = IF( status != '2' , now(), order_date ) where txid = '$txid'";
+    //$this->log->aPrint( $sql ); exit;
     if($query = $this->db->query($sql)){
       return true;
     }
@@ -124,7 +124,6 @@ class ModelSalesOrder extends Model{
           //$sql.= " backorder = $backorder, backfree = $backfree, backdamage = $backdamage, promotion = $promotion , backpromotion = $backpromotion";
           $sql.= " promotion = $promotion ";
           $sql.= " where model = '$model' and txid = '$txid'";
-          //if( $model == 'VN7916' )  $this->log->aPrint( $sql );
           if( !$this->db->query($sql) ){
             $aErr['key'] = $txid;
             $aErr['msg'] = $sql;
@@ -151,7 +150,6 @@ class ModelSalesOrder extends Model{
 		    }
       }
     } // end for
-
     // todo. temporary , besso-201103 
     return true;
   }
@@ -220,14 +218,12 @@ class ModelSalesOrder extends Model{
   		$tmpPayed += $data[0][$i];
 		}
 		if(number_format($tmpPayed,2) != number_format($payed_sum,2)){
-		  echo 'Payed Sum Wrong !! call IT team';
-		  exit;
+		  echo 'Payed Sum Wrong !! call IT team'; exit;
 		}
 		$tmpBalance = number_format($order_price - $tmpPayed,2);
 		//$this->log->aPrint( $tmpBalance); exit;
 		if(number_format($balance,2) != $tmpBalance){
-		  echo 'Balance Wrong !! call IT team';
-		  exit;
+		  echo 'Balance Wrong !! call IT team'; exit;
 		}
     // update balance and payed_sum to tx
     $sql = "update transaction set balance = $balance, payed_sum = $payed_sum where txid = '" . $data['txid'] . "'";
@@ -251,14 +247,9 @@ class ModelSalesOrder extends Model{
   }
 
   public function selectStoreARTotal($store_id){
-    $sql = "
-            select store_id,
-               count(txid) as count,
-                sum(order_price) as tot_order ,
-                sum(payed_sum) as tot_payed,
-               (sum(order_price) - sum(payed_sum)) as balance
-          from transaction
-         where store_id = $store_id";
+    $sql = "select store_id,count(txid) as count,sum(order_price) as tot_order ,
+                   sum(payed_sum) as tot_payed,(sum(order_price) - sum(payed_sum)) as balance
+              from transaction where store_id = $store_id";
 		$query = $this->db->query($sql);
 		$data = $query->row;
     return $data;
@@ -266,7 +257,6 @@ class ModelSalesOrder extends Model{
 
   public function quickbookHistory($store_id){
     $sql = "select a.* from storelocator s, ar_kim a where trim(s.accountno) = trim(a.c1) and s.id = $store_id";
-    //echo $sql;
 		$query = $this->db->query($sql);
 		$data = $query->row;
     return $data;
@@ -390,10 +380,7 @@ class ModelSalesOrder extends Model{
 
   public function selectPay($txid){
     $aData = array();
-    $sql = "select *
-              from pay
-             where txid ='$txid' order by pay_date";
-    //echo $sql;
+    $sql = "select * from pay where txid ='$txid' order by pay_date";
   	$query = $this->db->query($sql);
 	  $res = $query->rows;
 	  $aData = $res;
