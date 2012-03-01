@@ -1,35 +1,14 @@
 <style>
 .header{
-  color:white;
-  font-size:16px;
-  background:black;
-  padding-left:20px;
-  line-height:30px;
-  height:30px;
-  width:900px;
-  margin-bottom:1px;
+  color:white;  font-size:16px;  background:black;  padding-left:20px;
+  line-height:30px;  height:30px;  width:900px;  margin-bottom:1px;
 }
-.sales_tbl{
-  display:none;
-}
-td{
-  padding:2px;
-}
-.rborder{
-  border-right:1px dotted black;
-}
-.item{
-  width:430px;
-  margin: 2px 5px 2px 5px;
-}
-.item div{
-  float:left;
-  padding:1px;
-  line-height:20px;
-}
-.fl{
-  float:left;
-}
+.sales_tbl{ display:none; }
+td{ padding:2px;  }
+.rborder{ border-right:1px dotted black;  }
+.item{  width:430px;  margin: 2px 5px 2px 5px;  }
+.item div{  float:left;  padding:1px;  line-height:20px;  }
+.fl{  float:left; }
 </style>
 <script>
   // define freeorder check method before DOM
@@ -39,69 +18,42 @@ td{
     $el_backdamage = node.find('input[name="backdamage[]"]');
     if( $el_backorder.val() > 0 || $el_backfree.val() > 0 || $el_backdamage.val() > 0 ){
       node.find('.backorder').css('display','block')
-      .css('background-color','#e2e2e2')
-      .css('width','400px');
+      .css('background-color','#e2e2e2').css('width','400px');
       node.find('.backorder input').css('width','30px');
     }
   }
 </script>
-<?php 
+<?php
   $today = date("Y-m-d"); 
-  function subval_sort($a,$subkey) {
-  	foreach($a as $k=>$v) {
-  		$b[$k] = strtolower($v[$subkey]);
-  	}
-  	asort($b);
-    $i = 0;
+  function subval_sort($a,$subkey){
+  	foreach($a as $k=>$v){  $b[$k] = strtolower($v[$subkey]); }
+  	asort($b);  
+  	$i = 0;
     $aLeft = $aRight = array();
     foreach( $b as $k => $v ){
   		$prefix = substr($v,2,2);
   		$suffix = substr($v,4,2);
-  		if( $prefix == '08' ){
-  		  $aLeft[] = $v;
-  		}
-   		if( $prefix == '09' ){
-  		  $aRight[] = $v;
-  		}
+  		if( $prefix == '08' ) $aLeft[] = $v;
+   		if( $prefix == '09' ) $aRight[] = $v;
       $i++;
     }
-    //print_r($aLeft);print_r($aRight);
-    $aSort = array();
-    $i = 0;
+    $aSort = array(); $i = 0;
     $lflag = $rflag = true;
     while(true){
       $k = ceil(($i+1)/2);
       $k = $k -1;
-      if( isset($aLeft[$k]) && $i%2 == 0 ){
-        $aSort[$i] = $aLeft[$k];
-      }
-      if( isset($aRight[$k]) && $i%2 == 1 ){
-        $aSort[$i] = $aRight[$k];
-      }
-      if( !isset($aLeft[$k]) ){
-        $lflag = false;
-      }
-      if( !isset($aRight[$k]) ){
-        $rflag = false;
-      }
+      if( isset($aLeft[$k]) && $i%2 == 0 ){ $aSort[$i] = $aLeft[$k];  }
+      if( isset($aRight[$k]) && $i%2 == 1 ){  $aSort[$i] = $aRight[$k]; }
+      if( !isset($aLeft[$k]) ){ $lflag = false; }
+      if( !isset($aRight[$k]) ){  $rflag = false; }
       $i++;
       if( $lflag == false && $rflag == false ) break;
     }
-
-    $i = 0;    $t1 = array();
-    foreach($aSort as $v){
-      $t1[$i] = $v; $i++;
-    }
-    //echo '<pre>';    print_r($t1);    echo '</pre>';
-    $aRtn = array();
-  	foreach($t1 as $key=>$val) {
+    $i = 0; $t1 = array();  $aRtn = array();
+    foreach($aSort as $v){  $t1[$i] = $v; $i++; }
+  	foreach($t1 as $key=>$val){
   	  foreach($a as $k => $v){
-  	    //print_r($v[$subkey]);
-  	    if( strtolower($v[$subkey]) == $val ){
-  	    
-  	      $aRtn[$key] = $a[$k];
-    		  //$c[] = $a[$key];
-  		  }
+  	    if( strtolower($v[$subkey]) == $val ){  $aRtn[$key] = $a[$k]; }
   		}
   	}
   	return $aRtn;
@@ -115,16 +67,11 @@ if($mode == 'show'){
     $sibling = implode('|',$catalog[$key]);
     $total = $cnt = $fre = $dmg = $prm = 0;
     $headerBG = ''; $headerTotal = ''; $fd = false;
-    //$this->log->aPrint( $sale );
-    if( $key == 'COLOR' ){
-      $sale = subval_sort($sale,'model');
-    }
+    if( $key == 'COLOR' ){  $sale = subval_sort($sale,'model'); }
     foreach($sale as $row){
       $total += $row['total_price'];
-      $cnt += $row['cnt'];
-      $fre += $row['free'];
-      $dmg += $row['damage'];
-      $prm += $row['promotion'];
+      $cnt += $row['cnt'];  $fre += $row['free'];
+      $dmg += $row['damage']; $prm += $row['promotion'];
     }
     if( ( $cnt + $fre + $dmg + $prm ) > 0 ) $fd = true;
     if( $total > 0 || $fd == true ){
@@ -165,7 +112,7 @@ if($mode == 'show'){
             echo '<td><td></tr><tr>';
           }
           if( substr($row['model'],0,4) == 'VN09' && $idx%2 == 0 ){
-            echo '<td></td>'; 
+            echo '<td></td>';
             $idx++;
           }
           // color highlight
@@ -230,9 +177,7 @@ if($mode == 'show'){
     if($prefix == '30') $bgcolor='#9900FF';
     if($prefix == 'VI') $bgcolor='#3333FF';
     if($prefix == 'OE') $bgcolor='#00CC33';
-
     $hdrHtml = $key;
-
     if( isset($sales[$key]) ){
       //$this->log->aPrint( $key );
       $groupTotal = 0;
@@ -258,7 +203,6 @@ if($mode == 'show'){
   } //end foreach
 } // mode
 ?>
-
 <script>
 $(document).ready(function(){
   /* not used now
@@ -279,27 +223,20 @@ $(document).ready(function(){
     $order_price = $order_price + parseFloat($lift) + parseFloat($cod);
     $order_price = $order_price.toFixed(2);
     //alert($order_price);    alert($amount);
-    if( $order_price != $amount ){
-      return true;
-    }
+    if( $order_price != $amount ){  return true;  }
     return true;
   }
   */
-
-  // rollback beforeNode job
   $beforeNode = null;
-
   if( 'edit' == $('#form').find('input[name=mode]').val() ){
     $('#floatmenu').css('visibility','visible');
     $('#floatmenu').find('input[name=float_order_price]').val($('#form').find('input[name=order_price]').val());
     $('#floatmenu').find('input[name=float_freegood_percent]').val($('#freegood_percent').val());
   }
-
   // defind window.object global
   var $el_order_date  = $('#form').find('input[name=order_date]'),
       $el_order_price = $('#form').find('input[name=order_price]'),
       $tx = 1;
-
   /* hard to distinguish if click or dbl-click
   It is inadvisable to bind handlers to both the click and dblclick events for the same element. The sequence of events triggered varies from browser to browser, with some receiving two click events before the dblclick and others only one. Double-click sensitivity (maximum time between clicks that is detected as a double click) can vary by operating system and browser, and is often user-configurable. 
   */
@@ -308,17 +245,10 @@ $(document).ready(function(){
     alert('NO double click!\nClick again softly and wait!');
   })
   .bind('click.hdrEvent',function(e){
-    //console.log( e.type );
-    if( 'show' == $('#form').find('input[name=mode]').val() ){
-      $tx = 0;
-    }
+    if( 'show' == $('#form').find('input[name=mode]').val() ){  $tx = 0;  }
     $('#form').find('input[name=mode]').val('edit');
     $tgt = $(e.target);
-
-    var $tbl_node = $tgt.next('table'),
-        $id = $tbl_node.attr('id'),
-        $c1 = $c2 = $c3 = $c4 = $c5 = 0;
-
+    var $tbl_node = $tgt.next('table'),$id = $tbl_node.attr('id'),$c1 = $c2 = $c3 = $c4 = $c5 = 0;
     if( $beforeNode == null)  $beforeNode = $tbl_node;
     $beforeNode.find('input[name="cnt[]"]').each(function($k,$v){
       if(!isNaN(parseInt($beforeNode.find('input[name="cnt[]"]')[$k].value))){
@@ -335,15 +265,9 @@ $(document).ready(function(){
       }
     });
     $c5 = $c1 + $c2 + $c3 + $c4;
-
-    if( $tx > 0 && $c5 > 0 ){
-      $.fn.postSubmit($tbl_node);
-    }else{
-      $.fn.hideGroups($tbl_node);
-    }
+    if( $tx > 0 && $c5 > 0 ){ $.fn.postSubmit($tbl_node); }else{  $.fn.hideGroups($tbl_node); }
     $tx++;
   })
-
   $.fn.postSubmit = function($tbl_node){
     //if($('#freegood_percent').val() > 10)      alert('freegood exceed 10%');  return;
     if( $('#form').find('input[name=txid]').val() == '' ){
@@ -370,7 +294,6 @@ $(document).ready(function(){
       });
     }
   }
-
   $.fn.hideGroups = function($exceptNode){
     var $el_groups = $exceptNode.parents('#order').children('table');
     //if($beforeNode != $exceptNode){
@@ -405,7 +328,6 @@ $(document).ready(function(){
       }
       $beforeNode = $exceptNode;
     //}
-
     /* ajax retrieve just data which stored in sales table
        and dynamically show that models under the category */
     //$el_groups.each(function(){
@@ -416,13 +338,11 @@ $(document).ready(function(){
         $.fn.retrieveGroup($exceptNode,$models);
         $group.css('display','block');
         //$pos = $(this).positon();
-        //debugger;
       }else{
         $group.css('display','none');
       }
     });
   }
-
   $.fn.generateTXID = function(){
     var $salesrep = $('#storeinfo').find('input[name=salesrep]'),
         $store_id = $('#form').find('input[name=store_id]'),
@@ -432,23 +352,19 @@ $(document).ready(function(){
     if(false == $.fn.validateNull($accountno)) return;
     if(false == $.fn.validateNull($salesrep)) return;
     if(false == $.fn.validateNull($store_id)) return;
-
     $salesrep = $salesrep.attr('value').substring(0,2).toUpperCase();
     $ymd = $el_order_date.attr('value').substring(0,4) + $el_order_date.attr('value').substring(5,7) + $el_order_date.attr('value').substring(8,10);
     $accountno = $accountno.attr('value');
     $vTxid = $accountno + '-' + $salesrep + $ymd;
-
     $hdr = $.ajax({
              type:'get',
              url:'/backyard/index.php?route=sales/order/verify_txid',
              dataType:'text',
              data:'token=<?php echo $token; ?>&txid=' + $vTxid
            });
-    // return asysnronous handler
     return $hdr;
   }
 
-  // queryProduct
   // call ajax to query product to fill default value in order
   $.fn.retrieveGroup = function($exceptNode,$model){
     $exceptNode.html('');
@@ -486,7 +402,6 @@ $(document).ready(function(){
             $itemHtml+= "</div>";
             $itemHtml+= "</td>";
 			    }
-
           if( idx%2 == 0 ){
             if( idx > 0 ){
     			    thisNode = node.find("tr:last-child");
@@ -505,7 +420,6 @@ $(document).ready(function(){
  			      thisNode.find('td:last-child').addClass('right');
   			    thisNode = thisNode.find("td:last-child");
  			    }
-
 			    $.each(line, function(key,val){
             if(key == 'pn'){
               pn = val.substring(0,20);
@@ -545,7 +459,6 @@ $(document).ready(function(){
               if( val == 0 ) val = 'd2';
               thisNode.find('input[name="discount2[]"]').val(val);
             }
-
             var storetype = $('input[name="storetype"]').val();
             // todo. null check , besso-201103 
             if(storetype == 'W'){
@@ -553,14 +466,11 @@ $(document).ready(function(){
                 thisNode.find('input[name="price[]"]').val(val);
               }
             }else{
-              if(key == 'rt'){
-                thisNode.find('input[name="price[]"]').val(val);
-              }
+              if(key == 'rt'){  thisNode.find('input[name="price[]"]').val(val);  }
             }
             // from sales
             if(key == 'c'){
               thisNode.find('input[name="cnt[]"]').val(val);
-              // todo ugly code. tired . let's make custom func, later.
               if( val > 0 ){  if(thisNode.is('tr')){  thisNode.children('td').css( 'border' , '2px solid red' );  }else{  thisNode.css( 'border' , '2px solid red' ); } }
             }
             if(key == 'f'){
@@ -588,42 +498,26 @@ $(document).ready(function(){
             if(key == 'bo'){
               thisNode.find('input[name="backorder[]"]').val(val);
               if( val > 0 ){
-                if(thisNode.is('tr')){
-                  thisNode.children('td').css( 'border' , '2px solid red' );
-                }else{
-                  thisNode.css( 'border' , '2px solid red' );
-                }
+                if(thisNode.is('tr')){  thisNode.children('td').css( 'border' , '2px solid red' );
+                }else{  thisNode.css( 'border' , '2px solid red' ); }
               }
             }
-            if(key == 'bf'){
-              thisNode.find('input[name="backfree[]"]').val(val);
-            }
-            if(key == 'bd'){
-              thisNode.find('input[name="backdamage[]"]').val(val);
-            }
-            if(key == 'bp'){
-              thisNode.find('input[name="backpromotion[]"]').val(val);
-            }
+            if(key == 'bf'){  thisNode.find('input[name="backfree[]"]').val(val); }
+            if(key == 'bd'){  thisNode.find('input[name="backdamage[]"]').val(val); }
+            if(key == 'bp'){  thisNode.find('input[name="backpromotion[]"]').val(val);  }
             *****/
           });
-          // show backorder
           $.fn.showBackorder(thisNode);
 			  });
       }
    });
   }
-
   $.fn.floatingMenu = function($tgt){
     var $p = $tgt.offset();
-    $cssMap = {
-      'top':$p.top,
-      'left':$p.left + 850,
-      'visibility':'visible'
-    };
+    $cssMap = { 'top':$p.top,'left':$p.left + 850,'visibility':'visible'  };
     $('#floatmenu').find('input[name=float_order_price]').val($('#form').find('input[name=order_price]').val());
     $('#floatmenu').find('input[name=float_freegood_percent]').val($('#freegood_percent').val());
-    $('#floatmenu').css($cssMap);
-    $('#floatmenu').draggable();
+    $('#floatmenu').css($cssMap); $('#floatmenu').draggable();
   }
   $('#floatmenu').bind('click',function(e){
     $tgt = $(e.target);
@@ -635,7 +529,7 @@ $(document).ready(function(){
       $order_price = $('#form').find('input[name=order_price]').val();
       $order_price = parseFloat($order_price);
       //todo. allow 0 order for sample else
-      //if($order_price == 0){        alert('No Order');        return;      }
+      //if($order_price == 0){  alert('No Order');  return; }
       if('edit' == $mode){  //just simple redirect
         location.href = 'index.php?route=sales/order&mode=edit&txid=' + $('#form').find('input[name=txid]').val();
       }else{
@@ -655,23 +549,16 @@ $(document).ready(function(){
           $('#form').submit();
         }
       }
-    }else{
-      //$('#floatmenu').css('visibility','hidden');
-    }
+    }//else{  $('#floatmenu').css('visibility','hidden'); }
   })
 
-  /***
-  status 
-    0 : before request
-    1 : normal request
-    2 : hold request
-  ***/
+  // 0 : before request    1 : normal request    2 : hold request
   $('.save_order').bind('click',function(e){
     $this = $(this);
     $('#form').find('input[name=mode]').val('show');
     $order_price = $('#form').find('input[name=order_price]').val();
     $order_price = parseFloat($order_price);
-    //if($order_price == 0){      alert('No Order');      return;    }
+    //if($order_price == 0){  alert('No Order');  return; }
     if( $('#form').find('input[name=txid]').val() == '' ){
       $hdr = $.fn.generateTXID();
       $hdr.success(function($txid){
@@ -681,8 +568,7 @@ $(document).ready(function(){
         $('#form').find('input[name=txid]').val($txid);
         $('#form').find('input[name=ddl]').val('insert');
         $('#form').find('input[name=async]').val('false');
-        $('#txid_header').html($txid);
-        $('#form').submit();
+        $('#txid_header').html($txid);  $('#form').submit();
       });
     }else{
       $('#form').find('input[name=ddl]').val('update');
@@ -690,10 +576,8 @@ $(document).ready(function(){
       $('#form').submit();
     }
   });
-
   $(window).scroll(function(){
-    $p = $('#floatmenu').offset();
-    $top = $(window).scrollTop()+200;
+    $p = $('#floatmenu').offset();  $top = $(window).scrollTop()+200;
     $('#floatmenu').css('top',$top);
   });
   //$('input').attr('autocomplete','off');
