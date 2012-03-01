@@ -1,8 +1,4 @@
 <?php
-/**
-todo. need to make list button
-***/
-
 class ControllerSalesOrder extends Controller {
 	private $error = array();
 	private $bApprove = false;
@@ -12,13 +8,12 @@ class ControllerSalesOrder extends Controller {
 	private $isDebug  = false;
 
  	public function index(){
- 	  
  	  $this->isDebug = ( isset($this->request->get['debug']) ) ? true : false ;
  	  //$this->log->aPrint( $this->isDebug );
- 	  
+
  	  //todo. let's make global var 'isMobile'
  	  $this->isMobile = ( isset($this->request->get['mobile']) ) ? true : false ;
- 	  
+
     //echo 'start index';
 		$this->load->language('sales/order');
 		$this->document->title = $this->language->get('heading_title');
@@ -31,7 +26,7 @@ class ControllerSalesOrder extends Controller {
       $this->bApprove = true;
     }
     $this->data['bManager'] = $this->bManager;
-    
+
     # catalog for salesa
     if( isset($this->request->get['mobile']) ){
       $this->catalog = $this->config->getCatalogMobile();
@@ -43,7 +38,6 @@ class ControllerSalesOrder extends Controller {
 
     $this->load->model('sales/order');
     if(isset($this->request->get['txid'])){
-      //$this->log->aPrint( $this->request ); exit;
     	isset($this->request->get['mode']) ? $mode = $this->request->get['mode'] : $mode = 'edit';
     	//isset($this->request->post['mode']) ? $mode = $this->request->post['mode'] : $mode = 'edit';
     	$this->callOrderForm($this->request->get['txid'],$mode);
@@ -59,7 +53,6 @@ class ControllerSalesOrder extends Controller {
     //$aLocked = $this->model_sales_order->getSalesQuantity($model);
     //$this->load->library('json');
 		//$this->response->setOutput(Json::encode($data));
-
 		$this->template = 'sales/lockedPannel.tpl';
   	$this->response->setOutput($this->render(TRUE), $this->config->get('config_compression'));
   }
@@ -68,9 +61,7 @@ class ControllerSalesOrder extends Controller {
     //$this->log->aPrint( $this->request->get );
     isset($this->request->get['txid']) ?	$txid = $this->request->get['txid'] : $txid = '';
     isset($this->request->get['status']) ?	$status = $this->request->get['status'] : $status = '';
-    
  	  $this->load->model('sales/order');
- 	  
     # AR total
     if($this->model_sales_order->updateApprove($txid,$status)){
       echo 'success';
@@ -81,14 +72,11 @@ class ControllerSalesOrder extends Controller {
     //$this->log->aPrint( $this->request->get );
     isset($this->request->get['store_id']) ?	$store_id = $this->request->get['store_id'] : $store_id = '';
     $this->data['store_id'] = $store_id;
-    
  	  $this->load->model('sales/order');
- 	  
     # AR total
     if($res = $this->model_sales_order->selectStoreARTotal($this->data['store_id'])){
       $this->data['store_ar_total'] = $res;
     }
-
     # history
     if($res = $this->model_sales_order->selectStoreHistory($this->data['store_id'])){
       $this->data['store_history'] = $res;
@@ -97,15 +85,15 @@ class ControllerSalesOrder extends Controller {
     $this->template = 'sales/arHistory.tpl';
     $this->response->setOutput($this->render(TRUE), $this->config->get('config_compression'));
   }
-  
+
   // tmp
   public function qbHistory(){
     //$this->log->aPrint( $this->request->get );
     isset($this->request->get['store_id']) ?	$store_id = $this->request->get['store_id'] : $store_id = '';
     $this->data['store_id'] = $store_id;
-    
+
  	  $this->load->model('sales/order');
- 	  
+
     # history
     if($res = $this->model_sales_order->quickbookHistory($this->data['store_id'])){
       $this->data['store_history'] = $res;
@@ -115,12 +103,10 @@ class ControllerSalesOrder extends Controller {
     $this->response->setOutput($this->render(TRUE), $this->config->get('config_compression'));
   }
 
-
-
   // order form
   private function callOrderForm($txid = '',$mode='edit'){
     //$this->log->aPrint( $this->request ); exit;
-    
+
     $this->data['mode'] = $mode;
     //echo 'callOrderForm start';
 
@@ -132,7 +118,7 @@ class ControllerSalesOrder extends Controller {
 
  		if (isset($this->error['warning'])) {
   		$this->data['error_warning'] = $this->error['warning'];
-		} else {
+		}else{
 			$this->data['error_warning'] = '';
 		}
 
@@ -173,10 +159,10 @@ class ControllerSalesOrder extends Controller {
      	  $this->data['post_check'] = $res['post_check'];
      	  $this->data['cur_check']  = $res['cur_check'];
      	  $this->data['cur_cash']   = $res['cur_cash'];
-     	
+
         // firstname retrieve
      	  $this->data['firstname'] = $this->user->getFirstName($res['order_user']);
-        
+
         // decide whether you are approver or not.
         if('sales' == $this->user->getGroupName($this->data['salesrep'])){
           $approver = $this->user->getApprover($this->data['salesrep']);
@@ -223,27 +209,15 @@ class ControllerSalesOrder extends Controller {
      	}
 
       if($res = $this->model_sales_order->selectStoreARTotal($this->data['store_id'])){
-        /*
-        echo '<pre>';
-        print_r($res);
-        echo '</pre>';
-        */
         $this->data['store_ar_total'] = $res;
      	}else{
-     	  //echo 'selectStoreARTotal fail';
-     	  //exit;
+     	  //echo 'selectStoreARTotal fail'; exit;
      	}
 
       if($res = $this->model_sales_order->selectStoreHistory($this->data['store_id'])){
-        /*
-        echo '<pre>';
-        print_r($res);
-        echo '</pre>';
-        */
         $this->data['store_history'] = $res;
      	}else{
-     	  //echo 'selectStoreHistory fail';
-     	  //exit;
+     	  //echo 'selectStoreHistory fail'; exit;
      	}
 
       # for mode::show, show prepare new tied data set with sales table
@@ -276,9 +250,7 @@ class ControllerSalesOrder extends Controller {
      	  //exit;
      	}
      	*/
-
       $this->data['ddl'] = 'update';
-
     }else{  // if not txid
       //print ('no txid');
       # store
@@ -305,19 +277,19 @@ class ControllerSalesOrder extends Controller {
      	$this->data['ship_cod'] = '0';
      	$this->data['ship_lift'] = '0';
      	$this->data['ship_appointment'] = $this->util->date_format_kr(date('Ymdhis'));
-     	
+
      	$this->data['pc_date'] = '';
      	$this->data['post_check'] = '0';
      	$this->data['cur_check'] = '0';
      	$this->data['cur_cash'] = '0';
-     	
+
      	$this->data['shipto'] = '';
-      
+
    	  // todo. differ from insert/update
    	  $this->data['salesrep'] = $this->user->getUserName();
    	  $this->data['firstname'] = $this->user->getFirstName();
    	  //$this->data['user_id'] = $this->user->getId();
-   	  
+
    	  //set default value
       $this->data['term']    = '30';
 
@@ -334,40 +306,36 @@ class ControllerSalesOrder extends Controller {
    	  $this->data['pay'][0]['pay_date']    = '';
    	  $this->data['pay'][0]['pay_num']    = '';
    	  $this->data['pay'][0]['pay_user']    = '';
-   	  
+
    	  $this->data['freegood_amount']    = '0';
    	  $this->data['freegood_percent']    = '0';
-   	  
-      
+
       $this->data['ddl'] = 'insert';
       $this->data['status'] = '0';
     } // no txid
 
     # common for insert/update
     $this->data['bApprove'] = $this->bApprove;
-   	
+
     // [todo] it's ugly way to pass session
    	$this->data['token']    = $this->session->data['token'];
 
     # lnk
  		$this->data['lnk_cancel'] = HTTP_SERVER . 'index.php?route=sales/order&token=' . $this->session->data['token'] . $url;
  		$this->data['lnk_list'] = HTTP_SERVER . 'index.php?route=sales/list&token=' . $this->session->data['token'] . $url;
-
 		$this->data['order_action'] = HTTP_SERVER . 'index.php?route=sales/order/saveOrder&token=' . $this->session->data['token'];
-    
+
     if($this->isMobile == true){
       $this->template = 'sales/mobile/order.tpl';
     }else{
       $this->template = 'sales/order.tpl';
     }
-    
+
     if($this->isDebug == true)  $this->template = 'sales/order_debug.tpl';
-    
 		$this->children = array(
 			'common/header',
 			'common/footer'
 		);
-
 		$this->response->setOutput($this->render(TRUE), $this->config->get('config_compression'));
   }
 
@@ -400,13 +368,12 @@ class ControllerSalesOrder extends Controller {
     //$this->log->aPrint( 'post : description : ' . $description );
     $shipped_yn = $this->request->post['shipped_yn'];
     $shipto = $this->request->post['shipto'];
-    
+
   	$pc_date    = $this->request->post['pc_date'];
    	$post_check = $this->request->post['post_check'];
    	$cur_check  = $this->request->post['cur_check'];
    	$cur_cash   = $this->request->post['cur_cash'];
-    
-    
+
     // store discount control
     $discount = NULL;
     isset($this->request->post['dc1']) ? $dc1 = $this->request->post['dc1'] : $dc1 = 0;
@@ -415,7 +382,6 @@ class ControllerSalesOrder extends Controller {
     isset($this->request->post['dc2_desc']) ? $dc2_desc = $this->request->post['dc2_desc'] : $dc2_desc = '';
     if($dc1 == '') $dc1 = 0;
     if($dc2 == '') $dc2 = 0;
-    
     //$this->log->aPrint( stristr($description,'Store Discount') ); exit;
     //$this->log->aPrint( $this->request->post ); exit;
 
@@ -431,11 +397,6 @@ class ControllerSalesOrder extends Controller {
     }
     if($dc2 > 0){
       $aDC[1] = $dc2 . '|' . $dc2_desc;
-      /*
-      if( strstr($description,'Store Discount') === FALSE ){
-        $description .= "[ Store Discount 2  ] $dc2 % $dc2_desc \n";
-      }
-      */
     }
 
     ( count($aDC) > 0 ) ? $discount = json_encode($aDC) : $discount = '';
@@ -450,8 +411,8 @@ class ControllerSalesOrder extends Controller {
     $ship_appointment = $this->request->post['ship_appointment'];
 
     # ar
-    $balance = $this->request->post['balance'];
-    $payed_sum = $this->request->post['payed_sum'];
+    $balance = isset($this->request->post['balance']) ? $this->request->post['balance'] : $this->request->post['order_price'] ;
+    $payed_sum = isset($this->request->post['payed_sum']) ? $this->request->post['payed_sum'] : '0' ;
     $order_price = $this->request->post['order_price'];
 
     #order
@@ -470,7 +431,8 @@ class ControllerSalesOrder extends Controller {
     //$aBackorder = $this->request->post['backorder'];
     //$aBackfree = $this->request->post['backfree'];
     //$aBackdamage = $this->request->post['backdamage'];    
-    
+    //$this->log->aPrint( $aPromotion );exit;
+
     // todo. just for Gel. not good 
     $flagDC = false;
     foreach( $aDiscount as $dc ){
@@ -488,7 +450,6 @@ class ControllerSalesOrder extends Controller {
     }
 
     //echo $flagDC;     echo '<br/>';    echo $description;    exit;
-
     #ship
     /***
     $aShip_id = $this->request->post['ship_id'];
@@ -501,7 +462,6 @@ class ControllerSalesOrder extends Controller {
     //$aShip_appointment = $this->request->post['ship_appointment'];
     //$aShip_comment = $this->request->post['ship_comment'];
     //$ship_user = $this->request->post['ship_user'];
-    
     $this->load->model('sales/order');
 
     /*****
@@ -529,7 +489,7 @@ class ControllerSalesOrder extends Controller {
       }
     }
     *****/
-    
+
     // parsing data for ddl
     $data = array(
       'store' => array(
@@ -615,7 +575,7 @@ class ControllerSalesOrder extends Controller {
         return false; 
       }
     }
-    
+
     # always update store
     if(true == $this->model_sales_order->updateStore($data['store']) ){
       // todo. keep logging for any transaction in log
@@ -624,7 +584,7 @@ class ControllerSalesOrder extends Controller {
       // todo. need exception 
       return false; 
     }
-    
+
     //$this->log->aPrint( $data['sales'] ); exit;
     # always insert after delete.
     if(true == $this->model_sales_order->insertSales($data['sales']) ){
@@ -633,7 +593,7 @@ class ControllerSalesOrder extends Controller {
       // todo. need exception 
       return false; 
     }
-    
+
     // if the request is from ajax post, we dont need to redirect
     //$this->log->aPrint( $this->request->post );
     if( 'true' != $this->request->post['async'] ){
@@ -658,6 +618,5 @@ class ControllerSalesOrder extends Controller {
     $this->template = 'sales/verify_txid_proxy.tpl';
 		$this->response->setOutput($this->render(TRUE), $this->config->get('config_compression'));
   }
-
 }
 ?>
