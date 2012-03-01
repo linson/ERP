@@ -89,8 +89,10 @@ if($mode == 'show'){
     <table id='<?php echo $key; ?>' sibling='<?php echo $sibling; ?>' style='display:block'>
       <?php
         $idx = 0;
-        //$this->log->aPrint( $sale );
-        foreach($sale as $row){
+//        $this->log->aPrint( $catalog[$key] );
+        foreach($catalog[$key] as $sorted){
+          foreach($sale as $row){
+          if( $row['model'] != $sorted )  continue;
           //$total += $row['total_price'];
           // if exist rate stored in sales table, we should show that rate
           if( $row['rate'] > 0 ){
@@ -162,7 +164,7 @@ if($mode == 'show'){
         $idx++;
         $i++; // it's for dynamic show backyard
         // call dhtml to check backorder
-        } // foreach sale
+        }} // foreach sale
       ?>
     </table>
   <?php
