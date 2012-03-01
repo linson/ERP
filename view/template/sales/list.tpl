@@ -14,7 +14,7 @@
       <?php
       $aSales = $this->user->getSales();
       foreach($aSales as $row){
-        if( $row != 'UBP' && $row != 'AK2' ){
+        if( $row != 'UBP' && $row != 'AK2' && $row != 'BJ' ){
           echo "<a href='index.php?route=sales/list&filter_order_user=$row'><span style='background-color:#fdf8a0;padding:0 5px;'>$row</span></a>";
         }
       }
