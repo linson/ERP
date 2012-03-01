@@ -1,28 +1,20 @@
 <?php echo $header; ?>
-<?php if($error_warning) { ?>
-<div class="warning"><?php echo $error_warning; ?></div>
-<?php } ?>
-<?php if($success){ ?>
-<div class="success"><?php echo $success; ?></div>
-<?php } ?>
+<?php if($error_warning) { ?><div class="warning"><?php echo $error_warning; ?></div><?php } ?>
+<?php if($success){ ?><div class="success"><?php echo $success; ?></div><?php } ?>
 <div class="box">
-  <div class="left"></div>
-  <div class="right"></div>
-  <div class="heading">
+  <div class="left"></div><div class="right"></div><div class="heading">
     <h1 style='padding-left:10px;'>
       <?php if($manager == true){ ?>
         <input type=text name='notice' style='width:400px;' id='update_notice' value='<?php echo $notice[0]['notice'] ?>' />
       <?php }else{  ?>
-        <font color='red'>
-        <?php echo $notice[0]['notice'] ?>
-        </font>
+        <font color='red'><?php echo $notice[0]['notice'] ?></font>
       <?php } ?>
     </h1>
     <div class="buttons">
       <?php
       $aSales = $this->user->getSales();
       foreach($aSales as $row){
-        if( $row != 'UBP' ){
+        if( $row != 'UBP' && $row != 'AK2' ){
           echo "<a href='index.php?route=sales/list&filter_order_user=$row'><span style='background-color:#fdf8a0;padding:0 5px;'>$row</span></a>";
         }
       }
@@ -203,15 +195,11 @@
             <td class="left"><?php echo $approve_status ?></td>
             <td class="center">
             <?php
-            if(trim($tx['status']) == '2'){
-              echo 'POST'; 
-            }else if(trim($tx['status']) == '0'){
-              echo 'YET'; 
-            }else if(trim($tx['status']) == '1'){
-              echo 'SUBMIT'; 
-            }else if(trim($tx['status']) == '3'){
-              echo 'INVOICE'; 
-            } ?>
+            if(trim($tx['status']) == '2'){ echo 'POST'; 
+            }else if(trim($tx['status']) == '0'){ echo 'YET'; 
+            }else if(trim($tx['status']) == '1'){ echo 'SUBMIT'; 
+            }else if(trim($tx['status']) == '3'){ echo 'INVOICE'; } 
+            ?>
             </td>
             <td class="right"><?php foreach ($tx['action'] as $action){ ?>
               <a href="<?php echo $tx['action'][0]['href']; ?>" class='button'><span>View</span></a>
@@ -219,9 +207,7 @@
           </tr>
           <?php } ?>
           <?php }else{ ?>
-          <tr>
-            <td class="center" colspan="11">No Result</td>
-          </tr>
+          <tr><td class="center" colspan="11">No Result</td></tr>
           <?php } ?>
         </tbody>
       </table>
