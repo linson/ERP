@@ -404,9 +404,7 @@ $(document).ready(function(){
 
   $('#detail').bind('click',function(e){
     $tgt = $(e.target);
-    if($tgt.is('div.rep_locked')){
-      $('#detail').css('visibility','hidden');
-    }
+    if($tgt.is('div.rep_locked')){  $('#detail').css('visibility','hidden');  }
   });
 
   $('#show_invoice').bind('click',function(e){
