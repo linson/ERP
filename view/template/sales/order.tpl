@@ -11,27 +11,19 @@
       <?php if($mode == 'show'){ ?>
         <a href="index.php?route=sales/order&txid=<?php echo $txid; ?>" class="button"><span>Edit</span></a>
         <a onclick="location = '<?php echo $lnk_list; ?>';" class="button"><span>List</span></a>
-        <a id='print' onclick='printOrder()' class='button'>
-          <span>Print</span>
-        </a>
+        <a id='print' onclick='printOrder()' class='button'><span>Print</span></a>
       <?php } ?>
     </div>
   </div>
   <div id="ubporder">
     <form action='<?php echo $order_action; ?>' method='post' id='form' autocomplete="off">
     <div id='base'>
-      <div id='brief'>
-        <?php require_once('view/template/sales/approve.tpl'); ?>
-      </div>
+      <div id='brief'><?php require_once('view/template/sales/approve.tpl'); ?></div>
       <div class='half' style='clear:both'>
-        <div id='storeinfo'>
-          <?php require_once('view/template/sales/storeinfo.tpl'); ?>
-        </div>
+        <div id='storeinfo'><?php require_once('view/template/sales/storeinfo.tpl'); ?></div>
       </div>
       <div style='width:400px;float:left'>
-        <div id='ship'>
-          <?php require_once('view/template/sales/ship.tpl'); ?>
-        </div>
+        <div id='ship'><?php require_once('view/template/sales/ship.tpl'); ?></div>
         <div>
           <div style='float:left;width:100px;'>
             <table style='width:200px' id='cpay'>
@@ -43,15 +35,11 @@
               </tr>
               <tr>
                 <td>Current Check</td>
-                <td>
-                  <input type=text name='cur_check'  style='width:60px' value='<?php echo $cur_check ?>' />
-                </td>
+                <td><input type=text name='cur_check'  style='width:60px' value='<?php echo $cur_check ?>' /></td>
               </tr>
               <tr>
                 <td>Current Cash</td>
-                <td>
-                  <input type=text name='cur_cash'   style='width:60px' value='<?php echo $cur_cash ?>' />
-                </td>
+                <td><input type=text name='cur_cash'   style='width:60px' value='<?php echo $cur_cash ?>' /></td>
               </tr>
             </table>
           </div>
