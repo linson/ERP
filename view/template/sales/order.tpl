@@ -79,44 +79,22 @@
 
 <!-- common detail div -->
 <div id='detail' class='ui-widget-content'></div>
-
 <style>
 #floatmenu{
-  top:300px;
-  left:900px;
-  width:70px;
-  position:absolute;
-  border:1px solid red;
-  background-color:orange;
-  visibility:hidden;
+  top:300px;  left:900px; width:70px; position:absolute;
+  border:1px solid red; background-color:orange;  visibility:hidden;
 }
-#floatmenu div{
-  text-align:left;
-  margin:1px;
-}
-#floatmenu div input{
-  width:60px;
-  color:red;
-}
-#floatmenu button{
-  width:60px;
-}
+#floatmenu div{ text-align:left;  margin:1px; }
+#floatmenu div input{ width:60px; color:red;  }
+#floatmenu button{  width:60px; }
 </style>
 <div id='floatmenu' class='np'>
-  <div>
-    <input type='text' name='float_order_price' value='' readonly/>
-  </div>
-  <div>
-    <input type='text' name='float_freegood_percent' value='' readonly/>
-  </div>
-  <div>
-    <button type="button" id='show'>Confirm</button>
-    <!--button type="button" id='edit'>Edit</button-->
-  </div>
+  <div><input type='text' name='float_order_price' value='' readonly/></div>
+  <div><input type='text' name='float_freegood_percent' value='' readonly/></div>
+  <div><button type="button" id='show'>Confirm</button></div>
 </div>
 
 <script type="text/javascript" src="view/javascript/jquery/jquery.tipsy.js"></script>
-
 <script type="text/javascript">
 $(document).ready(function(){
   // use name as amount instead of order_price used in #order
@@ -135,12 +113,8 @@ $(document).ready(function(){
   // approve
   $('#brief').bind('click',function(e){
     $tgt = $(e.target);
-    if($tgt.is('span.approve')){
-      $.fn.updateApprove('approve');
-    }
-    if($tgt.is('span.pending')){
-      $.fn.updateApprove('pending');
-    }
+    if($tgt.is('span.approve')){  $.fn.updateApprove('approve');  }
+    if($tgt.is('span.pending')){  $.fn.updateApprove('pending');  }
   });
 
   $.fn.updateApprove = function(status){
@@ -184,17 +158,10 @@ $(document).ready(function(){
   // there could be some looping problem , besso 201105
   // after event keydown completed , we need to release the binding
   $('#storeinfo input[name=accountno]').bind('keydown',function(e){
-    if(e.keyCode == 13){
-      e.preventDefault();
-      $.fn.storeSubmit(e);
-    }
+    if(e.keyCode == 13){  e.preventDefault(); $.fn.storeSubmit(e);  }
   });
-
   $('#storeinfo input[name=store_name]').bind('keydown',function(e){
-    if(e.keyCode == 13){
-      e.preventDefault();
-      $.fn.storeSubmit(e);
-    }
+    if(e.keyCode == 13){  e.preventDefault(); $.fn.storeSubmit(e);  }
   });
 
   $.fn.storeSubmit = function(e){
@@ -211,10 +178,7 @@ $(document).ready(function(){
       dataType:'html',
       data:param,
       success:function(html){
-        $cssMap = {
-          'visibility':'visible',
-          'left':'50px'
-        }
+        $cssMap = { 'visibility':'visible','left':'50px'  }
         $('#detail').css($cssMap);
         $('#detail').html(html);
         //$('#detail').draggable();
@@ -237,34 +201,27 @@ $(document).ready(function(){
     $_date = $tgt.val();
   })
   .datepicker({
-    clickInput:true,
-    createButton:false,
-    startDate:'2000-01-01',
-    dateFormat:'yy-mm-dd'
+    clickInput:true,createButton:false,startDate:'2000-01-01',dateFormat:'yy-mm-dd'
   })
   .bind('change',function(e){
     var $tgt = $(e.target);
     if($tgt.is('input[name=ship_appointment]')){
       if( $tgt.val() != $_date ){
-      $el_desc = $('textarea[name=description]');
-      $desc = $el_desc.val();
-      if( $desc.indexOf("Shipping Date") == -1 ) {
-        if($desc != ''){
-          $desc = $desc + '\n' + 'Shipping Date : ' + $tgt.val();
-        }else{
-          $desc = 'Shipping Date : ' + $(this).val();
+        $el_desc = $('textarea[name=description]');
+        $desc = $el_desc.val();
+        if( $desc.indexOf("Shipping Date") == -1 ) {
+          if($desc != ''){  $desc = $desc + '\n' + 'Shipping Date : ' + $tgt.val();
+          }else{  $desc = 'Shipping Date : ' + $(this).val(); }
+          $el_desc.val($desc);
         }
-        $el_desc.val($desc);
-      }
       }
     }
   });
 
   // todo. move to lib. common lib to calculate date difference
   $.fn.calculateDiffDays = function(day1,day2){
-    d1 = $.fn.parseDate(day1);
-    d2 = $.fn.parseDate(day2);
-    dd = (d2-d1)/(1000*60*60*24); 
+    d1 = $.fn.parseDate(day1);  d2 = $.fn.parseDate(day2);
+    dd = (d2-d1)/(1000*60*60*24);
     return parseInt(dd);
   };
 
@@ -274,11 +231,8 @@ $(document).ready(function(){
   };
 
   var $clickNode = $('#order table tr');
-
   $('#order').bind('click',function(event){
-    if($tgt.is('input')){
-      $tgt.select();
-    }
+    if($tgt.is('input')){ $tgt.select();  }
   });
 
   // this start from total_price for all valid rows. we must confirm the one line verification.
@@ -303,10 +257,7 @@ $(document).ready(function(){
     if(false == $.fn.validateNull($salesrep)) return;
     if(false == $.fn.validateNull($store_id)) return;
 
-    if($el_freegood_percent.val() > 20){
-      alert('freegood exceed 10%');
-      return;
-    }
+    if($el_freegood_percent.val() > 20){  alert('freegood exceed 10%'); return; }
 
     if('insert' == $ddl.attr('value')){
       // saveOrder - txid : JH20110323-IL0004-01
@@ -364,9 +315,6 @@ $(document).ready(function(){
             return false;
           }
           // basic code done, need to test with real DB later , besso-201103 
-        },
-        fail:function(){
-          //console.log('fail : no response from proxy');
         }
       });
     }else{
@@ -381,27 +329,19 @@ $(document).ready(function(){
     if($tgt.is('input.pay_price')){
       //$default_val = $tgt['context'].defaultValue;
       $default_val = $tgt['context'].defaultValue;
-
       // init , default val , besso-201103 
       if('' == $default_val) $before_val = 0;
-
       // JS do not support value history except defaultValue, custom go , besso-201103 
-      if(typeof $before_val != 'undefined'){
-        $default_val = $before_val;
-      }
+      if(typeof $before_val != 'undefined'){  $default_val = $before_val; }
       $changed_val = $tgt['context'].value;
       $added_val = ( parseFloat($changed_val) - parseFloat($default_val) );
       $added_val.toFixed(2);
-
       // JS do not support value history except defaultValue, custom go , besso-201103 
       $before_val = $changed_val;
-      
       if($default_val != $changed_val){
         var $payed_sum =  $ele_payed_sum.val();
-
         $sum = parseFloat($payed_sum) + parseFloat($added_val);
         $sum.toFixed(2);
-        
         if( parseFloat($sum) > $ele_amount.val()){
           alert('Paid-Price cannot over Order-Price');
           $tgt.val($tgt[0].defaultValue);
@@ -409,7 +349,6 @@ $(document).ready(function(){
           return;
         }
         $ele_payed_sum.val($sum);
-
         $balance = $ele_amount.val() - $sum;
         $balance = $balance.toFixed(2);
         $ele_balance.val($balance);
@@ -446,24 +385,16 @@ $(document).ready(function(){
   }
 
   $txid = $('#form').find('input[name=txid]');
-  if('' != $txid.val()){
-    //$.fn.arHistory();
-    $.fn.qbHistory();
-  }
+  if('' != $txid.val()){  //$.fn.arHistory(); $.fn.qbHistory(); }
 
   $('#detail').bind('click',function(e){
     $tgt = $(e.target);
-    if($tgt.is('div.rep_locked')){
-      $('#detail').css('visibility','hidden');
-    }
+    if($tgt.is('div.rep_locked')){  $('#detail').css('visibility','hidden');  }
   });
 
   $('#show_invoice').bind('click',function(e){
     $txid = $('input[name=txid]').val();
-    if(!$txid){
-      alert('No Txid');
-      return;
-    }
+    if(!$txid){ alert('No Txid'); return; }
     if( $('input[name=order_price]').val() > 0 ){
       url = 'index.php?route=invoice/sheet&txid=' + $txid;
       window.open(url);
@@ -472,15 +403,10 @@ $(document).ready(function(){
 
   // remove all comma from 
   $('#cpay').find('input')
-  .bind('focusin',function(e){
-    $tgt = $(e.target);
-    $tgt.select();
-  })
+  .bind('focusin',function(e){  $tgt = $(e.target); $tgt.select();  })
   .bind('focusout',function(e){
-    $tgt = $(e.target);
-    $v = $tgt.val();
-    $v = $v.replace(',','');
-    $tgt.val($v);
+    $tgt = $(e.target); $v = $tgt.val();
+    $v = $v.replace(',','');  $tgt.val($v);
   });
   document.title = $('input[name=accountno]').val() + '-' + $('input[name=store_name]').val();
 });
