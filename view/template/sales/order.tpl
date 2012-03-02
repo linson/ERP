@@ -255,14 +255,11 @@ $(document).ready(function(){
         $accountno = $('#storeinfo').find('input[name=accountno]'),
         $txid = $('#form').find('input[name=txid]'),
         $weight_sum = $('#form').find('input[name=weight_sum]');
-
     if(false == $.fn.validateNull($accountno)) return;
     if(false == $.fn.validateNull($ele_order_date)) return;
     if(false == $.fn.validateNull($salesrep)) return;
     if(false == $.fn.validateNull($store_id)) return;
-
     if($el_freegood_percent.val() > 20){  alert('freegood exceed 10%'); return; }
-
     if('insert' == $ddl.attr('value')){
       // saveOrder - txid : JH20110323-IL0004-01
       // same variable mapping >.,<
