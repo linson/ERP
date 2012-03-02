@@ -1,11 +1,8 @@
 <?php echo $header; ?>
-<?php if ($error_warning){ ?>
-<div class="warning"><?php echo $error_warning; ?></div>
-<?php } ?>
+<?php if ($error_warning){ ?><div class="warning"><?php echo $error_warning; ?></div><?php } ?>
 <link rel='stylesheet' type='text/css' href='view/template/sales/order.css' />
 <div class="box">
-  <div class="left"></div>
-  <div class="right"></div>
+  <div class="left"></div><div class="right"></div>
   <div class="heading np">
     <h1 style='font-size:14px;padding:7px 10px 5px 2px;'></h1>
     <div class="buttons" style='float:right'>
@@ -158,7 +155,7 @@ $(document).ready(function(){
           $('#pending').html($pendingHtml);
         }else if('pending' == status){
           $approveHtml = '<a class="button"><span class="approve">Approve</span></a>';
-          $('#approve').html($approveHtml);        
+          $('#approve').html($approveHtml);
         }
       }
     });
@@ -184,17 +181,11 @@ $(document).ready(function(){
   // there could be some looping problem , besso 201105
   // after event keydown completed , we need to release the binding
   $('#storeinfo input[name=accountno]').bind('keydown',function(e){
-    if(e.keyCode == 13){
-      e.preventDefault();
-      $.fn.storeSubmit(e);
-    }
+    if(e.keyCode == 13){  e.preventDefault(); $.fn.storeSubmit(e);  }
   });
 
   $('#storeinfo input[name=store_name]').bind('keydown',function(e){
-    if(e.keyCode == 13){
-      e.preventDefault();
-      $.fn.storeSubmit(e);
-    }
+    if(e.keyCode == 13){  e.preventDefault(); $.fn.storeSubmit(e);  }
   });
 
   $.fn.storeSubmit = function(e){
@@ -232,15 +223,9 @@ $(document).ready(function(){
 
   // date picker binding
   $('input.date_pick')
-  .bind('focusin',function(e){
-    $tgt = $(e.target);
-    $_date = $tgt.val();
-  })
+  .bind('focusin',function(e){  $tgt = $(e.target); $_date = $tgt.val();  })
   .datepicker({
-    clickInput:true,
-    createButton:false,
-    startDate:'2000-01-01',
-    dateFormat:'yy-mm-dd'
+    clickInput:true,createButton:false,startDate:'2000-01-01',dateFormat:'yy-mm-dd'
   })
   .bind('change',function(e){
     var $tgt = $(e.target);
@@ -303,10 +288,7 @@ $(document).ready(function(){
     if(false == $.fn.validateNull($salesrep)) return;
     if(false == $.fn.validateNull($store_id)) return;
 
-    if($el_freegood_percent.val() > 20){
-      alert('freegood exceed 10%');
-      return;
-    }
+    if($el_freegood_percent.val() > 20){  alert('freegood exceed 10%'); return; }
 
     if('insert' == $ddl.attr('value')){
       // saveOrder - txid : JH20110323-IL0004-01
@@ -401,7 +383,7 @@ $(document).ready(function(){
 
         $sum = parseFloat($payed_sum) + parseFloat($added_val);
         $sum.toFixed(2);
-        
+
         if( parseFloat($sum) > $ele_amount.val()){
           alert('Paid-Price cannot over Order-Price');
           $tgt.val($tgt[0].defaultValue);
