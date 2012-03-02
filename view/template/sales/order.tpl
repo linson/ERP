@@ -67,25 +67,12 @@
 
 <style>
 #floatmenu{
-  top:300px;
-  left:900px;
-  width:70px;
-  position:absolute;
-  border:1px solid red;
-  background-color:orange;
-  visibility:hidden;
+  top:300px;  left:900px; width:70px; position:absolute;
+  border:1px solid red; background-color:orange;  visibility:hidden;
 }
-#floatmenu div{
-  text-align:left;
-  margin:1px;
-}
-#floatmenu div input{
-  width:60px;
-  color:red;
-}
-#floatmenu button{
-  width:60px;
-}
+#floatmenu div{ text-align:left;  margin:1px; }
+#floatmenu div input{ width:60px; color:red;  }
+#floatmenu button{  width:60px; }
 </style>
 <div id='floatmenu' class='np'>
   <div>
