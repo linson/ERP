@@ -271,14 +271,6 @@ $(document).ready(function(){
       $accountno = $accountno.attr('value');
 
       // create TXID
-      /* change TXID structure for kim
-      select substr(txid,1,10),substr(txid,12,6),substr(txid,19,1),txid from pay;
-      select concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1)), txid from pay;
-      update transaction set txid = concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1));
-      update sales set txid = concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1));
-      update ship set txid = concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1));
-      update pay set txid = concat(substr(txid,12,6),'-',substr(txid,1,10),'-',substr(txid,19,1));
-      */
       $vTxid = $accountno + '-' + $salesrep + $ymd;
       $txid.val($vTxid);  // todo. it not work under below if case. crop
 
