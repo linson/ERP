@@ -158,7 +158,6 @@ $(document).ready(function(){
   $('#storeinfo input[name=accountno]').bind('keydown',function(e){
     if(e.keyCode == 13){  e.preventDefault(); $.fn.storeSubmit(e);  }
   });
-
   $('#storeinfo input[name=store_name]').bind('keydown',function(e){
     if(e.keyCode == 13){  e.preventDefault(); $.fn.storeSubmit(e);  }
   });
@@ -234,7 +233,6 @@ $(document).ready(function(){
   };
 
   var $clickNode = $('#order table tr');
-
   $('#order').bind('click',function(event){
     if($tgt.is('input')){
       $tgt.select();
