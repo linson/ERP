@@ -355,10 +355,8 @@ $(document).ready(function(){
       
       if($default_val != $changed_val){
         var $payed_sum =  $ele_payed_sum.val();
-
         $sum = parseFloat($payed_sum) + parseFloat($added_val);
         $sum.toFixed(2);
-
         if( parseFloat($sum) > $ele_amount.val()){
           alert('Paid-Price cannot over Order-Price');
           $tgt.val($tgt[0].defaultValue);
@@ -366,7 +364,6 @@ $(document).ready(function(){
           return;
         }
         $ele_payed_sum.val($sum);
-
         $balance = $ele_amount.val() - $sum;
         $balance = $balance.toFixed(2);
         $ele_balance.val($balance);
