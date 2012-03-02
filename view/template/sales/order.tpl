@@ -343,16 +343,13 @@ $(document).ready(function(){
       if('' == $default_val) $before_val = 0;
 
       // JS do not support value history except defaultValue, custom go , besso-201103 
-      if(typeof $before_val != 'undefined'){
-        $default_val = $before_val;
-      }
+      if(typeof $before_val != 'undefined'){  $default_val = $before_val; }
       $changed_val = $tgt['context'].value;
       $added_val = ( parseFloat($changed_val) - parseFloat($default_val) );
       $added_val.toFixed(2);
 
       // JS do not support value history except defaultValue, custom go , besso-201103 
       $before_val = $changed_val;
-      
       if($default_val != $changed_val){
         var $payed_sum =  $ele_payed_sum.val();
         $sum = parseFloat($payed_sum) + parseFloat($added_val);
