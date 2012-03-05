@@ -257,20 +257,24 @@ $(document).ready(function(){
     // dc is pure sum of current val ( not before value calculation )
     // it's sequencial calc, dc1 first and dc2
     if( $dc1 > 0 ){
-      $total = parseFloat( parseFloat($price) * parseFloat($count) * ((100-$dc1) / 100) );
+//      $total = parseFloat( parseFloat($price) * parseFloat($count) * ((100-$dc1) / 100) );
+      $total = parseFloat( parseFloat($price) * parseFloat($count) / ( 1 + ($dc1/100)) );
     }
     if( $dc2 > 0 ){
       if( !($dc1 > 0) ) $total = parseFloat($price) * parseFloat($count);
-      $total = parseFloat( $total * ((100-$dc2) / 100) );
+//      $total = parseFloat( $total * ((100-$dc2) / 100) );
+      $total = parseFloat( $total / ( 1 + ($dc2/100)) );
     }
     // todo. omg store discount. do just once.
     $store_dc1 = $('input[name=dc1]').val();
     $store_dc2 = $('input[name=dc2]').val();
     if($store_dc1 > 0){
-      $total = parseFloat( $total * ((100 - $store_dc1) / 100) );
+//      $total = parseFloat( $total * ((100 - $store_dc1) / 100) );
+      $total = parseFloat( $total / ( 1 + ($store_dc1/100)) );
     }
     if($store_dc2 > 0){
-      $total = parseFloat( $total * ((100 - $store_dc2) / 100) );
+//      $total = parseFloat( $total * ((100 - $store_dc2) / 100) );
+      $total = parseFloat( $total * ( 1 + ($store_dc2/100)) );
     }
     // used ceil instead of round , besso 201108 
     if( $dc1 > 0 || $dc2 > 0 || $store_dc1 > 0 || $store_dc2 > 0 ){
