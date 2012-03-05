@@ -92,7 +92,7 @@ function add_date($givendate,$day=0,$mth=0,$yr=0){
     height:32px;
   }
 </style>
-
+<script type="text/javascript" src="view/javascript/jquery/jquery.min.js"></script>
 <div id='sheet'>
   <div id='top'>
     <div id='ubpinfo'>
@@ -250,12 +250,12 @@ HTML;
 
           $saledPrice = $rawPrice;
           if( $dc1 > 0 ){
-            $saledPrice = $saledPrice * (100-$dc1) / 100 ;
+            $saledPrice = $saledPrice / (1 + $dc1/100) ;
             //$saledPrice = round($saledPrice,2);
             $groupDcFlag = true;
           }
           if( $dc2 > 0 ){
-            $saledPrice = $saledPrice * (100-$dc2) / 100 ;
+            $saledPrice = $saledPrice / (1 + $dc2/100) ;
             //$saledPrice = round($saledPrice,2);
             $groupDcFlag = true;
           }
@@ -268,7 +268,7 @@ HTML;
               $i = $k+1;
               ${'store_dc'.$i} = isset($aT1[0]) ? $aT1[0] : 0;
               if( ${'store_dc'.$i} > 0 ){
-                $saledPrice = $saledPrice * ( 100 - ${'store_dc'.$i} ) / 100;
+                $saledPrice = $saledPrice / ( 1 + ${'store_dc'.$i}/100 );
                 //$saledPrice = round($saledPrice,2);
                 //$diff = $orgTotal - $total;
                 //$orgTotal = $total;
@@ -526,3 +526,19 @@ $descHeight = 'height:'.$descHeight.'px';
     </tr>
   </table>
 </div>
+
+<?php
+$btrip = ( isset($this->request->get['btrip']) ) ? true : false;
+if( true === $btrip ){
+?>
+<script>
+  $('table#billto').css('display','none');
+  $('table#shipto').css('display','none');
+  $('textarea').css('display','none');
+  setTimeout(function(){
+    window.print(); window.close();
+  },1000);
+</script>
+<?php
+}
+?>
